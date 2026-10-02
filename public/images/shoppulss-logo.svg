@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <!-- Rounded Orange Box Icon -->
+  <g id="logo-mark">
+    <rect x="0" y="2" width="44" height="44" rx="12" fill="url(#orange-grad)"/>
+    <!-- Shopping Bag Outline -->
+    <path d="M14 18C14 16.8954 14.8954 16 16 16H28C29.1046 16 30 16.8954 30 18V34C30 35.1046 29.1046 36 28 36H16C14.8954 36 14 35.1046 14 34V18Z" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.95"/>
+    <!-- Bag Handle -->
+    <path d="M18 16V14C18 11.7909 19.7909 10 22 10C24.2091 10 26 11.7909 26 14V16" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- Pulse Line over the bag -->
+    <path d="M11 27H17L19.5 22L23 31L25.5 25.5L27 27H33" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- Wordmark "Shop" in #161616 and "Pulss" in #FF5A1F -->
+  <text x="56" y="32" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="25" font-weight="900" letter-spacing="-0.5px">
+    <tspan fill="#161616">Shop</tspan><tspan fill="#FF5A1F">Pulss</tspan>
+  </text>
+  <defs>
+    <linearGradient id="orange-grad" x1="0" y1="2" x2="44" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF6B1F"/>
+      <stop offset="100%" stop-color="#FF4A0A"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,57 +1,59 @@
 @extends('layouts.app')
 
-@section('title', $category->name . ' - ShopPulss')
+@section('title', $category->name . ' - ShopPulss Direct Retail')
+@section('description', $category->description ?? "Explore {$category->name} with 100% authentic inventory and Cash on Delivery nationwide.")
 
 @section('content')
-<div class="bg-gray-50 py-6 border-b border-gray-100">
-    <div class="max-w-screen-xl mx-auto px-4">
-        {{-- Breadcrumb --}}
+<div class="bg-white border-b border-[#E6E8F2] py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        {{-- Breadcrumbs --}}
         <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
-            <a href="{{ route('home') }}" class="hover:text-teal-600">Home</a>
-            <span>/</span>
-            <a href="{{ route('products.index') }}" class="hover:text-teal-600">Categories</a>
+            <a href="{{ route('home') }}" class="hover:text-[#FF5A1F] transition-colors">Home</a>
+            <span class="text-gray-300">/</span>
+            <a href="{{ route('products.index') }}" class="hover:text-[#FF5A1F] transition-colors">Categories</a>
             @if($category->parent)
-                <span>/</span>
-                <a href="{{ route('categories.show', $category->parent->slug) }}" class="hover:text-teal-600">{{ $category->parent->name }}</a>
+                <span class="text-gray-300">/</span>
+                <a href="{{ route('categories.show', $category->parent->slug) }}" class="hover:text-[#FF5A1F] transition-colors">{{ $category->parent->name }}</a>
             @endif
-            <span>/</span>
-            <span class="text-gray-800 font-semibold">{{ $category->name }}</span>
+            <span class="text-gray-300">/</span>
+            <span class="text-[#0F1654] font-bold">{{ $category->name }}</span>
         </div>
 
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl md:text-3xl font-black text-navy-900" style="color: #0F1B4D;">
+                <h1 class="text-2xl sm:text-3xl font-black text-[#0F1654]">
                     {{ $category->name }}
                 </h1>
                 @if($category->description)
-                    <p class="text-xs text-gray-500 mt-1 max-w-xl">{{ $category->description }}</p>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1 max-w-2xl leading-relaxed">{{ $category->description }}</p>
                 @endif
             </div>
 
             {{-- Sorting --}}
-            <form method="GET" action="{{ url()->current() }}" class="flex items-center gap-2">
-                <label for="sort-select" class="text-xs font-semibold text-gray-600 whitespace-nowrap">Sort By:</label>
+            <form method="GET" action="{{ url()->current() }}" class="flex items-center gap-2 self-start md:self-auto">
+                <label for="sort-select" class="text-xs font-bold text-gray-600 whitespace-nowrap">Sort By:</label>
                 <select
                     id="sort-select"
                     name="sort"
                     onchange="this.form.submit()"
-                    class="h-9 px-3 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-teal-500"
+                    class="h-10 px-3.5 text-xs font-semibold text-[#161616] bg-[#F6F7FB] border border-[#E6E8F2] rounded-xl focus:outline-none focus:border-[#FF5A1F] cursor-pointer"
                 >
                     <option value="newest" {{ $sort === 'newest' ? 'selected' : '' }}>Newest</option>
-                    <option value="popular" {{ $sort === 'popular' ? 'selected' : '' }}>Popular</option>
+                    <option value="popular" {{ $sort === 'popular' ? 'selected' : '' }}>Most Popular</option>
                     <option value="price_asc" {{ $sort === 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
                     <option value="price_desc" {{ $sort === 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
                 </select>
             </form>
         </div>
 
-        {{-- Subcategories Pills --}}
+        {{-- Subcategory Quick Pills --}}
         @if($category->children->isNotEmpty())
-            <div class="flex items-center gap-2 overflow-x-auto pt-4 pb-1">
+            <div class="flex items-center gap-2 overflow-x-auto pt-5 pb-1 scrollbar-none">
+                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mr-1">Subcategories:</span>
                 @foreach($category->children as $child)
                     <a
                         href="{{ route('categories.show', $child->slug) }}"
-                        class="px-3 py-1.5 rounded-full text-xs font-semibold bg-white border border-gray-200 text-gray-700 hover:border-teal-500 hover:text-teal-600 whitespace-nowrap shadow-sm transition-colors"
+                        class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#F6F7FB] border border-[#E6E8F2] text-gray-700 hover:border-[#FF5A1F] hover:text-[#FF5A1F] hover:bg-white whitespace-nowrap transition-all shadow-2xs"
                     >
                         {{ $child->name }}
                     </a>
@@ -61,23 +63,26 @@
     </div>
 </div>
 
-<div class="max-w-screen-xl mx-auto px-4 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
     @if($products->isEmpty())
-        <div class="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
-            <h3 class="text-base font-bold text-gray-800 mb-1">No products in this category yet</h3>
-            <p class="text-xs text-gray-500 mb-4">We are restocking this section shortly directly from brands.</p>
-            <a href="{{ route('products.index') }}" class="inline-flex items-center px-4 py-2 rounded-lg text-xs font-semibold text-white" style="background-color: #00A8B8;">
-                Browse All Products
+        <div class="bg-white rounded-3xl border border-[#E6E8F2] p-12 text-center shadow-sp-card max-w-lg mx-auto">
+            <div class="w-16 h-16 rounded-full bg-[#FFF1EA] text-[#FF5A1F] flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            </div>
+            <h3 class="text-base font-bold text-gray-900 mb-1">No products in this category yet</h3>
+            <p class="text-xs text-gray-500 mb-6">We are currently restocking authenticated items for this department directly from suppliers.</p>
+            <a href="{{ route('products.index') }}" class="inline-flex items-center px-6 py-2.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#FF6B1F] to-[#FF4A0A] shadow-sp-orange">
+                Browse Full Catalog
             </a>
         </div>
     @else
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             @foreach($products as $product)
-                <x-product-card :product="$product" />
+                @include('components.product-card', ['product' => $product])
             @endforeach
         </div>
 
-        <div class="mt-8">
+        <div class="mt-10">
             {{ $products->links() }}
         </div>
     @endif

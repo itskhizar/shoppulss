@@ -9,7 +9,7 @@
     {{-- Top Action Bar --}}
     <div class="flex items-center justify-between flex-wrap gap-4">
         <div>
-            <h1 class="text-2xl font-black text-gray-900" style="color: #0F1B4D;">Store Overview</h1>
+            <h1 class="text-2xl font-black text-gray-900" style="color: #0F1654;">Store Overview</h1>
             <p class="text-xs text-gray-500 mt-0.5">Real-time metrics, fulfillment queue, and catalog health</p>
         </div>
 
@@ -17,8 +17,7 @@
             @if(Auth::user()->canManageCatalog())
                 <a
                     href="{{ route('admin.products.create') }}"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-white font-semibold text-xs shadow-sm hover:opacity-95 transition-all"
-                    style="background-color: #00A8B8;"
+                    class="btn-primary py-2.5 px-4 text-xs"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     Add New Product
@@ -27,7 +26,7 @@
             @if(Auth::user()->canManageOrders())
                 <a
                     href="{{ route('admin.orders.index') }}"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-gray-700 bg-white border border-gray-200 font-semibold text-xs hover:bg-gray-50 transition-colors"
+                    class="btn-secondary py-2.5 px-4 text-xs"
                 >
                     Manage Orders
                 </a>
@@ -47,7 +46,7 @@
                 </div>
             </div>
             <div class="mt-3">
-                <div class="text-2xl font-black text-gray-900" style="color: #0F1B4D;">{{ $todaysOrders }}</div>
+                <div class="text-2xl font-black text-gray-900" style="color: #0F1654;">{{ $todaysOrders }}</div>
                 <div class="text-[11px] text-gray-400 font-medium mt-1">Total Lifetime: {{ $totalOrders }}</div>
             </div>
         </a>
@@ -60,7 +59,7 @@
                 </div>
             </div>
             <div class="mt-3">
-                <div class="text-2xl font-black" style="color: #0F1B4D;">{{ $todaysOrders }}</div>
+                <div class="text-2xl font-black" style="color: #0F1654;">{{ $todaysOrders }}</div>
                 <div class="text-[11px] text-gray-400 font-medium mt-1">Total Lifetime: {{ $totalOrders }}</div>
             </div>
         </div>
@@ -119,7 +118,7 @@
                 </div>
             </div>
             <div class="mt-3">
-                <div class="text-2xl font-black text-gray-900" style="color: #0F1B4D;">Rs. {{ number_format($todaysRevenue) }}</div>
+                <div class="text-2xl font-black text-gray-900" style="color: #0F1654;">Rs. {{ number_format($todaysRevenue) }}</div>
                 <div class="text-[11px] text-emerald-600 font-medium mt-1">Total: Rs. {{ number_format($totalSales) }}</div>
             </div>
         </div>
@@ -229,7 +228,7 @@
         <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div class="p-6 border-b border-gray-100 flex items-center justify-between">
                 <div>
-                    <h2 class="font-bold text-base text-gray-900" style="color: #0F1B4D;">Recent Orders</h2>
+                    <h2 class="font-bold text-base text-gray-900" style="color: #0F1654;">Recent Orders</h2>
                     <p class="text-xs text-gray-500 mt-0.5">Pending and confirmed orders prioritized first</p>
                 </div>
                 <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-teal-600 hover:text-teal-700">View All →</a>
@@ -303,7 +302,7 @@
             @if(Auth::user()->canManageCatalog())
             <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-                    <h2 class="font-bold text-base text-gray-900" style="color: #0F1B4D;">Low Stock Alerts</h2>
+                    <h2 class="font-bold text-base text-gray-900" style="color: #0F1654;">Low Stock Alerts</h2>
                     <a href="{{ route('admin.products.index', ['stock' => 'low']) }}" class="text-xs font-semibold text-teal-600 hover:text-teal-700">All Products →</a>
                 </div>
 
@@ -330,7 +329,7 @@
             @if(Auth::user()->canManageCustomers())
             <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-gray-100">
-                    <h2 class="font-bold text-base text-gray-900" style="color: #0F1B4D;">Recent Customers</h2>
+                    <h2 class="font-bold text-base text-gray-900" style="color: #0F1654;">Recent Customers</h2>
                     <a href="{{ route('admin.customers.index') }}" class="text-xs font-semibold text-teal-600 hover:text-teal-700">View All →</a>
                 </div>
 
@@ -373,13 +372,13 @@
         <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
             <div class="flex items-center justify-between mb-4">
                 <div>
-                    <h2 class="font-bold text-base text-gray-900" style="color: #0F1B4D;">Sales & Orders Trend</h2>
+                    <h2 class="font-bold text-base text-gray-900" style="color: #0F1654;">Sales & Orders Trend</h2>
                     <p class="text-xs text-gray-500 mt-0.5">Revenue and order volume over time</p>
                 </div>
                 <div class="flex gap-1.5">
                     @foreach(['today' => 'Today', '7d' => '7D', '30d' => '30D', '3m' => '3M', '12m' => '12M'] as $key => $label)
                         <a href="{{ route('admin.dashboard', ['period' => $key]) }}"
-                           class="px-2.5 py-1 rounded-lg text-[11px] font-bold transition-colors {{ $chartPeriod === $key ? 'bg-[#0F1B4D] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
+                           class="px-2.5 py-1 rounded-lg text-[11px] font-bold transition-colors {{ $chartPeriod === $key ? 'bg-orange-grad text-white shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
                             {{ $label }}
                         </a>
                     @endforeach
@@ -392,7 +391,7 @@
 
         {{-- Order Distribution Doughnut --}}
         <div class="lg:col-span-1 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-            <h2 class="font-bold text-base text-gray-900 mb-4" style="color: #0F1B4D;">Order Distribution</h2>
+            <h2 class="font-bold text-base text-gray-900 mb-4" style="color: #0F1654;">Order Distribution</h2>
             <div class="relative h-44 flex items-center justify-center">
                 <canvas id="orderDistChart"></canvas>
             </div>
@@ -418,7 +417,7 @@
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div class="p-6 border-b border-gray-100 flex items-center justify-between">
             <div>
-                <h2 class="font-bold text-base text-gray-900" style="color: #0F1B4D;">Top Selling Products</h2>
+                <h2 class="font-bold text-base text-gray-900" style="color: #0F1654;">Top Selling Products</h2>
                 <p class="text-xs text-gray-500 mt-0.5">By units sold, excluding cancelled orders</p>
             </div>
             <a href="{{ route('admin.products.index') }}" class="text-xs font-semibold text-teal-600 hover:text-teal-700">All Products →</a>
@@ -473,8 +472,8 @@
                     {
                         label: 'Revenue (Rs.)',
                         data: @json($chartData['revenue']),
-                        backgroundColor: 'rgba(0, 168, 184, 0.15)',
-                        borderColor: '#00A8B8',
+                        backgroundColor: 'rgba(255, 90, 31, 0.15)',
+                        borderColor: '#FF5A1F',
                         borderWidth: 2,
                         borderRadius: 6,
                         type: 'bar',
@@ -483,8 +482,8 @@
                     {
                         label: 'Orders',
                         data: @json($chartData['orders']),
-                        borderColor: '#0F1B4D',
-                        backgroundColor: 'rgba(15, 27, 77, 0.08)',
+                        borderColor: '#0F1654',
+                        backgroundColor: 'rgba(15, 22, 84, 0.08)',
                         borderWidth: 2,
                         tension: 0.4,
                         fill: false,
