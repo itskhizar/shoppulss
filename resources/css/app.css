@@ -1,0 +1,50 @@
+@import 'tailwindcss';
+
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../../app/**/*.php";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* ShopPulss Master Brand Color System */
+    --color-brand-orange: #FA5216;
+    --color-brand-orange-hover: #E0400B;
+    --color-brand-orange-light: #FF6C3B;
+    --color-brand-orange-50: #FFF7ED;
+    --color-brand-orange-100: #FFEDD5;
+
+    --color-brand-dark: #0B0F19;
+    --color-brand-dark-soft: #111827;
+    --color-brand-dark-card: #182235;
+
+    --color-brand-gray-50: #F9FAFB;
+    --color-brand-gray-100: #F3F4F6;
+    --color-brand-gray-200: #E5E7EB;
+    --color-brand-gray-700: #374151;
+    --color-brand-gray-900: #111827;
+}
+
+/* Custom ShopPulse utilities */
+.brand-orange-gradient {
+    background: linear-gradient(135deg, #FA5216 0%, #FF6C3B 100%);
+}
+
+.brand-dark-gradient {
+    background: linear-gradient(135deg, #0B0F19 0%, #1E293B 100%);
+}
+
+.hero-bg-gradient {
+    background: radial-gradient(circle at 75% 45%, rgba(250, 82, 22, 0.08) 0%, rgba(249, 250, 251, 1) 70%);
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
