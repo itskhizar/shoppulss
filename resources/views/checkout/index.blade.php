@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Secure Checkout - ShopPulss')
+@section('description', 'Complete your order with our secure checkout. Cash on Delivery available. Fast nationwide delivery.')
+@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
 
 @section('content')
 {{-- Breadcrumbs & Header --}}
@@ -196,7 +198,7 @@
                                             <span class="font-black text-sm text-[#0F1654]">Cash on Delivery (COD)</span>
                                             <span class="badge-orange">Most Popular</span>
                                         </div>
-                                        <span class="text-xs font-semibold text-gray-500">🚚 Leopards / TCS</span>
+                                        <span class="text-xs font-semibold text-gray-500">ðŸšš Leopards / TCS</span>
                                     </div>
                                     <p class="text-xs text-gray-600 mt-1">Pay with physical cash directly to the courier representative when your parcel is delivered at your doorstep.</p>
                                 </div>
@@ -354,21 +356,6 @@
                             </div>
                         </label>
 
-                        {{-- 5. Card Online --}}
-                        <label class="payment-option-card flex flex-col p-4 rounded-2xl border border-[#E6E8F2] hover:border-[#FF5A1F]/40 cursor-pointer transition-all">
-                            <div class="flex items-start gap-3">
-                                <input type="radio" name="payment_method" value="card" class="mt-1 text-[#FF5A1F] focus:ring-[#FF5A1F]" onchange="togglePaymentPanels('card')">
-                                <div class="flex-1">
-                                    <div class="flex items-center justify-between">
-                                        <span class="font-black text-sm text-[#0F1654]">Debit / Credit Card & Instant Pay</span>
-                                        <div class="flex items-center gap-1 text-xs text-gray-400">
-                                            <span>Visa / Mastercard / PayPak</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mt-1">Secure instant payment via debit or credit card with zero processing fees.</p>
-                                </div>
-                            </div>
-                        </label>
                     </div>
                 </div>
 
@@ -391,7 +378,7 @@
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <div class="font-bold text-gray-800 truncate">{{ $item->product->name }}</div>
-                                    <div class="text-gray-400 text-[11px]">Qty: {{ $item->quantity }} × Rs. {{ number_format($item->unit_price) }}</div>
+                                    <div class="text-gray-400 text-[11px]">Qty: {{ $item->quantity }} Ã— Rs. {{ number_format($item->unit_price) }}</div>
                                 </div>
                                 <div class="font-black text-[#0F1654]">
                                     Rs. {{ number_format($item->total_price) }}
@@ -429,7 +416,7 @@
                     </button>
 
                     <div class="pt-2 text-[11px] text-gray-400 text-center leading-relaxed">
-                        🔒 256-bit encrypted checkout. By placing your order, you agree to ShopPulss's Terms & Conditions and 7-day Return Policy.
+                        ðŸ”’ 256-bit encrypted checkout. By placing your order, you agree to ShopPulss's Terms & Conditions and 7-day Return Policy.
                     </div>
                 </div>
             </div>

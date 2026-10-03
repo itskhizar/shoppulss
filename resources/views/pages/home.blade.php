@@ -1,7 +1,49 @@
 @extends('layouts.app')
 
 @section('title', 'ShopPulss - Discover Products You\'ll Love | Direct Retail Store Pakistan')
-@section('description', 'Shop authentic electronics, smart gadgets, fashion, and lifestyle essentials shipped directly from our central Karachi fulfilment warehouse.')
+@section('description', 'Shop authentic electronics, smart gadgets, fashion, and lifestyle essentials shipped directly from our central fulfilment hub. Cash on Delivery available nationwide across Pakistan.')
+@section('keywords', 'ShopPulss, online shopping Pakistan, Cash on Delivery Pakistan, direct retail, authentic products, electronics Pakistan, fashion Pakistan, free delivery Pakistan')
+@section('canonical', url('/'))
+
+@push('styles')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "Organization",
+  "name": "ShopPulss",
+  "url": "{{ url('/') }}",
+  "logo": "{{ asset('images/shoppulss-logo.svg') }}",
+  "description": "Pakistan's premier direct-to-consumer store. 100% genuine products, Cash on Delivery nationwide.",
+  "contactPoint": {
+    "@@type": "ContactPoint",
+    "telephone": "+92-300-000-0000",
+    "contactType": "customer service",
+    "areaServed": "PK",
+    "availableLanguage": ["Urdu", "English"]
+  },
+  "sameAs": [
+    "https://facebook.com/shoppulss",
+    "https://instagram.com/shoppulss"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "WebSite",
+  "name": "ShopPulss",
+  "url": "{{ url('/') }}",
+  "potentialAction": {
+    "@@type": "SearchAction",
+    "target": {
+      "@@type": "EntryPoint",
+      "urlTemplate": "{{ route('search') }}?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+@endpush
 
 @section('content')
 
@@ -154,48 +196,48 @@
     </div>
 </section>
 
-{{-- 2. TRUST STRIP (Peach #FFF1EA) --}}
-<section class="py-6 px-4 bg-[#FFF1EA] border-y border-[#FF5A1F]/15">
+{{-- 2. VALUE PROPOSITION STRIP --}}
+<section class="py-7 px-4 bg-white border-y border-[#E6E8F2] shadow-sm relative z-10">
     <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
 
             <div class="flex items-center gap-3.5">
-                <div class="w-11 h-11 rounded-2xl bg-white flex items-center justify-center text-[#FF5A1F] shadow-xs flex-shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+                <div class="w-12 h-12 rounded-xl bg-[#F6F7FB] flex items-center justify-center text-[#FF5A1F] flex-shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
                 </div>
                 <div>
                     <h4 class="font-bold text-xs sm:text-sm text-[#0F1654]">Free Shipping</h4>
-                    <p class="text-[11px] text-gray-500 mt-0.5">On all orders over Rs. 2,500</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5">On orders over Rs. 2,500</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-3.5">
-                <div class="w-11 h-11 rounded-2xl bg-white flex items-center justify-center text-[#0AA6B7] shadow-xs flex-shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                <div class="w-12 h-12 rounded-xl bg-[#F6F7FB] flex items-center justify-center text-[#FF5A1F] flex-shrink-0">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
                 </div>
                 <div>
                     <h4 class="font-bold text-xs sm:text-sm text-[#0F1654]">Secure Payments</h4>
-                    <p class="text-[11px] text-gray-500 mt-0.5">Cash on Delivery & Bank</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5">Cash on Delivery &amp; Bank</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-3.5">
-                <div class="w-11 h-11 rounded-2xl bg-white flex items-center justify-center text-[#FF5A1F] shadow-xs flex-shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <div class="w-12 h-12 rounded-xl bg-[#F6F7FB] flex items-center justify-center text-[#FF5A1F] flex-shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                 </div>
                 <div>
                     <h4 class="font-bold text-xs sm:text-sm text-[#0F1654]">Easy Returns</h4>
-                    <p class="text-[11px] text-gray-500 mt-0.5">7-day hassle-free guarantee</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5">7-Day Hassle-Free Policy</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-3.5">
-                <div class="w-11 h-11 rounded-2xl bg-white flex items-center justify-center text-[#25D366] shadow-xs flex-shrink-0">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413A11.815 11.815 0 0012.05 0z"/></svg>
+                <div class="w-12 h-12 rounded-xl bg-[#F6F7FB] flex items-center justify-center text-[#FF5A1F] flex-shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </div>
                 <div>
-                    <h4 class="font-bold text-xs sm:text-sm text-[#0F1654]">24/7 Fast Support</h4>
-                    <p class="text-[11px] text-gray-500 mt-0.5">WhatsApp & phone helpline</p>
+                    <h4 class="font-bold text-xs sm:text-sm text-[#0F1654]">24/7 Support</h4>
+                    <p class="text-[11px] text-gray-500 mt-0.5">WhatsApp &amp; Phone Line</p>
                 </div>
             </div>
 

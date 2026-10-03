@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
@@ -30,220 +30,160 @@
 </head>
 <body class="bg-[#F6F7FB] text-[#161616] font-sans antialiased min-h-screen flex flex-col selection:bg-[#FF5A1F] selection:text-white">
 
-    {{-- 1. Top Announcement Bar (Deep Navy #0F1654) --}}
+    {{-- 1. Top Announcement Bar --}}
     <div id="announcement-bar" class="bg-[#0F1654] text-white text-[11px] py-2 px-4 border-b border-white/10 z-50">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-            {{-- Left Trust Note --}}
-            <div class="hidden lg:flex items-center gap-1.5 text-blue-200/90 font-medium">
-                <svg class="w-3.5 h-3.5 text-[#0AA6B7]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"/>
-                </svg>
-                <span>Pakistan's Verified Direct Retail Store</span>
+            <div class="flex items-center gap-4 text-blue-100/90 font-medium">
+                <span class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-[#FF5A1F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+                    <span>Free Delivery over Rs. 2,500</span>
+                </span>
+                <span class="opacity-30 hidden sm:inline">|</span>
+                <span class="hidden sm:flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-[#FF5A1F]" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
+                    <span>Cash on Delivery Available Nationwide</span>
+                </span>
             </div>
-
-            {{-- Center Headline / Dynamic Announcement --}}
-            <p class="flex-1 text-center font-medium tracking-wide text-white/95">
-                {!! $announcementText ?? '🚀 <strong>Free delivery</strong> over Rs 2,500 &nbsp;|&nbsp; 💰 <strong>Cash on Delivery (COD)</strong> available nationwide' !!}
-            </p>
-
-            {{-- Right Quick Links: Helpline & Track Order --}}
-            <div class="hidden md:flex items-center gap-5 text-blue-200/90 font-medium">
-                <a href="{{ route('orders.track') }}" class="flex items-center gap-1.5 hover:text-white transition-colors">
-                    <svg class="w-3.5 h-3.5 text-[#0AA6B7]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
-                    Track Order
-                </a>
-                <span class="text-white/20">|</span>
-                <a href="tel:{{ str_replace([' ', '-'], '', $whatsappNumber ?? '+923000000000') }}" class="flex items-center gap-1.5 hover:text-white transition-colors">
-                    <svg class="w-3.5 h-3.5 text-[#0AA6B7]" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-                    Helpline: {{ $whatsappNumber ?? '+92 300 000-0000' }}
-                </a>
+            <div class="hidden md:flex items-center gap-4 text-blue-100/90 font-medium">
+                <a href="{{ route('orders.track') }}" class="hover:text-white transition-colors">Track Order</a>
+                <span class="opacity-30">|</span>
+                <a href="tel:08007857300" class="hover:text-white transition-colors">Helpline: 0800-PULSE</a>
             </div>
         </div>
     </div>
 
-    {{-- 2. Main Navbar with Centered Links (Left: Logo, Center: Nav Links, Right: Search, Cart, Account) --}}
-    <header id="main-header" class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E6E8F2] shadow-sm transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex items-center justify-between h-20 gap-4">
+    {{-- 2. Main Sticky Header: 2-Row Navbar --}}
+    <header id="main-header" class="sticky top-0 z-40 bg-white shadow-sm transition-all duration-300">
 
-                {{-- Left: Brand Logo --}}
-                <div class="flex items-center gap-4">
-                    {{-- Mobile menu button --}}
-                    <button type="button" onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 focus:outline-none" aria-label="Toggle menu" id="mobile-menu-btn">
+        {{-- Row A: Logo + Search Bar + Icons --}}
+        <div class="bg-white border-b border-[#E6E8F2]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6">
+                <div class="flex items-center gap-4 h-[68px]">
+
+                    {{-- Mobile Menu Button --}}
+                    <button type="button" onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 focus:outline-none flex-shrink-0" aria-label="Toggle menu" id="mobile-menu-btn">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
 
+                    {{-- Brand Logo --}}
                     <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center group" id="site-logo">
                         <img src="{{ asset('images/shoppulss-logo.svg') }}" alt="ShopPulss" class="h-10 w-auto transition-transform duration-200 group-hover:scale-[1.02]">
                     </a>
-                </div>
 
-                {{-- Center: Navigation Links --}}
-                <nav class="hidden lg:flex items-center gap-7 text-[13px] font-semibold text-[#161616]">
-                    <a href="{{ route('home') }}" class="transition-colors hover:text-[#FF5A1F] {{ request()->routeIs('home') ? 'text-[#FF5A1F] font-bold' : '' }}">
-                        Home
-                    </a>
-                    <a href="{{ route('products.index') }}" class="transition-colors hover:text-[#FF5A1F] {{ request()->routeIs('products.index') && !request('sort') ? 'text-[#FF5A1F] font-bold' : '' }}">
-                        Shop
-                    </a>
-                    <a href="{{ route('products.index', ['sort' => 'newest']) }}" class="transition-colors hover:text-[#FF5A1F]">
-                        New Arrivals
-                    </a>
-                    <a href="{{ route('products.index', ['sort' => 'popular']) }}" class="transition-colors hover:text-[#FF5A1F]">
-                        Best Sellers
-                    </a>
-                    <a href="{{ route('products.index', ['sort' => 'sale']) }}" class="flex items-center gap-1 text-[#FF5A1F] font-bold hover:opacity-90">
-                        <span>Deals & Flash Sale</span>
-                        <span class="inline-block px-1.5 py-0.2 bg-[#FF5A1F]/10 text-[#FF5A1F] text-[10px] font-extrabold rounded-full">HOT</span>
-                    </a>
-                    <a href="{{ route('products.index') }}#categories" class="transition-colors hover:text-[#FF5A1F]">
-                        Categories
-                    </a>
-                </nav>
-
-                {{-- Right: Search Box, Account, Cart --}}
-                @php
-                    $cartCount = app(\App\Services\CartService::class)->getCount();
-                @endphp
-                <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-
-                    {{-- Search Input (Desktop) --}}
-                    <div class="hidden xl:block w-56 2xl:w-64">
-                        <form action="{{ route('search') }}" method="GET" class="relative" id="search-form">
+                    {{-- Centered Search Bar --}}
+                    <form action="{{ route('search') }}" method="GET" class="flex-1 hidden md:flex items-center relative mx-2" id="search-form">
+                        <div class="relative w-full flex items-center">
                             <input
                                 id="search-input"
                                 type="search"
                                 name="q"
                                 value="{{ request('q') }}"
-                                placeholder="Search products..."
-                                class="w-full h-10 pl-3.5 pr-9 rounded-full bg-[#F6F7FB] border border-[#E6E8F2] text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-[#FF5A1F] focus:ring-2 focus:ring-[#FF5A1F]/15 transition-all"
+                                placeholder="Search products, brands and categories..."
+                                class="w-full h-10 pl-4 pr-28 rounded-full bg-[#F6F7FB] border border-[#E6E8F2] text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-[#FF5A1F] focus:ring-2 focus:ring-[#FF5A1F]/15 transition-all"
                             >
-                            <button type="submit" class="absolute right-1 top-1 h-8 w-8 flex items-center justify-center rounded-full text-gray-500 hover:text-[#FF5A1F] transition-colors" id="search-btn" title="Search">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                            </button>
-                        </form>
-                    </div>
+                            <button type="submit" class="absolute right-1 h-8 px-5 rounded-full bg-[#FF5A1F] text-white text-xs font-bold hover:bg-[#FF4A0A] transition-colors" id="search-btn">Search</button>
+                        </div>
+                    </form>
 
-                    {{-- Search Icon Trigger (Tablet/Mobile) --}}
-                    <button type="button" onclick="toggleMobileSearch()" class="xl:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors" title="Search">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    </button>
+                    {{-- Right Action Icons --}}
+                    @php
+                        $cartCount = app(\App\Services\CartService::class)->getCount();
+                    @endphp
+                    <div class="flex items-center gap-1 flex-shrink-0 ml-auto md:ml-0">
 
-                    {{-- User Account Dropdown --}}
-                    @auth
-                        <div class="relative" x-data="{ open: false }" id="user-menu-wrapper">
-                            <button
-                                type="button"
-                                onclick="toggleUserDropdown()"
-                                class="flex items-center gap-2 p-1.5 rounded-full hover:bg-gray-100 transition-colors text-left focus:outline-none"
-                                id="user-menu-btn"
-                            >
-                                <div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-black shadow-sm bg-gradient-to-br from-[#0F1654] to-[#1A237E]">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                                </div>
-                                <div class="hidden md:block pr-1">
-                                    <div class="text-xs font-bold text-[#161616] leading-none truncate max-w-[100px]">{{ Auth::user()->name }}</div>
-                                    <div class="text-[10px] text-[#0AA6B7] font-semibold leading-none mt-1">{{ Auth::user()->isAdmin() ? 'Admin' : 'Customer' }}</div>
-                                </div>
-                                <svg class="w-3.5 h-3.5 text-gray-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                            </button>
+                        {{-- Mobile Search Toggle --}}
+                        <button type="button" onclick="toggleMobileSearch()" class="md:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors" title="Search">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </button>
 
-                            {{-- Dropdown Menu --}}
-                            <div id="user-dropdown-menu" class="hidden absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl shadow-2xl border border-[#E6E8F2] py-2 z-50 animate-in fade-in zoom-in-95">
-                                <div class="px-4 py-2.5 border-b border-gray-100">
-                                    <p class="text-xs font-bold text-gray-900 truncate">{{ Auth::user()->name }}</p>
-                                    <p class="text-[11px] text-gray-400 truncate">{{ Auth::user()->email }}</p>
-                                </div>
+                        {{-- Wishlist Icon --}}
+                        <a href="{{ route('cart.index') }}" class="relative p-2 rounded-full text-gray-500 hover:text-[#FF5A1F] hover:bg-[#FFF1EA] transition-all" title="Wishlist" aria-label="Wishlist">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                        </a>
 
-                                @if(Auth::user()->isAdmin())
-                                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-[#0AA6B7] hover:bg-teal-50 transition-colors">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                                        Admin Dashboard
+                        {{-- Cart Icon with Count --}}
+                        <a href="{{ route('cart.index') }}" id="cart-btn" class="relative p-2 rounded-full text-gray-500 hover:text-[#FF5A1F] hover:bg-[#FFF1EA] transition-all" title="Cart" aria-label="Shopping Cart">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                            @if($cartCount > 0)
+                                <span class="absolute top-0.5 right-0.5 w-4 h-4 bg-[#FF5A1F] text-white text-[10px] font-black rounded-full flex items-center justify-center leading-none">{{ $cartCount }}</span>
+                            @endif
+                        </a>
+
+                        {{-- User Account --}}
+                        @auth
+                            <div class="relative" id="user-menu-wrapper">
+                                <button type="button" onclick="toggleUserDropdown()" class="flex items-center gap-1.5 p-1 rounded-full hover:bg-gray-100 transition-colors focus:outline-none" id="user-menu-btn">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-black shadow-sm bg-gradient-to-br from-[#0F1654] to-[#1A237E]">
+                                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                    </div>
+                                </button>
+                                <div id="user-dropdown-menu" class="hidden absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl shadow-2xl border border-[#E6E8F2] py-2 z-50">
+                                    <div class="px-4 py-2.5 border-b border-gray-100">
+                                        <p class="text-xs font-bold text-gray-900 truncate">{{ Auth::user()->name }}</p>
+                                        <p class="text-[11px] text-gray-400 truncate">{{ Auth::user()->email }}</p>
+                                    </div>
+                                    @if(Auth::user()->isAdmin())
+                                        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-[#0AA6B7] hover:bg-teal-50 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                                            Admin Dashboard
+                                        </a>
+                                        <div class="border-t border-gray-100 my-1"></div>
+                                    @endif
+                                    <a href="{{ route('account.dashboard') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 transition-colors">
+                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                        My Profile
+                                    </a>
+                                    <a href="{{ route('account.orders') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 transition-colors">
+                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                                        My Orders
                                     </a>
                                     <div class="border-t border-gray-100 my-1"></div>
-                                @endif
-
-                                <a href="{{ route('account.dashboard') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 transition-colors">
-                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                                    My Profile
-                                </a>
-                                <a href="{{ route('account.orders') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 transition-colors">
-                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                                    My Orders
-                                </a>
-
-                                <div class="border-t border-gray-100 my-1"></div>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-red-600 hover:bg-red-50 text-left transition-colors font-semibold">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                                        Logout
-                                    </button>
-                                </form>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-red-600 hover:bg-red-50 text-left transition-colors font-semibold">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                                            Logout
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                    @else
-                        <a href="{{ route('login') }}" id="auth-btn" class="flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#E6E8F2] text-xs font-bold text-[#161616] hover:border-[#FF5A1F] hover:text-[#FF5A1F] transition-all bg-white shadow-2xs" title="Sign In">
-                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                            <span>Sign In</span>
-                        </a>
-                    @endauth
-
-                    {{-- Cart Button with Live Count --}}
-                    <a href="{{ route('cart.index') }}" id="cart-btn" class="flex items-center gap-2 px-3 py-2 rounded-full bg-[#FFF1EA] hover:bg-[#FFE5D8] transition-all border border-[#FF5A1F]/20 group" title="Cart">
-                        <div class="relative">
-                            <svg class="w-5 h-5 text-[#FF5A1F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                            <span class="absolute -top-2 -right-2.5 px-1.5 py-0.2 min-w-4 text-center text-white text-[10px] font-black rounded-full shadow-sm bg-gradient-to-r from-[#FF6B1F] to-[#FF4A0A]">{{ $cartCount }}</span>
-                        </div>
-                        <div class="hidden sm:block text-left pr-0.5">
-                            <div class="text-[11px] font-bold text-[#0F1654] leading-tight">{{ $cartCount > 0 ? $cartCount . ' items' : 'Rs. 0' }}</div>
-                        </div>
-                    </a>
-
+                        @else
+                            <a href="{{ route('login') }}" id="auth-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#E6E8F2] text-xs font-bold text-[#161616] hover:border-[#FF5A1F] hover:text-[#FF5A1F] transition-all bg-white" title="Sign In">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                <span class="hidden sm:inline">Sign In</span>
+                            </a>
+                        @endauth
+                    </div>
                 </div>
+            </div>
+
+            {{-- Mobile Search Panel --}}
+            <div id="mobile-search-panel" class="hidden md:hidden border-t border-gray-100 px-4 py-3 bg-white">
+                <form action="{{ route('search') }}" method="GET" class="relative">
+                    <input type="search" name="q" value="{{ request('q') }}" placeholder="Search products..."
+                        class="w-full h-11 pl-4 pr-12 rounded-xl bg-[#F6F7FB] border border-[#E6E8F2] text-sm placeholder-gray-400 focus:outline-none focus:border-[#FF5A1F]">
+                    <button type="submit" class="absolute right-0 top-0 h-11 w-12 flex items-center justify-center text-[#FF5A1F]">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </button>
+                </form>
             </div>
         </div>
 
-        {{-- Mobile Search Bar Toggle Panel --}}
-        <div id="mobile-search-panel" class="hidden xl:hidden border-t border-gray-100 px-4 py-3 bg-white">
-            <form action="{{ route('search') }}" method="GET" class="relative">
-                <input
-                    type="search"
-                    name="q"
-                    value="{{ request('q') }}"
-                    placeholder="Search direct authentic essentials..."
-                    class="w-full h-11 pl-4 pr-12 rounded-xl bg-[#F6F7FB] border border-[#E6E8F2] text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#FF5A1F]"
-                >
-                <button type="submit" class="absolute right-0 top-0 h-11 w-12 flex items-center justify-center text-[#FF5A1F]">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                </button>
-            </form>
-        </div>
-
-        {{-- 3. Secondary Category Bar (Deep Navy #0F1654) --}}
-        <div class="bg-[#0F1654] border-t border-white/10 hidden md:block">
+        {{-- Row B: Nav Links Bar (Deep Navy) --}}
+        <div class="bg-[#0F1654] hidden md:block">
             <div class="max-w-7xl mx-auto px-4 sm:px-6">
-                <div class="flex items-center justify-between text-xs">
-                    {{-- All Categories Trigger --}}
-                    <div class="flex items-center overflow-x-auto scrollbar-none py-1">
-                        <a href="{{ route('products.index') }}" id="all-categories-btn" class="flex items-center gap-2 py-2 px-3 text-white font-bold hover:bg-white/10 rounded-lg transition-colors whitespace-nowrap mr-2">
-                            <svg class="w-4 h-4 text-[#FF5A1F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                            All Categories
-                        </a>
-
-                        @php
-                            $navCategories = \App\Models\Category::active()->parents()->orderBy('display_order')->limit(7)->get();
-                        @endphp
-                        @foreach($navCategories as $cat)
-                            <a href="{{ route('categories.show', $cat->slug) }}" class="px-3 py-2 font-medium text-blue-100 hover:text-white hover:bg-white/10 rounded-lg transition-colors whitespace-nowrap">
-                                {{ $cat->name }}
-                            </a>
-                        @endforeach
-                    </div>
-
-                    {{-- Hot Deals Right Tag --}}
-                    <a href="{{ route('products.index', ['sort' => 'sale']) }}" class="hidden lg:flex items-center gap-1.5 py-2 px-3 font-black text-[#FF5A1F] hover:text-[#FFA07A] whitespace-nowrap transition-colors">
-                        <span>🔥 Today's Hot Deals</span>
+                <div class="flex items-center justify-between h-11">
+                    <nav class="flex items-center gap-0.5 h-full overflow-x-auto scrollbar-none" id="main-nav">
+                        <a href="{{ route('home') }}" class="px-3.5 py-2 text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('home') ? 'text-[#FF5A1F]' : 'text-blue-100 hover:text-white' }}">Home</a>
+                        <a href="{{ route('products.index') }}" class="px-3.5 py-2 text-sm font-semibold whitespace-nowrap transition-colors {{ request()->routeIs('products.index') && !request('sort') ? 'text-[#FF5A1F]' : 'text-blue-100 hover:text-white' }}">Shop</a>
+                        <a href="{{ route('products.index', ['sort' => 'newest']) }}" class="px-3.5 py-2 text-sm font-semibold text-blue-100 hover:text-white whitespace-nowrap transition-colors">New Arrivals</a>
+                        <a href="{{ route('products.index', ['sort' => 'popular']) }}" class="px-3.5 py-2 text-sm font-semibold text-blue-100 hover:text-white whitespace-nowrap transition-colors">Best Sellers</a>
+                        <a href="{{ route('products.index', ['sort' => 'sale']) }}" class="px-3.5 py-2 text-sm font-bold text-[#FF5A1F] hover:text-orange-300 whitespace-nowrap transition-colors">Deals &amp; Flash Sale</a>
+                        <a href="{{ route('products.index') }}#categories" class="px-3.5 py-2 text-sm font-semibold text-blue-100 hover:text-white whitespace-nowrap transition-colors">Categories</a>
+                    </nav>
+                    <a href="{{ route('products.index', ['sort' => 'sale']) }}" class="hidden lg:flex items-center gap-1.5 text-xs font-bold text-[#FF5A1F] hover:text-orange-300 whitespace-nowrap ml-4 transition-colors">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"/></svg>
+                        Mega Clearance Live
                     </a>
                 </div>
             </div>
@@ -266,7 +206,7 @@
                     <a href="{{ route('products.index') }}" class="block px-3 py-2.5 rounded-xl hover:bg-gray-50">Shop All Catalog</a>
                     <a href="{{ route('products.index', ['sort' => 'newest']) }}" class="block px-3 py-2.5 rounded-xl hover:bg-gray-50">New Arrivals</a>
                     <a href="{{ route('products.index', ['sort' => 'popular']) }}" class="block px-3 py-2.5 rounded-xl hover:bg-gray-50">Best Sellers</a>
-                    <a href="{{ route('products.index', ['sort' => 'sale']) }}" class="block px-3 py-2.5 rounded-xl text-[#FF5A1F] font-bold">🔥 Deals & Flash Sale</a>
+                    <a href="{{ route('products.index', ['sort' => 'sale']) }}" class="block px-3 py-2.5 rounded-xl text-[#FF5A1F] font-bold">ðŸ”¥ Deals & Flash Sale</a>
                     <a href="{{ route('orders.track') }}" class="block px-3 py-2.5 rounded-xl hover:bg-gray-50">Track My Order</a>
                 </div>
 
@@ -303,7 +243,7 @@
     <div class="bg-emerald-50 border-b border-emerald-200 py-3.5 px-4 text-emerald-900 text-sm animate-in slide-in-from-top duration-300">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2.5 font-medium">
-                <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs">✓</span>
+                <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs">âœ“</span>
                 {{ session('success') }}
             </div>
         </div>
@@ -392,7 +332,7 @@
                         @endforeach
                         <li>
                             <a href="{{ route('products.index', ['sort' => 'sale']) }}" class="text-[#FF5A1F] font-bold hover:underline flex items-center gap-1">
-                                🔥 Daily Deals
+                                ðŸ”¥ Daily Deals
                             </a>
                         </li>
                     </ul>
@@ -438,8 +378,8 @@
                     </form>
                     <div class="pt-3">
                         <a href="https://wa.me/{{ str_replace(['+', ' ', '-'], '', $whatsappNumber ?? '923000000000') }}" class="text-[11px] text-[#0AA6B7] hover:text-white flex items-center gap-1">
-                            <span>📲 Join WhatsApp VIP Channel</span>
-                            <span>→</span>
+                            <span>ðŸ“² Join WhatsApp VIP Channel</span>
+                            <span>â†’</span>
                         </a>
                     </div>
                 </div>
@@ -468,7 +408,7 @@
 
             {{-- Bottom Copyright & Legal --}}
             <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-blue-100/60">
-                <p>© {{ date('Y') }} ShopPulss. All Rights Reserved. Single-store direct logistics.</p>
+                <p>Â© {{ date('Y') }} ShopPulss. All Rights Reserved. Single-store direct logistics.</p>
                 <div class="flex items-center gap-4">
                     <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
                     <a href="#" class="hover:text-white transition-colors">Terms of Service</a>

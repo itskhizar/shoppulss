@@ -1,6 +1,8 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
-@section('title', ($search ? "Search: '{$search}'" : 'Shop All Direct Essentials') . ' - ShopPulss')
+@section('title', ($search ? "Search: '{$search}'" : 'Shop All Direct Essentials')
+@section('description', 'Browse our complete collection of 100% authentic products. Electronics, fashion, lifestyle essentials. Cash on Delivery available nationwide.')
+@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail') . ' - ShopPulss')
 
 @section('content')
 {{-- Catalog Top Bar --}}
@@ -47,7 +49,7 @@
                     <option value="popular" {{ $sort === 'popular' ? 'selected' : '' }}>Most Popular</option>
                     <option value="price_asc" {{ $sort === 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
                     <option value="price_desc" {{ $sort === 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
-                    <option value="sale" {{ $sort === 'sale' ? 'selected' : '' }}>🔥 Biggest Discount</option>
+                    <option value="sale" {{ $sort === 'sale' ? 'selected' : '' }}>ðŸ”¥ Biggest Discount</option>
                 </select>
             </form>
         </div>

@@ -1,6 +1,8 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Create Account - ShopPulss')
+@section('description', 'Join ShopPulss and enjoy exclusive member benefits, order tracking, and personalized deals on authentic products.')
+@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
 
 @section('content')
 <div class="min-h-[75vh] py-14 px-4 flex items-center justify-center bg-[#F6F7FB]">
@@ -74,7 +76,7 @@
                         name="password"
                         required
                         class="sp-input"
-                        placeholder="••••••••"
+                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                     >
                 </div>
 
@@ -86,7 +88,7 @@
                         name="password_confirmation"
                         required
                         class="sp-input"
-                        placeholder="••••••••"
+                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                     >
                 </div>
 

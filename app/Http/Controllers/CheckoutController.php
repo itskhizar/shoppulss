@@ -63,7 +63,7 @@ class CheckoutController extends Controller
             'area' => ['nullable', 'string', 'max:100'],
             'street_address' => ['required', 'string', 'max:255'],
             'postal_code' => ['nullable', 'string', 'max:20'],
-            'payment_method' => ['required', 'in:cod,card,bank_transfer,easypaisa,jazzcash'],
+            'payment_method' => ['required', 'in:cod,bank_transfer,easypaisa,jazzcash'],
             'customer_notes' => ['nullable', 'string', 'max:500'],
 
             // Bank Transfer fields

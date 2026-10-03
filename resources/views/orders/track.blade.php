@@ -1,6 +1,8 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Track Your Order - ShopPulss')
+@section('description', 'Track your ShopPulss order in real-time. Enter your order number to get live delivery status updates.')
+@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
 
 @section('content')
 {{-- Header --}}
@@ -128,7 +130,7 @@
                                 <div class="flex flex-col items-center">
                                     <div class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-black transition-all {{ $isDone ? 'bg-orange-grad text-white shadow-sp-orange' : 'bg-gray-100 text-gray-400 border border-gray-200' }}">
                                         @if($isDone && !$isCurrent)
-                                            ✓
+                                            âœ“
                                         @else
                                             {{ $idx + 1 }}
                                         @endif
@@ -148,7 +150,7 @@
                             <div>
                                 <span class="text-[10px] font-black uppercase tracking-wider text-[#FF5A1F] block">Courier Logistics</span>
                                 <div class="text-base font-black text-[#0F1654] flex items-center gap-2 mt-0.5">
-                                    <span>🚚 {{ $shipment->courier?->name ?? 'Courier Partner' }}</span>
+                                    <span>ðŸšš {{ $shipment->courier?->name ?? 'Courier Partner' }}</span>
                                     <span class="text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-white border border-[#FF5A1F]/20 text-[#0F1654]">
                                         {{ $shipment->tracking_number }}
                                     </span>
@@ -166,7 +168,7 @@
                                         class="btn-teal py-1.5 px-3 text-xs"
                                     >
                                         <span>Courier Portal</span>
-                                        <span>↗</span>
+                                        <span>â†—</span>
                                     </a>
                                 @endif
                             </div>
@@ -204,7 +206,7 @@
                                                 <div>
                                                     <span class="font-bold text-gray-800 block">{{ $evt->description }}</span>
                                                     @if($evt->location)
-                                                        <span class="text-[11px] text-gray-400 font-medium">📍 {{ $evt->location }}</span>
+                                                        <span class="text-[11px] text-gray-400 font-medium">ðŸ“ {{ $evt->location }}</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -245,7 +247,7 @@
                     <div class="divide-y divide-[#E6E8F2] border border-[#E6E8F2] rounded-2xl overflow-hidden text-xs bg-white">
                         @foreach($order->items as $item)
                             <div class="p-3.5 flex items-center justify-between">
-                                <span class="font-bold text-gray-800">{{ $item->product_name }} (×{{ $item->quantity }})</span>
+                                <span class="font-bold text-gray-800">{{ $item->product_name }} (Ã—{{ $item->quantity }})</span>
                                 <span class="font-black text-[#0F1654]">Rs. {{ number_format($item->total_price) }}</span>
                             </div>
                         @endforeach

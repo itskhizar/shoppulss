@@ -1,6 +1,8 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'My Account - ShopPulss')
+@section('description', 'Manage your ShopPulss account, track orders, and update your profile.')
+@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
 
 @section('content')
 <div class="bg-white border-b border-[#E6E8F2] py-5">
@@ -57,7 +59,7 @@
                     </div>
                     <a href="{{ route('account.orders') }}" class="view-all-link text-xs">
                         <span>View All Orders</span>
-                        <span>→</span>
+                        <span>â†’</span>
                     </a>
                 </div>
 
@@ -76,7 +78,7 @@
                             <div class="py-4 flex items-center justify-between flex-wrap gap-3">
                                 <div>
                                     <div class="font-black text-[#0F1654] font-mono text-sm">{{ $order->order_number }}</div>
-                                    <div class="text-gray-400 text-[11px] mt-0.5">{{ $order->created_at->format('M d, Y') }} • {{ $order->items->count() }} items</div>
+                                    <div class="text-gray-400 text-[11px] mt-0.5">{{ $order->created_at->format('M d, Y') }} â€¢ {{ $order->items->count() }} items</div>
                                 </div>
                                 <div class="flex items-center gap-4">
                                     <span class="badge-navy uppercase">
@@ -85,7 +87,7 @@
                                     <span class="font-black text-[#0F1654] text-sm">Rs. {{ number_format($order->total_amount) }}</span>
                                     <a href="{{ route('account.orders.show', $order->order_number) }}" class="btn-secondary py-1.5 px-3.5 text-xs">
                                         <span>Details</span>
-                                        <span>→</span>
+                                        <span>â†’</span>
                                     </a>
                                 </div>
                             </div>

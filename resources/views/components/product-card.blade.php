@@ -117,7 +117,7 @@
                     <button
                         type="submit"
                         id="add-to-cart-{{ $product->id }}"
-                        class="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white flex items-center justify-center gap-2 bg-[#0AA6B7] hover:bg-[#088F9E] active:scale-97 shadow-xs hover:shadow-md transition-all duration-200"
+                        class="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 bg-gray-100 text-gray-700 group-hover:bg-[#FF5A1F] group-hover:text-white active:scale-97 shadow-xs hover:shadow-md transition-all duration-200"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                         <span>Add to Cart</span>

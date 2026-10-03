@@ -1,6 +1,8 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Sign In - ShopPulss')
+@section('description', 'Sign in to your ShopPulss account to track orders, manage returns, and access exclusive member deals.')
+@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
 
 @section('content')
 <div class="min-h-[72vh] py-14 px-4 flex items-center justify-center bg-[#F6F7FB]">
@@ -55,7 +57,7 @@
                         name="password"
                         required
                         class="sp-input"
-                        placeholder="••••••••"
+                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                     >
                 </div>
 
@@ -83,7 +85,7 @@
 
             {{-- Demo credentials hint for convenience --}}
             <div class="mt-6 p-3.5 bg-[#FFF1EA] rounded-2xl border border-[#FF5A1F]/20 text-[11px] text-gray-700 leading-relaxed">
-                <span class="font-black text-[#0F1654]">🔑 Demo Admin Login:</span><br>
+                <span class="font-black text-[#0F1654]">ðŸ”‘ Demo Admin Login:</span><br>
                 Email: <code class="bg-white/80 px-1.5 py-0.5 rounded font-mono text-[#0F1654] font-bold">admin@shoppulss.com</code> &nbsp;|&nbsp; Password: <code class="bg-white/80 px-1.5 py-0.5 rounded font-mono text-[#0F1654] font-bold">password</code>
             </div>
         </div>

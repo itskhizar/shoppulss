@@ -1,6 +1,8 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'My Orders - ShopPulss')
+@section('description', 'View and track all your ShopPulss orders in one place.')
+@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
 
 @section('content')
 <div class="bg-white border-b border-[#E6E8F2] py-5">
@@ -48,7 +50,7 @@
                                         </span>
                                     </div>
                                     <div class="text-gray-400 text-[11px]">
-                                        Placed on {{ $order->created_at->format('M d, Y') }} • {{ $order->items->count() }} {{ Str::plural('item', $order->items->count()) }}
+                                        Placed on {{ $order->created_at->format('M d, Y') }} â€¢ {{ $order->items->count() }} {{ Str::plural('item', $order->items->count()) }}
                                     </div>
                                     <div class="text-gray-600">
                                         Total: <strong class="text-[#0F1654] font-black">Rs. {{ number_format($order->total_amount) }}</strong>
@@ -62,7 +64,7 @@
                                         class="btn-secondary py-2 px-4 text-xs font-bold"
                                     >
                                         <span>View Details</span>
-                                        <span>→</span>
+                                        <span>â†’</span>
                                     </a>
                                 </div>
                             </div>

@@ -1,6 +1,8 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Shopping Cart - ShopPulss')
+@section('description', 'Review your selected items and proceed to checkout. 100% secure Cash on Delivery across Pakistan.')
+@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
 
 @section('content')
 {{-- Cart Header & Breadcrumbs --}}
@@ -48,7 +50,7 @@
                 <span class="font-bold {{ $totals['shipping_free'] ? 'text-emerald-700' : 'text-[#0F1654]' }} flex items-center gap-2">
                     @if($totals['shipping_free'])
                         <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        🎉 Congratulations! You have unlocked <strong>Free Nationwide Delivery</strong>!
+                        ðŸŽ‰ Congratulations! You have unlocked <strong>Free Nationwide Delivery</strong>!
                     @else
                         <span class="w-2 h-2 rounded-full bg-[#FF5A1F]"></span>
                         Add <strong class="text-[#FF5A1F]">Rs. {{ number_format($difference) }}</strong> more to unlock Free Nationwide Delivery!
