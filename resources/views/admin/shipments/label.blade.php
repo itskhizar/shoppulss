@@ -297,7 +297,7 @@
         <div class="shipper-section">
             <strong>If Undelivered, Return To:</strong><br>
             ShopPulss Central Dispatch Hub, Commercial Area, Pakistan.<br>
-            Helpline: +92 300 0000000 | support@shoppulss.com
+            Helpline: {{ \App\Models\Setting::get('store_phone', '+92 3328912706') }} | {{ \App\Models\Setting::get('store_email', 'devwordspace3300@gmail.com') }}
         </div>
     </div>
 

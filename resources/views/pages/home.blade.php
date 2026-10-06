@@ -640,9 +640,9 @@
 
         {{-- Live Order Tracking & Direct WhatsApp Bar --}}
         @php
-            $rawWhatsapp = \App\Models\Setting::get('whatsapp_number', '+923000000000');
+            $rawWhatsapp = \App\Models\Setting::get('whatsapp_number', '+923328912706');
             $cleanWhatsapp = preg_replace('/[^0-9]/', '', $rawWhatsapp);
-            $helplinePhone = \App\Models\Setting::get('whatsapp_helpline', '+92 300 000-0000');
+            $helplinePhone = \App\Models\Setting::get('whatsapp_helpline', '+92 3328912706');
         @endphp
         <div class="bg-pulse-bg border border-pulse-border rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4" id="order-tracking">
             <div class="flex items-center space-x-3">

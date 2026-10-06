@@ -30,9 +30,10 @@
     @php
         $settingsHelper = [
             'tagline' => \App\Models\Setting::get('store_tagline', 'Pakistan\'s Verified Direct Retail Hub'),
-            'phone' => \App\Models\Setting::get('store_phone', '0800-PULSE (78573)'),
-            'whatsapp' => \App\Models\Setting::get('whatsapp_number', '+923000000000'),
-            'whatsapp_helpline' => \App\Models\Setting::get('whatsapp_helpline', '+92 300 000-0000'),
+            'phone' => \App\Models\Setting::get('store_phone', '+92 3328912706'),
+            'email' => \App\Models\Setting::get('store_email', 'devwordspace3300@gmail.com'),
+            'whatsapp' => \App\Models\Setting::get('whatsapp_number', '+923328912706'),
+            'whatsapp_helpline' => \App\Models\Setting::get('whatsapp_helpline', '+92 3328912706'),
             'facebook' => \App\Models\Setting::get('facebook_url', 'https://facebook.com/shoppulss'),
             'instagram' => \App\Models\Setting::get('instagram_url', 'https://instagram.com/shoppulss'),
         ];
@@ -43,10 +44,13 @@
         $activeCart = $cartService->getCart();
         $cartTotals = $cartService->getTotals($activeCart);
         $cartCount = (int) ($cartTotals['item_count'] ?? 0);
-        $cartTotal = (float) ($cartTotals['total'] ?? 0.0);
+        $cartTotal = (float) ($cartTotals['subtotal'] ?? 0.0);
 
         // Database categories for dropdowns
         $navCategories = \App\Models\Category::active()->parents()->orderBy('display_order')->get();
+
+        // Valid published product IDs for wishlist verification
+        $validProductIds = \App\Models\Product::where('status', 'published')->pluck('id')->toArray();
     @endphp
 
     {{-- BEGIN: Top Utility Bar (Navy) --}}
@@ -90,7 +94,7 @@
 
                 {{-- Brand Logo --}}
                 <a class="flex items-center space-x-2.5 shrink-0 group" href="{{ route('home') }}">
-                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-10 sm:h-11 w-auto object-contain transition-transform group-hover:scale-102">
+                    <img src="{{ asset('images/shoppulss-logo.svg') }}" alt="ShopPulss" class="h-10 sm:h-11 w-auto object-contain transition-transform group-hover:scale-102" onerror="this.onerror=null;this.src='{{ asset('images/shoppulss-logo.png') }}';">
                 </a>
 
                 {{-- Center Search Bar --}}
@@ -205,18 +209,22 @@
                     {{-- Wishlist (Local state toggle) --}}
                     <a class="relative p-2 text-slate-700 hover:text-pulse-navy rounded-lg hover:bg-slate-100 transition-colors" href="{{ route('cart.index') }}" title="Wishlist">
                         <i class="fa-regular fa-heart text-xl"></i>
-                        <span id="wishlist-badge" class="absolute top-1 right-1 w-4 h-4 bg-pulse-orange text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
+                        <span id="wishlist-badge" class="absolute top-1 right-1 w-4 h-4 bg-pulse-orange text-white text-[10px] font-bold rounded-full items-center justify-center hidden">0</span>
                     </a>
 
                     {{-- Cart Counter & Total --}}
                     <a class="relative flex items-center space-x-2.5 bg-pulse-navy hover:bg-pulse-navy-dark text-white px-3.5 py-2 rounded-xl transition-all shadow-sm" href="{{ route('cart.index') }}" id="nav-cart-btn">
                         <div class="relative">
                             <i class="fa-solid fa-bag-shopping text-base"></i>
-                            <span id="nav-cart-count" class="absolute -top-1.5 -right-2 w-4 h-4 bg-pulse-orange text-white text-[10px] font-extrabold rounded-full flex items-center justify-center border-2 border-pulse-navy">{{ $cartCount }}</span>
+                            @if($cartCount > 0)
+                                <span id="nav-cart-count" class="absolute -top-1.5 -right-2 w-4 h-4 bg-pulse-orange text-white text-[10px] font-extrabold rounded-full flex items-center justify-center border-2 border-pulse-navy">{{ $cartCount }}</span>
+                            @else
+                                <span id="nav-cart-count" class="absolute -top-1.5 -right-2 w-4 h-4 bg-pulse-orange text-white text-[10px] font-extrabold rounded-full hidden items-center justify-center border-2 border-pulse-navy">0</span>
+                            @endif
                         </div>
                         <div class="hidden sm:block text-left text-xs leading-none">
-                            <span class="text-[10px] text-slate-300 block font-normal">Cart Total</span>
-                            <span id="nav-cart-total" class="font-bold text-white text-xs mt-0.5 block">Rs. {{ number_format($cartTotal) }}</span>
+                            <span class="text-[10px] text-slate-300 block font-normal">{{ $cartCount > 0 ? 'Cart Total' : 'Cart' }}</span>
+                            <span id="nav-cart-total" class="font-bold text-white text-xs mt-0.5 block">{{ $cartCount > 0 ? 'Rs. ' . number_format($cartTotals['subtotal']) : 'Rs. 0' }}</span>
                         </div>
                     </a>
                 </div>
@@ -327,11 +335,23 @@
                 {{-- Brand Info --}}
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-9 w-auto brightness-0 invert object-contain">
+                        <a href="{{ route('home') }}" class="inline-block">
+                            <img src="{{ asset('images/shoppulss-logo-white.svg') }}" alt="ShopPulss" class="h-9 w-auto object-contain" onerror="this.onerror=null;this.src='{{ asset('images/shoppulss-logo.png') }}';">
+                        </a>
                     </div>
                     <p class="text-slate-400 text-xs leading-relaxed max-w-sm">
                         Pakistan's premier direct-to-consumer store. We inspect, authenticate, and fulfill every item directly from our central Karachi fulfillment warehouse with zero marketplace middlemen.
                     </p>
+                    <div class="space-y-1.5 pt-1 text-xs">
+                        <div class="flex items-center space-x-2 text-slate-300">
+                            <i class="fa-solid fa-phone text-pulse-orange w-4"></i>
+                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $settingsHelper['phone']) }}" class="hover:text-white font-medium transition-colors">{{ $settingsHelper['phone'] }}</a>
+                        </div>
+                        <div class="flex items-center space-x-2 text-slate-300">
+                            <i class="fa-solid fa-envelope text-pulse-teal w-4"></i>
+                            <a href="mailto:{{ $settingsHelper['email'] }}" class="hover:text-white font-medium transition-colors">{{ $settingsHelper['email'] }}</a>
+                        </div>
+                    </div>
                     <div class="flex items-center space-x-3 text-white pt-1">
                         @if($settingsHelper['facebook'])
                             <a class="w-8 h-8 rounded-lg bg-white/10 hover:bg-pulse-orange flex items-center justify-center transition-colors" href="{{ $settingsHelper['facebook'] }}" target="_blank" rel="noopener" aria-label="Facebook">
@@ -519,11 +539,22 @@
             showToast('🎉 Thank you for subscribing to ShopPulss VIP updates!', 'success');
         }
 
+        // Valid product IDs passed from backend
+        const validProductIds = @json($validProductIds);
+
         // Wishlist client-side management
         function toggleWishlist(productId, btn) {
             try {
+                const pId = parseInt(productId);
+                if (!validProductIds.includes(pId)) {
+                    showToast('This product is currently unavailable', 'error');
+                    return;
+                }
                 let wishlist = JSON.parse(localStorage.getItem('shoppulss_wishlist') || '[]');
-                const idx = wishlist.indexOf(productId);
+                if (!Array.isArray(wishlist)) wishlist = [];
+                wishlist = wishlist.map(x => parseInt(x)).filter(id => validProductIds.includes(id));
+
+                const idx = wishlist.indexOf(pId);
                 const heart = btn.querySelector('i');
                 if (idx > -1) {
                     wishlist.splice(idx, 1);
@@ -533,7 +564,7 @@
                     }
                     showToast('Item removed from wishlist');
                 } else {
-                    wishlist.push(productId);
+                    wishlist.push(pId);
                     if (heart) {
                         heart.className = 'fa-solid fa-heart text-rose-500';
                     }
@@ -546,9 +577,28 @@
 
         function updateWishlistBadge() {
             try {
-                const wishlist = JSON.parse(localStorage.getItem('shoppulss_wishlist') || '[]');
+                let wishlist = JSON.parse(localStorage.getItem('shoppulss_wishlist') || '[]');
+                if (Array.isArray(wishlist)) {
+                    // Filter out any IDs that no longer exist or are not published
+                    wishlist = wishlist.map(x => parseInt(x)).filter(id => validProductIds.includes(id));
+                    localStorage.setItem('shoppulss_wishlist', JSON.stringify(wishlist));
+                } else {
+                    wishlist = [];
+                    localStorage.setItem('shoppulss_wishlist', '[]');
+                }
+
                 const badge = document.getElementById('wishlist-badge');
-                if (badge) badge.textContent = wishlist.length;
+                if (badge) {
+                    if (wishlist.length > 0) {
+                        badge.textContent = wishlist.length;
+                        badge.classList.remove('hidden');
+                        badge.classList.add('flex');
+                    } else {
+                        badge.textContent = '0';
+                        badge.classList.add('hidden');
+                        badge.classList.remove('flex');
+                    }
+                }
             } catch (err) {}
         }
 

@@ -46,6 +46,9 @@ class CartService
             Session::put('cart_id', $cart->id);
         }
 
+        // Clean up any orphaned cart items where product was deleted
+        $cart->items()->whereDoesntHave('product')->delete();
+
         return $cart->load('items.product.images');
     }
 
@@ -143,6 +146,18 @@ class CartService
     public function getTotals(Cart $cart): array
     {
         $subtotal = (float) $cart->items->sum('total_price');
+        $itemCount = (int) $cart->items->sum('quantity');
+
+        if ($itemCount <= 0 || $subtotal <= 0) {
+            return [
+                'subtotal' => 0.0,
+                'shipping' => 0.0,
+                'shipping_free' => true,
+                'total' => 0.0,
+                'item_count' => 0,
+            ];
+        }
+
         $shipping = $subtotal >= 2500 ? 0.0 : 199.0;
         $total = $subtotal + $shipping;
 
@@ -151,7 +166,7 @@ class CartService
             'shipping' => $shipping,
             'shipping_free' => $shipping === 0.0,
             'total' => $total,
-            'item_count' => $cart->items->sum('quantity'),
+            'item_count' => $itemCount,
         ];
     }
 
@@ -165,7 +180,8 @@ class CartService
             return 0;
         }
 
-        return CartItem::whereHas('cart', fn ($q) => $q->where('id', $cartId))
+        return (int) CartItem::whereHas('cart', fn ($q) => $q->where('id', $cartId))
+            ->whereHas('product')
             ->sum('quantity');
     }
 }
