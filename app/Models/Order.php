@@ -46,20 +46,25 @@ class Order extends Model
 
     /** V3 status lifecycle constants. */
     public const STATUSES = [
-        'pending', 'payment_pending', 'paid', 'confirmed', 'processing', 'packed', 'shipped', 'delivered', 'cancelled',
+        'pending', 'payment_pending', 'paid', 'confirmed', 'processing', 'packed', 'shipped', 'delivered',
+        'cancelled', 'return_requested', 'returned', 'refund_pending', 'refunded',
     ];
 
     /** Valid transitions from a given status. */
     public const TRANSITIONS = [
-        'pending' => ['payment_pending', 'paid', 'confirmed', 'cancelled'],
+        'pending' => ['payment_pending', 'paid', 'confirmed', 'processing', 'cancelled'],
         'payment_pending' => ['paid', 'confirmed', 'cancelled'],
-        'paid' => ['processing', 'packed', 'shipped', 'cancelled'],
+        'paid' => ['processing', 'packed', 'shipped', 'cancelled', 'refund_pending'],
         'confirmed' => ['processing', 'packed', 'shipped', 'cancelled'],
         'processing' => ['packed', 'shipped', 'cancelled'],
         'packed' => ['shipped', 'cancelled'],
         'shipped' => ['delivered', 'cancelled'],
-        'delivered' => [],
+        'delivered' => ['return_requested'],
         'cancelled' => [],
+        'return_requested' => ['returned', 'cancelled'],
+        'returned' => ['refund_pending'],
+        'refund_pending' => ['refunded', 'cancelled'],
+        'refunded' => [],
     ];
 
     public function user(): BelongsTo
@@ -168,6 +173,10 @@ class Order extends Model
             'shipped' => 'orange',
             'delivered' => 'green',
             'cancelled' => 'red',
+            'return_requested' => 'amber',
+            'returned' => 'gray',
+            'refund_pending' => 'orange',
+            'refunded' => 'purple',
             default => 'gray',
         };
     }

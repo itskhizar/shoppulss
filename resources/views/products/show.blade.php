@@ -53,14 +53,14 @@
 
                 {{-- Thumbnails --}}
                 @if($product->images->count() > 1)
-                    <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
+                    <div class="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none pt-1">
                         @foreach($product->images as $img)
                             <button
                                 type="button"
-                                onclick="document.getElementById('main-product-image').src='{{ $img->image_url }}'"
-                                class="w-18 h-18 rounded-2xl border-2 border-[#E6E8F2] bg-[#F8FAFC] overflow-hidden flex-shrink-0 hover:border-[#FF5A1F] focus:outline-none focus:border-[#FF5A1F] transition-all p-1"
+                                onclick="setProductMainImage('{{ $img->image_url }}', this)"
+                                class="product-thumb-btn w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 {{ $loop->first ? 'border-pulse-orange shadow-xs' : 'border-slate-200' }} bg-[#F8FAFC] overflow-hidden shrink-0 hover:border-pulse-orange transition-all p-1.5 focus:outline-none"
                             >
-                                <img src="{{ $img->image_url }}" alt="" class="w-full h-full object-contain mix-blend-multiply">
+                                <img src="{{ $img->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-contain mix-blend-multiply">
                             </button>
                         @endforeach
                     </div>
@@ -119,11 +119,16 @@
                         <div class="text-xs font-bold text-[#FF5A1F] uppercase tracking-wider">Direct Retail Price</div>
                         <div class="flex items-baseline gap-3 mt-1">
                             <span id="display-product-price" class="text-3xl sm:text-4xl font-black text-[#0F1654]">
-                                Rs. {{ number_format($product->sale_price ?? $product->regular_price) }}
+                                Rs. {{ number_format($product->effective_price) }}
                             </span>
-                            <span id="display-regular-price" class="text-base text-gray-400 line-through {{ ($product->sale_price && $product->sale_price < $product->regular_price) ? '' : 'hidden' }}">
+                            <span id="display-regular-price" class="text-base text-gray-400 line-through {{ ($product->effective_price < $product->regular_price) ? '' : 'hidden' }}">
                                 Rs. {{ number_format($product->regular_price) }}
                             </span>
+                            @if($product->hasActiveDeal())
+                                <span class="bg-[#FF5A1F] text-white text-[11px] font-black px-2 py-0.5 rounded-md shadow-xs animate-pulse">
+                                    FLASH DEAL
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="text-right">
@@ -223,7 +228,7 @@
                         <div class="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-[#0AA6B7] shadow-xs flex-shrink-0">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/><path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H11a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7h4l2 4v4h-6V7z"/></svg>
                         </div>
-                        <span class="font-bold text-[#0F1654]">Free Delivery &gt; Rs 2,500</span>
+                        <span class="font-bold text-[#0F1654]">Nationwide Express Delivery</span>
                     </div>
                     <div class="flex items-center gap-3 p-3 rounded-2xl bg-[#F6F7FB] border border-[#E6E8F2]">
                         <div class="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-[#FF5A1F] shadow-xs flex-shrink-0">
@@ -272,6 +277,26 @@
 </div>
 
 <script>
+// Thumbnail image switcher
+function setProductMainImage(url, btn) {
+    const mainImg = document.getElementById('main-product-image');
+    if (mainImg) {
+        mainImg.style.opacity = '0.3';
+        setTimeout(() => {
+            mainImg.src = url;
+            mainImg.style.opacity = '1';
+        }, 120);
+    }
+    document.querySelectorAll('.product-thumb-btn').forEach(b => {
+        b.classList.remove('border-pulse-orange', 'shadow-xs');
+        b.classList.add('border-slate-200');
+    });
+    if (btn) {
+        btn.classList.add('border-pulse-orange', 'shadow-xs');
+        btn.classList.remove('border-slate-200');
+    }
+}
+
 // Base price for the currently shown product (or selected variant)
 let _unitPrice = {{ $product->sale_price ?? $product->regular_price }};
 let _maxStock  = {{ max(1, (int) $product->stock_quantity) }};

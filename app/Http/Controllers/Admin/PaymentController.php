@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\Payment;
 use App\Services\Payment\PaymentService;
 use Illuminate\Http\RedirectResponse;
@@ -66,6 +67,14 @@ class PaymentController extends Controller
 
         $this->paymentService->verifyBankPayment($payment, Auth::id(), $notes);
 
+        AuditLog::record(
+            'payment.verified',
+            $payment,
+            "Payment #{$payment->id} for Order #{$payment->order?->order_number} verified and marked Paid",
+            ['status' => 'pending_verification'],
+            ['status' => 'paid', 'verified_by' => Auth::id(), 'notes' => $notes]
+        );
+
         return back()->with('success', "Payment for Order #{$payment->order?->order_number} verified and marked as Paid!");
     }
 
@@ -80,6 +89,46 @@ class PaymentController extends Controller
 
         $this->paymentService->rejectBankPayment($payment, Auth::id(), $reason);
 
+        AuditLog::record(
+            'payment.rejected',
+            $payment,
+            "Payment #{$payment->id} for Order #{$payment->order?->order_number} rejected: {$reason}",
+            ['status' => 'pending_verification'],
+            ['status' => 'failed', 'verified_by' => Auth::id(), 'notes' => $reason]
+        );
+
         return back()->with('success', "Payment for Order #{$payment->order?->order_number} marked as Failed.");
+    }
+
+    /**
+     * Record Cash on Delivery payment collection.
+     */
+    public function recordCod(Request $request, int $id): RedirectResponse
+    {
+        $payment = Payment::with('order')->findOrFail($id);
+
+        $notes = $request->input('notes', 'Cash on Delivery received and confirmed.');
+
+        $payment->update([
+            'status' => 'paid',
+            'paid_at' => now(),
+            'verified_by' => Auth::id(),
+            'verified_at' => now(),
+            'verification_notes' => $notes,
+        ]);
+
+        if ($payment->order) {
+            $payment->order->update(['payment_status' => 'paid']);
+        }
+
+        AuditLog::record(
+            'payment.cod_collected',
+            $payment,
+            "COD Payment #{$payment->id} for Order #{$payment->order?->order_number} recorded as Paid",
+            ['status' => 'pending'],
+            ['status' => 'paid', 'verified_by' => Auth::id(), 'notes' => $notes]
+        );
+
+        return back()->with('success', "COD Payment for Order #{$payment->order?->order_number} marked as Paid!");
     }
 }

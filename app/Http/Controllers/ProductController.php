@@ -18,7 +18,8 @@ class ProductController extends Controller
             ->with(['images', 'category']);
 
         // Search keyword
-        if ($search = $request->get('q')) {
+        $search = $request->get('q');
+        if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%")
@@ -49,7 +50,7 @@ class ProductController extends Controller
         match ($sort) {
             'price_asc' => $query->orderByRaw('COALESCE(sale_price, regular_price) ASC'),
             'price_desc' => $query->orderByRaw('COALESCE(sale_price, regular_price) DESC'),
-            'popular' => $query->orderByDesc('is_featured')->orderByDesc('rating_cache'),
+            'popular' => $query->orderByDesc('is_featured')->orderByDesc('created_at'),
             'sale' => $query->whereNotNull('sale_price')->orderByDesc('sale_price'),
             default => $query->orderByDesc('created_at'),
         };

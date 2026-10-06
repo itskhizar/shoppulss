@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\AuditLog;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderStatusHistory;
@@ -78,6 +79,36 @@ class CheckoutController extends Controller
             'jazzcash_mobile_number' => ['nullable', 'required_if:payment_method,jazzcash', 'string', 'max:25'],
             'jazzcash_cnic_last4' => ['nullable', 'string', 'max:4'],
         ]);
+
+        // Validate product availability and stock before proceeding
+        foreach ($cart->items as $cartItem) {
+            $product = $cartItem->product;
+            if (! $product || $product->status !== 'published') {
+                return redirect()->route('cart.index')->with('error', "The item '{$cartItem->product?->name}' is no longer available.");
+            }
+
+            if ($product->stock_quantity < $cartItem->quantity) {
+                return redirect()->route('cart.index')->with(
+                    'error',
+                    "Insufficient stock for '{$product->name}' (Requested: {$cartItem->quantity}, Available: {$product->stock_quantity})."
+                );
+            }
+
+            if ($cartItem->product_variant_id && $cartItem->variant) {
+                if ($cartItem->variant->stock_quantity < $cartItem->quantity) {
+                    return redirect()->route('cart.index')->with(
+                        'error',
+                        "Insufficient stock for the selected variant of '{$product->name}'."
+                    );
+                }
+            }
+
+            // Enforce authentic server-side pricing from product model
+            $serverPrice = (float) $product->effective_price;
+            $cartItem->unit_price = $serverPrice;
+            $cartItem->total_price = $serverPrice * $cartItem->quantity;
+            $cartItem->save();
+        }
 
         $totals = $this->cartService->getTotals($cart);
 
@@ -160,6 +191,15 @@ class CheckoutController extends Controller
 
             // Delegate to PaymentService to create Payment record and handle gateway
             $this->paymentService->createAndProcessPayment($order, $validated['payment_method'], $validated);
+
+            // Record Audit Log for order placement
+            AuditLog::record(
+                'order.created',
+                $order,
+                "Order #{$order->order_number} placed by {$order->customer_name} (Total: Rs. {$order->total_amount}, Method: {$order->payment_method})",
+                null,
+                $order->toArray()
+            );
 
             // Clear cart
             $this->cartService->clear();

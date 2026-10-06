@@ -57,7 +57,16 @@ class CartService
         $cart = $this->getCart();
         $product = Product::findOrFail($productId);
 
-        $effectivePrice = $product->sale_price ?? $product->regular_price;
+        if ($product->status !== 'published') {
+            throw new \InvalidArgumentException('This product is not currently available for purchase.');
+        }
+
+        if ($product->stock_quantity <= 0) {
+            throw new \InvalidArgumentException('This product is currently out of stock.');
+        }
+
+        $effectivePrice = (float) $product->effective_price;
+        $addQuantity = max(1, min($quantity, $product->stock_quantity));
 
         // Check existing item
         $existing = $cart->items()
@@ -66,10 +75,11 @@ class CartService
             ->first();
 
         if ($existing) {
-            $newQty = min($existing->quantity + $quantity, $product->stock_quantity);
+            $newQty = min($existing->quantity + $addQuantity, $product->stock_quantity);
             $existing->update([
                 'quantity' => $newQty,
-                'total_price' => $existing->unit_price * $newQty,
+                'unit_price' => $effectivePrice,
+                'total_price' => $effectivePrice * $newQty,
             ]);
 
             return $existing;
@@ -78,9 +88,9 @@ class CartService
         return $cart->items()->create([
             'product_id' => $product->id,
             'product_variant_id' => $variantId,
-            'quantity' => min($quantity, $product->stock_quantity),
+            'quantity' => $addQuantity,
             'unit_price' => $effectivePrice,
-            'total_price' => $effectivePrice * min($quantity, $product->stock_quantity),
+            'total_price' => $effectivePrice * $addQuantity,
         ]);
     }
 

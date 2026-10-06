@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\Category;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -52,9 +53,9 @@ class ProductController extends Controller
             if ($sort === 'oldest') {
                 $query->oldest('created_at');
             } elseif ($sort === 'price_high') {
-                $query->orderByDesc('price');
+                $query->orderByDesc('regular_price');
             } elseif ($sort === 'price_low') {
-                $query->orderBy('price');
+                $query->orderBy('regular_price');
             } elseif ($sort === 'stock_high') {
                 $query->orderByDesc('stock_quantity');
             } elseif ($sort === 'stock_low') {
@@ -147,6 +148,10 @@ class ProductController extends Controller
             'status' => ['required', 'in:draft,published,archived'],
             'is_featured' => ['boolean'],
             'is_new' => ['boolean'],
+            'is_deal' => ['boolean'],
+            'deal_start_at' => ['nullable', 'date'],
+            'deal_end_at' => ['nullable', 'date'],
+            'is_trending' => ['boolean'],
             'image_url' => ['nullable', 'url'],
             'images' => ['nullable', 'array'],
             'images.*' => ['image', 'mimes:jpeg,png,jpg,webp,avif', 'max:20480'],
@@ -160,11 +165,17 @@ class ProductController extends Controller
         $validated['slug'] = Str::slug($validated['name']).'-'.Str::random(5);
         $validated['is_featured'] = $request->boolean('is_featured');
         $validated['is_new'] = $request->boolean('is_new');
+        $validated['is_deal'] = $request->boolean('is_deal');
+        $validated['is_trending'] = $request->boolean('is_trending');
+        $validated['deal_start_at'] = $request->filled('deal_start_at') ? $request->date('deal_start_at') : null;
+        $validated['deal_end_at'] = $request->filled('deal_end_at') ? $request->date('deal_end_at') : null;
 
         $imageUrl = $validated['image_url'] ?? null;
         unset($validated['image_url'], $validated['images']);
 
         $product = Product::create($validated);
+
+        AuditLog::record('product.created', $product, "Product '{$product->name}' (SKU: {$product->sku}) created", null, $product->toArray());
 
         if ($imageUrl) {
             ProductImage::create([
@@ -245,6 +256,10 @@ class ProductController extends Controller
             'status' => ['required', 'in:draft,published,archived'],
             'is_featured' => ['boolean'],
             'is_new' => ['boolean'],
+            'is_deal' => ['boolean'],
+            'deal_start_at' => ['nullable', 'date'],
+            'deal_end_at' => ['nullable', 'date'],
+            'is_trending' => ['boolean'],
             'image_url' => ['nullable', 'url'],
             'images' => ['nullable', 'array'],
             'images.*' => ['image', 'mimes:jpeg,png,jpg,webp,avif', 'max:20480'],
@@ -257,14 +272,25 @@ class ProductController extends Controller
             'images.*.uploaded' => 'An image failed to upload. Please ensure the file is under 20MB and not corrupted.',
         ]);
 
+        $oldValues = $product->only([
+            'name', 'sku', 'category_id', 'regular_price', 'sale_price',
+            'stock_quantity', 'status', 'is_featured', 'is_deal', 'deal_start_at', 'deal_end_at',
+        ]);
+
         $validated['is_featured'] = $request->boolean('is_featured');
         $validated['is_new'] = $request->boolean('is_new');
+        $validated['is_deal'] = $request->boolean('is_deal');
+        $validated['is_trending'] = $request->boolean('is_trending');
+        $validated['deal_start_at'] = $request->filled('deal_start_at') ? $request->date('deal_start_at') : null;
+        $validated['deal_end_at'] = $request->filled('deal_end_at') ? $request->date('deal_end_at') : null;
 
         $imageUrl = $validated['image_url'] ?? null;
         $deleteImages = $validated['delete_images'] ?? [];
         unset($validated['image_url'], $validated['images'], $validated['delete_images']);
 
         $product->update($validated);
+
+        AuditLog::record('product.updated', $product, "Product '{$product->name}' updated", $oldValues, $product->only(array_keys($oldValues)));
 
         if (! empty($deleteImages)) {
             $product->images()->whereIn('id', $deleteImages)->delete();
@@ -333,8 +359,12 @@ class ProductController extends Controller
             $product->update(['status' => 'archived']);
             $product->delete();
 
+            AuditLog::record('product.archived', $product, "Product '{$product->name}' archived and soft-deleted (has order history)", $product->toArray(), null);
+
             return redirect()->route('admin.products.index')->with('success', 'Product has associated orders, so it was safely archived and soft-deleted.');
         }
+
+        AuditLog::record('product.deleted', $product, "Product '{$product->name}' permanently deleted", $product->toArray(), null);
 
         $product->images()->delete();
         $product->variants()->delete();

@@ -31,7 +31,7 @@ class CategoryController extends Controller
         match ($sort) {
             'price_asc' => $query->orderByRaw('COALESCE(sale_price, regular_price) ASC'),
             'price_desc' => $query->orderByRaw('COALESCE(sale_price, regular_price) DESC'),
-            'popular' => $query->orderByDesc('is_featured')->orderByDesc('rating_cache'),
+            'popular' => $query->orderByDesc('is_featured')->orderByDesc('created_at'),
             default => $query->orderByDesc('created_at'),
         };
 

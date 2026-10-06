@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\Courier;
 use App\Models\Order;
 use App\Models\OrderStatusHistory;
@@ -106,12 +107,16 @@ class OrderController extends Controller
 
         $validated = $request->validate([
             'status' => ['required', 'string', 'in:'.implode(',', Order::STATUSES)],
-            'payment_status' => ['nullable', 'string', 'in:pending,paid,failed,refunded'],
+            'payment_status' => ['nullable', 'string', 'in:pending,authorized,paid,failed,partially_refunded,refunded'],
             'reason' => ['nullable', 'string', 'max:255'],
         ]);
 
         $oldStatus = $order->status;
         $newStatus = $validated['status'];
+
+        if ($oldStatus !== $newStatus && ! $order->canTransitionTo($newStatus)) {
+            return back()->with('error', "Cannot transition order from '".ucfirst(str_replace('_', ' ', $oldStatus))."' to '".ucfirst(str_replace('_', ' ', $newStatus))."'. Invalid lifecycle transition.");
+        }
 
         $order->status = $newStatus;
 
@@ -132,8 +137,29 @@ class OrderController extends Controller
                 'changed_by' => Auth::id(),
                 'created_at' => now(),
             ]);
+
+            AuditLog::record(
+                'order.status_updated',
+                $order,
+                "Order #{$order->order_number} status changed from {$oldStatus} to {$newStatus}",
+                ['status' => $oldStatus],
+                ['status' => $newStatus, 'payment_status' => $order->payment_status]
+            );
         }
 
-        return back()->with('success', "Order #{$order->order_number} status updated to ".ucfirst($newStatus).'.');
+        // If order payment status is marked paid (e.g. on delivery or manual update), sync payment record
+        if ($order->payment_status === 'paid') {
+            $payment = $order->payment;
+            if ($payment && $payment->status !== 'paid') {
+                $payment->update([
+                    'status' => 'paid',
+                    'paid_at' => now(),
+                    'verified_by' => Auth::id(),
+                    'verification_notes' => $validated['reason'] ?? 'Payment marked as paid via admin order status update',
+                ]);
+            }
+        }
+
+        return back()->with('success', "Order #{$order->order_number} status updated to ".ucfirst(str_replace('_', ' ', $newStatus)).'.');
     }
 }

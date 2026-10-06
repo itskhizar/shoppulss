@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuditLog;
 use App\Models\Courier;
 use App\Models\Order;
 use App\Models\Shipment;
@@ -78,6 +79,14 @@ class ShipmentController extends Controller
 
         $shipment = $this->shippingService->createShipment($order, (int) $validated['courier_id'], $validated);
 
+        AuditLog::record(
+            'shipment.created',
+            $shipment,
+            "Shipment created for Order #{$order->order_number} via {$shipment->courier?->name} (Tracking #{$shipment->tracking_number})",
+            null,
+            $shipment->toArray()
+        );
+
         return back()->with('success', "Shipment booked via {$shipment->courier?->name}! Tracking Number: {$shipment->tracking_number}");
     }
 
@@ -94,11 +103,21 @@ class ShipmentController extends Controller
             'description' => ['nullable', 'string', 'max:500'],
         ]);
 
+        $oldStatus = $shipment->shipment_status;
+
         $this->shippingService->updateShipmentStatus(
             $shipment,
             $validated['status'],
             $validated['location'] ?? null,
             $validated['description'] ?? null
+        );
+
+        AuditLog::record(
+            'shipment.status_updated',
+            $shipment,
+            "Shipment #{$shipment->tracking_number} status updated from {$oldStatus} to {$validated['status']}",
+            ['status' => $oldStatus],
+            ['status' => $validated['status'], 'location' => $validated['location'] ?? null]
         );
 
         return back()->with('success', "Shipment #{$shipment->tracking_number} updated to ".ucfirst(str_replace('_', ' ', $validated['status'])).'.');

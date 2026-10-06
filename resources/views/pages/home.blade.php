@@ -1,716 +1,707 @@
 @extends('layouts.app')
 
-@section('title', 'ShopPulss - Discover Products You\'ll Love | Direct Retail Store Pakistan')
-@section('description', 'Shop authentic electronics, smart gadgets, fashion, and lifestyle essentials shipped directly from our central fulfilment hub. Cash on Delivery available nationwide across Pakistan.')
-@section('keywords', 'ShopPulss, online shopping Pakistan, Cash on Delivery Pakistan, direct retail, authentic products, electronics Pakistan, fashion Pakistan, free delivery Pakistan')
-@section('canonical', url('/'))
-
-@push('styles')
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "Organization",
-  "name": "ShopPulss",
-  "url": "{{ url('/') }}",
-  "logo": "{{ asset('images/shoppulss-logo.svg') }}",
-  "description": "Pakistan's premier direct-to-consumer store. 100% genuine products, Cash on Delivery nationwide.",
-  "contactPoint": {
-    "@@type": "ContactPoint",
-    "telephone": "+92-300-000-0000",
-    "contactType": "customer service",
-    "areaServed": "PK",
-    "availableLanguage": ["Urdu", "English"]
-  },
-  "sameAs": [
-    "https://facebook.com/shoppulss",
-    "https://instagram.com/shoppulss"
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "WebSite",
-  "name": "ShopPulss",
-  "url": "{{ url('/') }}",
-  "potentialAction": {
-    "@@type": "SearchAction",
-    "target": {
-      "@@type": "EntryPoint",
-      "urlTemplate": "{{ route('search') }}?q={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
-@endpush
+@section('title', 'ShopPulss | Direct Retail Store - 100% Authentic Products & Nationwide COD')
+@section('description', 'Shop authentic electronics, smart gadgets, fashion, and lifestyle essentials shipped directly from our central Karachi fulfillment hub. Cash on Delivery available nationwide across Pakistan.')
 
 @section('content')
 
-{{-- 1. HERO SECTION --}}
-<section class="relative overflow-hidden py-10 lg:py-16 bg-[#F6F7FB]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+@php
+    // Hero featured product
+    $heroProduct = $heroProducts->first() ?? $trendingProducts->first() ?? $deals->first();
 
-            {{-- Left Column: Headline, Trust & CTAs --}}
-            <div class="lg:col-span-6 z-10 space-y-6">
+    // Deal of the Day product
+    $dealProduct = $deals->first() ?? $trendingProducts->first();
+    $dealDiscount = 0;
+    if ($dealProduct) {
+        $hasDealSale = $dealProduct->sale_price && $dealProduct->sale_price > 0 && $dealProduct->sale_price < $dealProduct->regular_price;
+        $dealDiscount = $dealProduct->discount_percentage > 0
+            ? $dealProduct->discount_percentage
+            : ($hasDealSale ? (int) round((($dealProduct->regular_price - $dealProduct->sale_price) / $dealProduct->regular_price) * 100) : 0);
+        $dealSavings = $dealProduct->regular_price - ($dealProduct->sale_price ?? $dealProduct->regular_price);
+    }
 
-                {{-- Trending Badge --}}
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFF1EA] border border-[#FF5A1F]/20 text-[#FF5A1F] text-xs font-black tracking-wide uppercase">
-                    <span class="w-2 h-2 rounded-full bg-[#FF5A1F] animate-pulse"></span>
-                    <span>Direct Retail • Zero Middlemen</span>
+    // Category visual mappings
+    $catVisuals = [
+        'electronics' => ['icon' => 'fa-headphones', 'bg' => 'bg-blue-50', 'text' => 'text-blue-600'],
+        'fashion' => ['icon' => 'fa-shirt', 'bg' => 'bg-amber-50', 'text' => 'text-amber-600'],
+        'fashion-apparel' => ['icon' => 'fa-shirt', 'bg' => 'bg-amber-50', 'text' => 'text-amber-600'],
+        'beauty-personal-care' => ['icon' => 'fa-spa', 'bg' => 'bg-rose-50', 'text' => 'text-rose-500'],
+        'beauty' => ['icon' => 'fa-spa', 'bg' => 'bg-rose-50', 'text' => 'text-rose-500'],
+        'sports-outdoors' => ['icon' => 'fa-dumbbell', 'bg' => 'bg-emerald-50', 'text' => 'text-emerald-600'],
+        'fitness' => ['icon' => 'fa-dumbbell', 'bg' => 'bg-emerald-50', 'text' => 'text-emerald-600'],
+        'home-living' => ['icon' => 'fa-couch', 'bg' => 'bg-purple-50', 'text' => 'text-purple-600'],
+        'home-decor' => ['icon' => 'fa-couch', 'bg' => 'bg-purple-50', 'text' => 'text-purple-600'],
+        'accessories' => ['icon' => 'fa-stopwatch-20', 'bg' => 'bg-teal-50', 'text' => 'text-pulse-teal'],
+        'toys-games' => ['icon' => 'fa-gamepad', 'bg' => 'bg-indigo-50', 'text' => 'text-indigo-600'],
+        'automotive' => ['icon' => 'fa-car', 'bg' => 'bg-orange-50', 'text' => 'text-pulse-orange'],
+    ];
+@endphp
+
+{{-- 1. BEGIN: HeroSection --}}
+<section class="hero-pattern relative overflow-hidden py-10 lg:py-16 border-b border-slate-200" data-purpose="hero-banner">
+    {{-- Glow decorations --}}
+    <div class="absolute -top-32 -left-20 w-96 h-96 bg-pulse-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 -right-32 w-96 h-96 bg-pulse-teal/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            {{-- Left Column: Copy & Value Proposition --}}
+            <div class="lg:col-span-6 space-y-6">
+                {{-- Tag Eyebrow --}}
+                <div class="inline-flex items-center space-x-2 bg-pulse-orange-light border border-pulse-orange/20 px-3.5 py-1.5 rounded-full text-xs font-bold text-pulse-orange">
+                    <span class="w-2 h-2 rounded-full bg-pulse-orange pulse-dot"></span>
+                    <span>DIRECT RETAIL · ZERO MIDDLEMEN</span>
                 </div>
 
-                {{-- Hero Headline --}}
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-[#161616] tracking-tight leading-[1.12]">
-                    Discover Products<br>
-                    <span class="text-orange-gradient">You'll Love.</span>
+                {{-- Bold Headline --}}
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-pulse-navy tracking-tight leading-[1.08]">
+                    Discover Products <br>
+                    <span class="bg-gradient-to-r from-pulse-orange via-amber-500 to-pulse-orange bg-clip-text text-transparent">
+                        You'll Love.
+                    </span>
                 </h1>
 
-                {{-- Hero Subtitle --}}
-                <p class="text-gray-600 text-sm sm:text-base leading-relaxed max-w-lg">
-                    Shop direct authentic electronics, smart gadgets, and lifestyle essentials. 100% genuine inventory inspected and shipped straight from our central fulfillment hub nationwide.
+                {{-- Value Statement --}}
+                <p class="text-base sm:text-lg text-slate-600 font-body max-w-xl leading-relaxed">
+                    Shop direct authentic electronics, smart gadgets, and lifestyle essentials. 
+                    <strong class="text-slate-800 font-semibold">100% genuine inventory</strong> inspected and shipped straight from our central fulfillment hub nationwide.
                 </p>
 
-                {{-- CTAs --}}
-                <div class="flex flex-wrap items-center gap-3.5 pt-2">
-                    <a
-                        href="{{ route('products.index') }}"
-                        id="hero-shop-now"
-                        class="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full text-white font-bold text-sm bg-gradient-to-r from-[#FF6B1F] to-[#FF4A0A] hover:opacity-95 shadow-sp-orange transition-all hover:scale-102 active:scale-98"
-                    >
+                {{-- Action CTAs --}}
+                <div class="pt-2 flex flex-wrap items-center gap-4">
+                    <a class="bg-pulse-orange hover:bg-pulse-orange-dark text-white px-8 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-orange-glow hover:shadow-lg flex items-center space-x-2 group" href="#trending">
                         <span>Shop Now</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
                     </a>
-
-                    <a
-                        href="#categories"
-                        id="hero-categories"
-                        class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm text-[#0F1654] bg-white border border-[#E6E8F2] hover:bg-gray-50 shadow-xs transition-all hover:scale-102"
-                    >
+                    <a class="bg-white hover:bg-slate-50 text-pulse-navy border border-slate-300 hover:border-slate-400 px-7 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-subtle" href="#categories">
                         Explore Collection
                     </a>
                 </div>
 
-                {{-- Social Proof & Trust Metric --}}
-                <div class="pt-4 flex items-center gap-3.5 border-t border-[#E6E8F2]/80">
+                {{-- Social Proof Cluster --}}
+                <div class="pt-4 flex flex-wrap items-center gap-4 sm:gap-6 border-t border-slate-200/80">
                     <div class="flex -space-x-2">
-                        <img class="w-8 h-8 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Customer">
-                        <img class="w-8 h-8 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Customer">
-                        <img class="w-8 h-8 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Customer">
-                        <div class="w-8 h-8 rounded-full border-2 border-white bg-[#0AA6B7] text-white flex items-center justify-center text-[10px] font-bold">
-                            +50k
-                        </div>
+                        <div class="w-9 h-9 rounded-full bg-pulse-navy text-white font-bold text-xs flex items-center justify-center border-2 border-white">HK</div>
+                        <div class="w-9 h-9 rounded-full bg-amber-500 text-white font-bold text-xs flex items-center justify-center border-2 border-white">SM</div>
+                        <div class="w-9 h-9 rounded-full bg-pulse-teal text-white font-bold text-xs flex items-center justify-center border-2 border-white">AR</div>
+                        <div class="w-9 h-9 rounded-full bg-slate-700 text-white font-bold text-xs flex items-center justify-center border-2 border-white">+5k</div>
                     </div>
-                    <div class="text-xs">
-                        <div class="flex items-center text-amber-400 text-xs">
-                            ★★★★★
+                    <div>
+                        <div class="flex items-center space-x-1 text-amber-400 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                            <span class="font-bold text-slate-800 ml-1">4.9 / 5</span>
                         </div>
-                        <span class="text-gray-500 font-medium">Loved by <strong>50,000+</strong> happy buyers nationwide</span>
+                        <span class="text-xs text-slate-500">Loved by 50,000+ happy buyers nationwide</span>
                     </div>
                 </div>
-
             </div>
 
-            {{-- Right Column: Organic 3D Orange Curve + Model + Dynamic Floating Cards --}}
-            <div class="lg:col-span-6 relative flex items-center justify-center min-h-[460px] lg:min-h-[540px]">
+            {{-- Right Column: Interactive Bento Showcase (Real Featured Product) --}}
+            <div class="lg:col-span-6 relative">
+                <div class="relative bg-gradient-to-b from-white to-slate-50 rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-card">
+                    {{-- Hero Product Stage --}}
+                    <div class="relative rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center h-80 sm:h-96">
+                        @if($heroProduct)
+                            <a href="{{ route('products.show', $heroProduct->slug ?? $heroProduct->id) }}" class="w-full h-full relative flex items-center justify-center bg-gradient-to-tr from-amber-50/60 to-orange-50/60 p-6 group">
+                                <div class="text-center w-full">
+                                    <div class="w-48 h-48 mx-auto relative flex items-center justify-center mb-2">
+                                        @if($heroProduct->primary_image_url && !str_contains($heroProduct->primary_image_url, 'placeholder'))
+                                            <img
+                                                src="{{ $heroProduct->primary_image_url }}"
+                                                alt="{{ $heroProduct->name }}"
+                                                class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
+                                            >
+                                        @else
+                                            <i class="fa-solid fa-headphones-simple text-8xl text-pulse-navy/90 drop-shadow-2xl"></i>
+                                        @endif
+                                        {{-- Pulse badge --}}
+                                        <span class="absolute top-2 right-2 bg-pulse-orange text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full shadow-xs">
+                                            Direct Hub
+                                        </span>
+                                    </div>
+                                    <h3 class="text-base sm:text-lg font-extrabold text-pulse-navy group-hover:text-pulse-orange transition-colors truncate max-w-sm mx-auto">
+                                        {{ $heroProduct->name }}
+                                    </h3>
+                                    <p class="text-xs text-slate-500 truncate max-w-xs mx-auto">
+                                        {{ $heroProduct->short_description ?? ($heroProduct->category?->name ?? 'Verified Central Inventory') }}
+                                    </p>
+                                </div>
+                            </a>
 
-                {{-- 3D Glossy Orange Curve / Blob Backdrop --}}
-                <div class="hero-curve-blob"></div>
+                            {{-- Floating Tag 1 (Top Left) --}}
+                            <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-md border border-slate-200 px-3.5 py-2 rounded-xl shadow-lg flex items-center space-x-3 pointer-events-none">
+                                <div class="w-8 h-8 rounded-lg bg-orange-100 text-pulse-orange flex items-center justify-center font-bold text-xs">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">{{ $heroProduct->category?->name ?? 'Smart Series' }}</span>
+                                    <span class="text-xs font-extrabold text-pulse-navy">Rs. {{ number_format($heroProduct->effective_price) }}</span>
+                                </div>
+                            </div>
+                        @else
+                            <div class="w-full h-full flex flex-col items-center justify-center p-8 text-center bg-gradient-to-tr from-amber-50/40 to-orange-50/40">
+                                <div class="w-20 h-20 rounded-2xl bg-white shadow-card flex items-center justify-center text-pulse-orange text-3xl mb-3">
+                                    <i class="fa-solid fa-sparkles"></i>
+                                </div>
+                                <h3 class="text-base font-extrabold text-pulse-navy">Direct Retail Central Hub</h3>
+                                <p class="text-xs text-slate-500 max-w-xs mt-1">100% Genuine Direct Products. Ready for Nationwide COD.</p>
+                            </div>
+                        @endif
 
-                {{-- Main Model Showcase --}}
-                <div class="relative z-10 w-full max-w-[380px] sm:max-w-[420px] aspect-[4/5] rounded-[32px] overflow-hidden shadow-2xl border-4 border-white bg-white">
-                    <img
-                        src="{{ asset('images/hero-model.jpg') }}"
-                        alt="ShopPulss Curated Essentials"
-                        class="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-103"
-                    >
-                    {{-- Bottom Pill on Model --}}
-                    <div class="absolute bottom-4 inset-x-4 py-2.5 px-4 rounded-2xl bg-white/95 backdrop-blur-md shadow-lg border border-white/80 flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
-                            <span class="font-bold text-[#0F1654]">100% Genuine Brands Sourced</span>
+                        {{-- Floating Tag 2 (Top Right) --}}
+                        <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-md border border-slate-200 px-3.5 py-2 rounded-xl shadow-lg flex items-center space-x-2.5 pointer-events-none">
+                            <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-shield-check"></i>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-400 font-semibold uppercase">Quality Certified</span>
+                                <span class="text-xs font-bold text-slate-800">100% Genuine</span>
+                            </div>
                         </div>
-                        <span class="text-[#FF5A1F] font-black">Karachi Hub</span>
+
+                        {{-- Floating Bottom Hub Bar --}}
+                        <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md border border-slate-200 px-4 py-2.5 rounded-xl shadow-md flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center space-x-2 text-xs font-bold text-pulse-navy">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                <span>Authentic Stock Verified</span>
+                            </div>
+                            <div class="text-[11px] font-semibold text-pulse-orange">
+                                Express Dispatch <i class="fa-solid fa-bolt ml-0.5"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Bento Mini Grid Below Main Card --}}
+                    <div class="grid grid-cols-2 gap-3.5 mt-4">
+                        <div class="bg-white border border-slate-200 p-3.5 rounded-xl flex items-center space-x-3 hover:border-pulse-orange/40 transition-colors">
+                            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm shrink-0">
+                                <i class="fa-solid fa-box-open"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-pulse-navy">Unopened Factory Box</div>
+                                <div class="text-[10px] text-slate-500">Intact Seals Guaranteed</div>
+                            </div>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-3.5 rounded-xl flex items-center space-x-3 hover:border-pulse-orange/40 transition-colors">
+                            <div class="w-10 h-10 rounded-lg bg-orange-50 text-pulse-orange flex items-center justify-center text-sm shrink-0">
+                                <i class="fa-solid fa-truck-fast"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-pulse-navy">Same Day Dispatch</div>
+                                <div class="text-[10px] text-slate-500">For 150+ major cities</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                {{-- Dynamic Floating Preview Product Cards from Backend ($heroProducts) --}}
-                @php
-                    $hProd1 = $heroProducts->get(0) ?? $trendingProducts->get(0);
-                    $hProd2 = $heroProducts->get(1) ?? $trendingProducts->get(1);
-                    $hProd3 = $heroProducts->get(2) ?? $deals->get(0);
-                @endphp
-
-                {{-- Floating Card 1: Top Right --}}
-                @if($hProd1)
-                <a
-                    href="{{ route('products.show', $hProd1->slug ?? $hProd1->id) }}"
-                    class="floating-product-card absolute -top-4 -right-2 sm:right-2 z-20 p-2.5 flex items-center gap-3 hidden sm:flex max-w-[210px]"
-                >
-                    <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 p-1 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                        <img src="{{ $hProd1->images->first()?->image_url ?? 'https://placehold.co/80' }}" alt="{{ $hProd1->name }}" class="w-full h-full object-contain">
-                    </div>
-                    <div class="min-w-0 pr-1">
-                        <div class="text-[11px] font-bold text-gray-900 truncate leading-tight">{{ $hProd1->name }}</div>
-                        <div class="text-xs font-black text-[#FF5A1F] mt-0.5">Rs. {{ number_format($hProd1->sale_price ?? $hProd1->regular_price) }}</div>
-                    </div>
-                </a>
-                @endif
-
-                {{-- Floating Card 2: Middle Left --}}
-                @if($hProd2)
-                <a
-                    href="{{ route('products.show', $hProd2->slug ?? $hProd2->id) }}"
-                    class="floating-product-card absolute top-1/3 -left-4 sm:-left-6 z-20 p-2.5 flex items-center gap-3 hidden sm:flex max-w-[200px]"
-                >
-                    <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 p-1 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                        <img src="{{ $hProd2->images->first()?->image_url ?? 'https://placehold.co/80' }}" alt="{{ $hProd2->name }}" class="w-full h-full object-contain">
-                    </div>
-                    <div class="min-w-0 pr-1">
-                        <div class="text-[11px] font-bold text-gray-900 truncate leading-tight">{{ $hProd2->name }}</div>
-                        <div class="text-xs font-black text-[#0F1654] mt-0.5">Rs. {{ number_format($hProd2->sale_price ?? $hProd2->regular_price) }}</div>
-                    </div>
-                </a>
-                @endif
-
-                {{-- Floating Card 3: Bottom Right --}}
-                @if($hProd3)
-                <a
-                    href="{{ route('products.show', $hProd3->slug ?? $hProd3->id) }}"
-                    class="floating-product-card absolute bottom-12 -right-4 sm:-right-6 z-20 p-2.5 flex items-center gap-3 hidden sm:flex max-w-[220px]"
-                >
-                    <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 p-1 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                        <img src="{{ $hProd3->images->first()?->image_url ?? 'https://placehold.co/80' }}" alt="{{ $hProd3->name }}" class="w-full h-full object-contain">
-                    </div>
-                    <div class="min-w-0 pr-1">
-                        <div class="text-[11px] font-bold text-gray-900 truncate leading-tight">{{ $hProd3->name }}</div>
-                        <div class="text-xs font-black text-[#0AA6B7] mt-0.5">Rs. {{ number_format($hProd3->sale_price ?? $hProd3->regular_price) }}</div>
-                    </div>
-                </a>
-                @endif
-
             </div>
-
         </div>
     </div>
 </section>
+{{-- END: HeroSection --}}
 
-{{-- 2. VALUE PROPOSITION STRIP --}}
-<section class="py-7 px-4 bg-white border-y border-[#E6E8F2] shadow-sm relative z-10">
-    <div class="max-w-7xl mx-auto">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-
-            <div class="flex items-center gap-3.5">
-                <div class="w-12 h-12 rounded-xl bg-[#F6F7FB] flex items-center justify-center text-[#FF5A1F] flex-shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+{{-- 2. BEGIN: TrustGuarantees --}}
+<section class="py-6 bg-white border-b border-slate-200" data-purpose="trust-badges">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-8">
+            <div class="flex items-center space-x-3.5 p-2">
+                <div class="w-12 h-12 rounded-xl bg-orange-50 text-pulse-orange flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-truck-fast"></i>
                 </div>
                 <div>
-                    <h4 class="font-bold text-xs sm:text-sm text-[#0F1654]">Free Shipping</h4>
-                    <p class="text-[11px] text-gray-500 mt-0.5">On orders over Rs. 2,500</p>
+                    <h4 class="text-xs sm:text-sm font-bold text-pulse-navy">Free Express Shipping</h4>
+                    <p class="text-[11px] text-slate-500">On all orders over Rs. 2,500</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-3.5">
-                <div class="w-12 h-12 rounded-xl bg-[#F6F7FB] flex items-center justify-center text-[#FF5A1F] flex-shrink-0">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
+            <div class="flex items-center space-x-3.5 p-2">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 text-pulse-teal flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
                 </div>
                 <div>
-                    <h4 class="font-bold text-xs sm:text-sm text-[#0F1654]">Secure Payments</h4>
-                    <p class="text-[11px] text-gray-500 mt-0.5">Cash on Delivery &amp; Bank</p>
+                    <h4 class="text-xs sm:text-sm font-bold text-pulse-navy">Cash on Delivery</h4>
+                    <p class="text-[11px] text-slate-500">Inspect &amp; pay at doorstep</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-3.5">
-                <div class="w-12 h-12 rounded-xl bg-[#F6F7FB] flex items-center justify-center text-[#FF5A1F] flex-shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <div class="flex items-center space-x-3.5 p-2">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-arrow-rotate-left"></i>
                 </div>
                 <div>
-                    <h4 class="font-bold text-xs sm:text-sm text-[#0F1654]">Easy Returns</h4>
-                    <p class="text-[11px] text-gray-500 mt-0.5">7-Day Hassle-Free Policy</p>
+                    <h4 class="text-xs sm:text-sm font-bold text-pulse-navy">7-Day Easy Returns</h4>
+                    <p class="text-[11px] text-slate-500">Hassle-free direct policy</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-3.5">
-                <div class="w-12 h-12 rounded-xl bg-[#F6F7FB] flex items-center justify-center text-[#FF5A1F] flex-shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <div class="flex items-center space-x-3.5 p-2">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-headset"></i>
                 </div>
                 <div>
-                    <h4 class="font-bold text-xs sm:text-sm text-[#0F1654]">24/7 Support</h4>
-                    <p class="text-[11px] text-gray-500 mt-0.5">WhatsApp &amp; Phone Line</p>
+                    <h4 class="text-xs sm:text-sm font-bold text-pulse-navy">24/7 Priority Support</h4>
+                    <p class="text-[11px] text-slate-500">Direct WhatsApp &amp; Helpline</p>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
+{{-- END: TrustGuarantees --}}
 
-{{-- 3. FEATURED CATEGORIES --}}
-<section id="categories" class="py-14 px-4 bg-white">
-    <div class="max-w-7xl mx-auto">
+{{-- 3. BEGIN: ShopByCategories --}}
+<section class="py-14 bg-pulse-bg" data-purpose="category-grid" id="categories">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-end justify-between mb-8">
             <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-[#FF5A1F] mb-1">Explore Departments</p>
-                <h2 class="text-2xl sm:text-3xl font-black text-[#0F1654]">Shop by Categories</h2>
+                <span class="text-xs font-bold text-pulse-orange uppercase tracking-wider block">Explore Departments</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-pulse-navy tracking-tight mt-0.5">Shop by Categories</h2>
             </div>
-            <a href="{{ route('products.index') }}" class="text-xs sm:text-sm font-bold text-[#FF5A1F] hover:text-[#FF4A0A] flex items-center gap-1 transition-colors">
+            <a class="text-xs sm:text-sm font-bold text-pulse-orange hover:text-pulse-orange-dark flex items-center space-x-1.5 transition-colors" href="{{ route('products.index') }}#categories">
                 <span>View All Categories</span>
-                <span>→</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
             </a>
         </div>
 
+        {{-- Categories Grid: 6 Pillars from DB --}}
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            @foreach($featuredCategories as $cat)
-                <a
-                    href="{{ route('categories.show', $cat->slug) }}"
-                    id="cat-{{ $cat->id }}"
-                    class="group p-4 rounded-2xl bg-[#F6F7FB] border border-[#E6E8F2] hover:border-[#FF5A1F]/30 hover:bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-sp-card flex flex-col items-center text-center"
-                >
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white border border-[#E6E8F2] p-2 flex items-center justify-center overflow-hidden mb-3 shadow-2xs group-hover:scale-108 transition-transform duration-300">
-                        @if($cat->image_url)
-                            <img src="{{ $cat->image_url }}" alt="{{ $cat->name }}" class="w-full h-full object-contain">
-                        @else
-                            <svg class="w-8 h-8 text-[#0AA6B7]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                        @endif
+            @forelse($featuredCategories as $cat)
+                @php
+                    $visual = $catVisuals[$cat->slug] ?? ['icon' => 'fa-shapes', 'bg' => 'bg-amber-50', 'text' => 'text-amber-600'];
+                    $catProductsCount = $cat->products()->count();
+                @endphp
+                <a class="group bg-white p-4 rounded-2xl border border-pulse-border text-center hover:shadow-card hover:border-pulse-orange/40 transition-all flex flex-col justify-between" href="{{ route('categories.show', $cat->slug) }}">
+                    <div>
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-2xl {{ $visual['bg'] }} flex items-center justify-center {{ $visual['text'] }} text-2xl group-hover:scale-110 transition-transform overflow-hidden p-2">
+                            @if($cat->image_url && !str_contains($cat->image_url, 'placeholder'))
+                                <img src="{{ $cat->image_url }}" alt="{{ $cat->name }}" class="w-full h-full object-contain mix-blend-multiply" loading="lazy">
+                            @else
+                                <i class="fa-solid {{ $visual['icon'] }}"></i>
+                            @endif
+                        </div>
+                        <h3 class="text-xs font-bold text-pulse-navy group-hover:text-pulse-orange transition-colors truncate">
+                            {{ $cat->name }}
+                        </h3>
                     </div>
-                    <h3 class="font-bold text-xs sm:text-sm text-[#161616] group-hover:text-[#FF5A1F] transition-colors line-clamp-1">
-                        {{ $cat->name }}
-                    </h3>
-                    <span class="text-[11px] font-semibold text-gray-400 group-hover:text-[#0AA6B7] mt-1 transition-colors flex items-center gap-1">
+                    <span class="text-[10px] text-slate-400 font-medium block mt-2">
                         Shop Now →
                     </span>
                 </a>
-            @endforeach
+            @empty
+                <p class="col-span-full text-center text-xs text-slate-400 py-6">Categories loading from warehouse database...</p>
+            @endforelse
         </div>
     </div>
 </section>
+{{-- END: ShopByCategories --}}
 
-{{-- 4. DEAL OF THE DAY HIGHLIGHT BANNER --}}
-@php
-    $dealHighlight = $deals->first();
-@endphp
-@if($dealHighlight)
-@php
-    $dealDiscount = $dealHighlight->regular_price > 0 && $dealHighlight->sale_price
-        ? (int) round((($dealHighlight->regular_price - $dealHighlight->sale_price) / $dealHighlight->regular_price) * 100)
-        : 35;
-    $remainingSeconds = $dealHighlight->remainingDealSeconds() > 0 ? $dealHighlight->remainingDealSeconds() : 52319;
-@endphp
-<section id="deal-of-the-day" class="py-10 px-4 bg-[#F6F7FB]">
-    <div class="max-w-7xl mx-auto">
-        <div class="rounded-3xl bg-[#FFF1EA] border border-[#FF5A1F]/20 p-6 sm:p-10 lg:p-12 shadow-sp-card relative overflow-hidden">
-
+{{-- 4. BEGIN: DealOfTheDaySection --}}
+@if($dealProduct)
+<section class="py-10 bg-white" data-purpose="deal-of-the-day" id="deals">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-br from-amber-50/80 via-orange-50/60 to-white border border-amber-200/80 rounded-3xl p-6 sm:p-10 shadow-card">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-
-                {{-- Left Side: Deal Offer & Countdown --}}
-                <div class="lg:col-span-7 space-y-5">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-[#FF5A1F] text-xs font-black shadow-2xs">
-                        <span>⚡ DEAL OF THE DAY</span>
+                {{-- Left: Deal Urgency Details --}}
+                <div class="lg:col-span-6 space-y-4">
+                    <div class="inline-flex items-center space-x-2 bg-pulse-orange text-white text-xs font-extrabold uppercase px-3 py-1 rounded-full shadow-sm">
+                        <i class="fa-solid fa-fire"></i>
+                        <span>DEAL OF THE DAY</span>
                     </div>
-
-                    <h2 class="text-3xl sm:text-4xl font-black text-[#0F1654] leading-tight">
-                        Grab It Before<br>It's Gone!
+                    <h2 class="text-3xl sm:text-4xl font-black text-pulse-navy tracking-tight leading-tight">
+                        Grab It Before <br>It's Gone!
                     </h2>
-
-                    <p class="text-gray-600 text-xs sm:text-sm leading-relaxed max-w-md">
+                    <p class="text-sm text-slate-600 max-w-md">
                         Special direct warehouse allocation at unbeatable prices. Limited stock available with express dispatch across 150+ cities.
                     </p>
 
-                    {{-- Countdown Timer --}}
-                    <div>
-                        <div class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">Deal Ends In</div>
-                        <div id="deal-countdown" class="flex items-center gap-2.5">
-                            <div class="bg-white border border-[#E6E8F2] rounded-xl px-3.5 py-2 text-center shadow-xs min-w-[56px]">
-                                <span class="block text-lg font-black text-[#0F1654]" id="cd-hours">08</span>
-                                <span class="text-[10px] uppercase font-bold text-gray-400">Hours</span>
+                    {{-- Countdown Timer Blocks --}}
+                    <div class="pt-2">
+                        <span class="text-xs font-bold uppercase text-slate-500 tracking-wider block mb-2">Deal Ends In</span>
+                        <div class="flex items-center space-x-2.5 text-center">
+                            <div class="bg-white border border-slate-200 rounded-xl px-3.5 py-2 min-w-[64px] shadow-sm">
+                                <span class="block text-xl font-black text-pulse-navy" id="deal-hours">14</span>
+                                <span class="block text-[9px] font-bold text-slate-400 uppercase">Hours</span>
                             </div>
-                            <span class="text-lg font-black text-[#FF5A1F]">:</span>
-                            <div class="bg-white border border-[#E6E8F2] rounded-xl px-3.5 py-2 text-center shadow-xs min-w-[56px]">
-                                <span class="block text-lg font-black text-[#0F1654]" id="cd-mins">45</span>
-                                <span class="text-[10px] uppercase font-bold text-gray-400">Mins</span>
+                            <span class="font-bold text-slate-400">:</span>
+                            <div class="bg-white border border-slate-200 rounded-xl px-3.5 py-2 min-w-[64px] shadow-sm">
+                                <span class="block text-xl font-black text-pulse-navy" id="deal-minutes">31</span>
+                                <span class="block text-[9px] font-bold text-slate-400 uppercase">Mins</span>
                             </div>
-                            <span class="text-lg font-black text-[#FF5A1F]">:</span>
-                            <div class="bg-white border border-[#E6E8F2] rounded-xl px-3.5 py-2 text-center shadow-xs min-w-[56px]">
-                                <span class="block text-lg font-black text-[#0F1654]" id="cd-secs">19</span>
-                                <span class="text-[10px] uppercase font-bold text-gray-400">Secs</span>
+                            <span class="font-bold text-slate-400">:</span>
+                            <div class="bg-white border border-slate-200 rounded-xl px-3.5 py-2 min-w-[64px] shadow-sm">
+                                <span class="block text-xl font-black text-pulse-navy" id="deal-seconds">43</span>
+                                <span class="block text-[9px] font-bold text-slate-400 uppercase">Secs</span>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Action Row --}}
-                    <div class="flex flex-wrap items-center gap-4 pt-2">
-                        <form action="{{ route('cart.add') }}" method="POST">
+                    {{-- CTA & Inventory Stock Indicator --}}
+                    <div class="pt-4 flex flex-wrap items-center gap-4">
+                        <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-to-cart inline-block">
                             @csrf
-                            <input type="hidden" name="product_id" value="{{ $dealHighlight->id }}">
+                            <input type="hidden" name="product_id" value="{{ $dealProduct->id }}">
                             <input type="hidden" name="quantity" value="1">
-                            <button
-                                type="submit"
-                                class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-white text-sm font-bold bg-gradient-to-r from-[#FF6B1F] to-[#FF4A0A] hover:opacity-95 shadow-sp-orange transition-all hover:scale-102"
-                            >
+                            <button type="submit" class="bg-pulse-orange hover:bg-pulse-orange-dark text-white px-7 py-3 rounded-xl font-bold text-sm shadow-orange-glow transition-all flex items-center space-x-2">
                                 <span>Buy The Deal</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
                             </button>
                         </form>
-
-                        <div class="text-xs font-semibold text-[#0F1654] flex items-center gap-1.5 bg-white/80 px-3.5 py-2 rounded-full border border-white">
-                            <span class="w-2 h-2 rounded-full bg-[#FF5A1F] animate-ping"></span>
-                            <span>Only <strong>{{ max(2, (int) $dealHighlight->stock_quantity) }}</strong> items left in stock</span>
+                        <div class="flex items-center space-x-2 text-xs font-bold text-pulse-orange bg-white px-3.5 py-2.5 rounded-xl border border-pulse-orange/30">
+                            <span class="w-2 h-2 rounded-full bg-pulse-orange pulse-dot"></span>
+                            <span>Only <strong>{{ $dealProduct->stock_quantity }} items</strong> left in stock!</span>
                         </div>
                     </div>
                 </div>
 
-                {{-- Right Side: Highlight Product Card --}}
-                <div class="lg:col-span-5 flex justify-center">
-                    <div class="bg-white rounded-[26px] p-6 shadow-2xl border border-white max-w-sm w-full relative">
-                        {{-- Discount Badge --}}
-                        <span class="absolute top-4 right-4 z-10 px-3 py-1 rounded-full text-xs font-black text-white bg-gradient-to-r from-[#FF6B1F] to-[#FF4A0A] shadow-sm">
-                            -{{ $dealDiscount }}% OFF
-                        </span>
-
-                        {{-- Product Image --}}
-                        <a href="{{ route('products.show', $dealHighlight->slug ?? $dealHighlight->id) }}" class="aspect-square rounded-2xl bg-gray-50 p-4 block overflow-hidden mb-4 group">
-                            <img
-                                src="{{ $dealHighlight->images->first()?->image_url ?? 'https://placehold.co/400' }}"
-                                alt="{{ $dealHighlight->name }}"
-                                class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
-                            >
-                        </a>
-
-                        {{-- Product Details --}}
-                        <div class="space-y-2">
-                            <div class="text-[11px] font-bold text-[#0AA6B7] uppercase tracking-wider">
-                                {{ $dealHighlight->category?->name ?? 'Special Allocation' }}
-                            </div>
-                            <h3 class="text-base font-bold text-gray-900 leading-snug line-clamp-1">
-                                <a href="{{ route('products.show', $dealHighlight->slug ?? $dealHighlight->id) }}" class="hover:text-[#FF5A1F] transition-colors">
-                                    {{ $dealHighlight->name }}
+                {{-- Right: Featured Deal Product Card --}}
+                <div class="lg:col-span-6">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-card relative max-w-md mx-auto">
+                        @if($dealDiscount > 0)
+                            <span class="absolute top-4 right-4 bg-pulse-orange text-white text-xs font-black px-2.5 py-1 rounded-lg">
+                                -{{ $dealDiscount }}% OFF
+                            </span>
+                        @endif
+                        <div class="h-56 bg-amber-50/40 rounded-xl flex items-center justify-center p-4 mb-4 overflow-hidden">
+                            @if($dealProduct->primary_image_url && !str_contains($dealProduct->primary_image_url, 'placeholder'))
+                                <img src="{{ $dealProduct->primary_image_url }}" alt="{{ $dealProduct->name }}" class="w-full h-full object-contain mix-blend-multiply" loading="lazy">
+                            @else
+                                <i class="fa-solid fa-headphones-simple text-7xl text-pulse-navy drop-shadow-md"></i>
+                            @endif
+                        </div>
+                        <div>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-pulse-teal">
+                                {{ $dealProduct->category?->name ?? 'Audio & Electronics' }}
+                            </span>
+                            <h3 class="text-base font-bold text-pulse-navy mt-0.5 line-clamp-2">
+                                <a href="{{ route('products.show', $dealProduct->slug ?? $dealProduct->id) }}" class="hover:text-pulse-orange transition-colors">
+                                    {{ $dealProduct->name }}
                                 </a>
                             </h3>
-
-                            <div class="flex items-baseline gap-3 pt-1">
-                                <span class="text-2xl font-black text-[#0F1654]">
-                                    Rs. {{ number_format($dealHighlight->sale_price ?? $dealHighlight->regular_price) }}
+                            <div class="flex items-center space-x-3 mt-3 flex-wrap gap-y-1">
+                                <span class="text-2xl font-black text-pulse-orange">
+                                    Rs. {{ number_format($dealProduct->sale_price ?? $dealProduct->regular_price) }}
                                 </span>
-                                @if($dealHighlight->sale_price)
-                                    <span class="text-xs text-gray-400 line-through">
-                                        Rs. {{ number_format($dealHighlight->regular_price) }}
+                                @if($dealProduct->sale_price)
+                                    <span class="text-sm text-slate-400 line-through">
+                                        Rs. {{ number_format($dealProduct->regular_price) }}
                                     </span>
-                                    <span class="text-xs font-bold text-[#FF5A1F]">
-                                        Save Rs. {{ number_format($dealHighlight->regular_price - $dealHighlight->sale_price) }}
+                                    <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
+                                        Save Rs. {{ number_format($dealSavings) }}
                                     </span>
                                 @endif
                             </div>
-
-                            <form action="{{ route('cart.add') }}" method="POST" class="pt-3">
+                            <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-to-cart mt-5">
                                 @csrf
-                                <input type="hidden" name="product_id" value="{{ $dealHighlight->id }}">
+                                <input type="hidden" name="product_id" value="{{ $dealProduct->id }}">
                                 <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="w-full py-3 rounded-xl bg-[#0F1654] hover:bg-[#16206E] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                                <button type="submit" class="w-full bg-pulse-navy hover:bg-pulse-navy-dark text-white py-3 rounded-xl font-bold text-xs tracking-wider transition-colors flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-cart-shopping"></i>
                                     <span>Add Deal to Cart</span>
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 </section>
 @endif
+{{-- END: DealOfTheDaySection --}}
 
-{{-- 5. TRENDING PRODUCTS --}}
-<section id="trending" class="py-14 px-4 bg-white">
-    <div class="max-w-7xl mx-auto">
+{{-- 5. BEGIN: TrendingProductsGrid --}}
+<section class="py-14 bg-pulse-bg" data-purpose="trending-products" id="trending">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- Section Header --}}
         <div class="flex items-end justify-between mb-8">
             <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-[#FF5A1F] mb-1">Top Picks</p>
-                <h2 class="text-2xl sm:text-3xl font-black text-[#0F1654]">Trending Products</h2>
+                <span class="text-xs font-bold text-pulse-orange uppercase tracking-wider block">Top Picks</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-pulse-navy tracking-tight mt-0.5">Trending Products</h2>
             </div>
-            <a href="{{ route('products.index', ['sort' => 'popular']) }}" id="view-all-trending" class="text-xs sm:text-sm font-bold text-[#FF5A1F] hover:text-[#FF4A0A] flex items-center gap-1 transition-colors">
+            <a class="text-xs sm:text-sm font-bold text-pulse-orange hover:text-pulse-orange-dark flex items-center space-x-1.5 transition-colors" href="{{ route('products.index', ['sort' => 'popular']) }}">
                 <span>View All Trending</span>
-                <span>→</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
             </a>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            @forelse($trendingProducts->take(8) as $product)
-                @include('components.product-card', ['product' => $product, 'badge' => 'Trending'])
+        {{-- 8-Product Grid --}}
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            @forelse($trendingProducts->take(8) as $tProduct)
+                <x-product-card :product="$tProduct" />
             @empty
-                <div class="col-span-full py-12 text-center bg-gray-50 rounded-2xl border border-gray-100">
-                    <p class="text-sm text-gray-500">Trending inventory is currently updating. Check back shortly!</p>
-                </div>
+                <p class="col-span-full text-center text-xs text-slate-400 py-10">Trending products catalog updating...</p>
             @endforelse
         </div>
     </div>
 </section>
+{{-- END: TrendingProductsGrid --}}
 
-{{-- 6. DUAL PROMOTIONAL BANNERS --}}
-<section class="py-6 px-4 bg-[#F6F7FB]">
-    <div class="max-w-7xl mx-auto">
+{{-- 6. BEGIN: PromotionalDualBanners --}}
+<section class="py-8 bg-pulse-bg" data-purpose="promotional-banners">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            {{-- Banner 1: Orange Flash Sale --}}
-            <div class="rounded-3xl p-8 sm:p-10 bg-gradient-to-r from-[#FF6B1F] to-[#FF4A0A] text-white flex flex-col justify-between shadow-sp-orange relative overflow-hidden min-h-[220px]">
-                <div class="space-y-2 z-10">
-                    <span class="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-[11px] font-black uppercase tracking-wider">Warehouse Clearance</span>
-                    <h3 class="text-2xl sm:text-3xl font-black leading-tight">
-                        Flash Sale<br>Up To 60% Off
-                    </h3>
-                    <p class="text-white/80 text-xs max-w-xs">Limited allocation direct from certified manufacturers. First come, first served.</p>
+            {{-- Banner 1: Energetic Orange Flash Sale --}}
+            <div class="bg-gradient-to-r from-pulse-orange to-amber-500 rounded-3xl p-8 sm:p-10 text-white relative overflow-hidden shadow-card flex flex-col justify-between min-h-[220px]">
+                <div class="relative z-10 space-y-2">
+                    <span class="text-xs font-black uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full inline-block backdrop-blur-sm">Warehouse Clearance</span>
+                    <h3 class="text-2xl sm:text-3xl font-black">Flash Sale <br>Up To 60% Off</h3>
+                    <p class="text-xs text-white/90 max-w-xs font-body">Limited allocation direct from certified manufacturers. First come, first served.</p>
                 </div>
-                <div class="pt-4 z-10">
-                    <a href="{{ route('products.index', ['sort' => 'sale']) }}" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white text-[#FF5A1F] text-xs font-bold hover:bg-gray-50 shadow-md transition-transform hover:scale-105">
+                <div class="pt-5 relative z-10">
+                    <a class="bg-white hover:bg-slate-100 text-pulse-orange px-6 py-2.5 rounded-xl font-extrabold text-xs tracking-wider inline-flex items-center space-x-2 transition-transform hover:scale-105 shadow-md" href="{{ route('products.index', ['sort' => 'sale']) }}">
                         <span>Shop Flash Deals</span>
-                        <span>→</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </a>
                 </div>
-                {{-- Decorative background circle --}}
-                <div class="absolute -right-10 -bottom-10 w-52 h-52 rounded-full bg-white/10 pointer-events-none"></div>
+                <i class="fa-solid fa-tags absolute -right-6 -bottom-8 text-white/15 text-9xl"></i>
             </div>
 
-            {{-- Banner 2: Navy Direct Sourcing --}}
-            <div class="rounded-3xl p-8 sm:p-10 bg-gradient-to-r from-[#0F1654] to-[#1A237E] text-white flex flex-col justify-between shadow-sp-card relative overflow-hidden min-h-[220px]">
-                <div class="space-y-2 z-10">
-                    <span class="inline-block px-3 py-1 rounded-full bg-[#0AA6B7]/30 text-[#0AA6B7] text-[11px] font-black uppercase tracking-wider">Direct Sourcing</span>
-                    <h3 class="text-2xl sm:text-3xl font-black leading-tight">
-                        Curated Direct<br>Retail Excellence
-                    </h3>
-                    <p class="text-blue-100/70 text-xs max-w-xs">Zero third-party seller headaches. 100% verified single-origin retail inventory.</p>
+            {{-- Banner 2: Deep Ink Navy Direct Retail Excellence --}}
+            <div class="bg-gradient-to-r from-pulse-navy to-pulse-navy-surface rounded-3xl p-8 sm:p-10 text-white relative overflow-hidden shadow-card flex flex-col justify-between min-h-[220px] border border-white/10">
+                <div class="relative z-10 space-y-2">
+                    <span class="text-xs font-black uppercase tracking-wider bg-pulse-teal/20 text-pulse-teal px-3 py-1 rounded-full inline-block backdrop-blur-sm border border-pulse-teal/30">Direct Sourcing</span>
+                    <h3 class="text-2xl sm:text-3xl font-black">Curated Direct <br>Retail Excellence</h3>
+                    <p class="text-xs text-slate-300 max-w-xs font-body">Zero third-party seller headaches. 100% verified single-origin retail inventory.</p>
                 </div>
-                <div class="pt-4 z-10">
-                    <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#0AA6B7] text-white text-xs font-bold hover:bg-[#088F9E] shadow-md transition-transform hover:scale-105">
+                <div class="pt-5 relative z-10">
+                    <a class="bg-pulse-teal hover:bg-teal-500 text-white px-6 py-2.5 rounded-xl font-extrabold text-xs tracking-wider inline-flex items-center space-x-2 transition-transform hover:scale-105 shadow-md" href="{{ route('products.index') }}">
                         <span>Explore Sourcing</span>
-                        <span>→</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </a>
                 </div>
-                <div class="absolute -right-10 -bottom-10 w-52 h-52 rounded-full bg-white/5 pointer-events-none"></div>
+                <i class="fa-solid fa-circle-check absolute -right-6 -bottom-8 text-white/10 text-9xl"></i>
             </div>
-
         </div>
     </div>
 </section>
+{{-- END: PromotionalDualBanners --}}
 
-{{-- 7. NEW ARRIVALS --}}
-<section id="new-arrivals" class="py-14 px-4 bg-white">
-    <div class="max-w-7xl mx-auto">
+{{-- 7. BEGIN: NewArrivalsSection --}}
+<section class="py-14 bg-white border-y border-pulse-border" data-purpose="new-arrivals" id="new-arrivals">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-end justify-between mb-8">
             <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-[#0AA6B7] mb-1">Fresh Inventory</p>
-                <h2 class="text-2xl sm:text-3xl font-black text-[#0F1654]">New Arrivals</h2>
+                <span class="text-xs font-bold text-pulse-teal uppercase tracking-wider block">Fresh Inventory</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-pulse-navy tracking-tight mt-0.5">New Arrivals</h2>
             </div>
-            <a href="{{ route('products.index', ['sort' => 'newest']) }}" class="text-xs sm:text-sm font-bold text-[#FF5A1F] hover:text-[#FF4A0A] flex items-center gap-1 transition-colors">
+            <a class="text-xs sm:text-sm font-bold text-pulse-orange hover:text-pulse-orange-dark flex items-center space-x-1.5 transition-colors" href="{{ route('products.index', ['sort' => 'newest']) }}">
                 <span>View All New</span>
-                <span>→</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
             </a>
         </div>
-
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            @forelse($newArrivals->take(4) as $product)
-                @include('components.product-card', ['product' => $product, 'badge' => 'New'])
+            @forelse($newArrivals->take(4) as $nProduct)
+                <x-product-card :product="$nProduct" badge="New" />
             @empty
-                @foreach($trendingProducts->take(4) as $product)
-                    @include('components.product-card', ['product' => $product, 'badge' => 'New'])
-                @endforeach
+                <p class="col-span-full text-center text-xs text-slate-400 py-6">New arrivals inventory arriving soon...</p>
             @endforelse
         </div>
     </div>
 </section>
+{{-- END: NewArrivalsSection --}}
 
-{{-- 8. DEALS & SPECIAL OFFERS --}}
-<section id="deals" class="py-14 px-4 bg-[#F6F7FB]">
-    <div class="max-w-7xl mx-auto">
+{{-- 8. BEGIN: DealsAndSpecialOffers --}}
+<section class="py-14 bg-pulse-bg" data-purpose="deals-special-offers">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-end justify-between mb-8">
             <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-[#FF5A1F] mb-1">Direct Markdowns</p>
-                <h2 class="text-2xl sm:text-3xl font-black text-[#0F1654]">Deals & Special Offers</h2>
+                <span class="text-xs font-bold text-pulse-orange uppercase tracking-wider block">Direct Markdowns</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-pulse-navy tracking-tight mt-0.5">Deals &amp; Special Offers</h2>
             </div>
-            <a href="{{ route('products.index', ['sort' => 'sale']) }}" class="text-xs sm:text-sm font-bold text-[#FF5A1F] hover:text-[#FF4A0A] flex items-center gap-1 transition-colors">
+            <a class="text-xs sm:text-sm font-bold text-pulse-orange hover:text-pulse-orange-dark flex items-center space-x-1.5 transition-colors" href="{{ route('products.index', ['sort' => 'sale']) }}">
                 <span>View All Deals</span>
-                <span>→</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
             </a>
         </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            @forelse($deals->take(4) as $product)
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @forelse($deals->take(4) as $dItem)
                 @php
-                    $dPercent = $product->regular_price > 0 && $product->sale_price
-                        ? round((($product->regular_price - $product->sale_price) / $product->regular_price) * 100)
-                        : 20;
+                    $dDiscount = $dItem->discount_percentage > 0
+                        ? $dItem->discount_percentage
+                        : (int) round((($dItem->regular_price - $dItem->sale_price) / $dItem->regular_price) * 100);
                 @endphp
-                <div class="bg-white rounded-2xl md:rounded-[22px] border border-[#E6E8F2] overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-sp-card-hover" id="deal-product-{{ $product->id }}">
-                    <div class="relative aspect-square bg-[#F8FAFC] p-3 overflow-hidden">
-                        <span class="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full text-[11px] font-black text-white bg-gradient-to-r from-[#FF6B1F] to-[#FF4A0A] shadow-xs">
-                            Save {{ $dPercent }}%
-                        </span>
-                        <a href="{{ route('products.show', $product->slug ?? $product->id) }}" class="w-full h-full block">
-                            <img
-                                src="{{ $product->images->first()?->image_url ?? 'https://placehold.co/300' }}"
-                                alt="{{ $product->name }}"
-                                class="w-full h-full object-contain mix-blend-multiply group-hover:scale-108 transition-transform duration-500"
-                                loading="lazy"
-                            >
-                        </a>
-                    </div>
-
-                    <div class="p-4 flex flex-col flex-1 justify-between">
-                        <div>
-                            <span class="text-[11px] text-gray-400 font-medium block mb-1">{{ $product->category?->name ?? 'Special' }}</span>
-                            <h3 class="text-xs sm:text-sm font-bold text-[#161616] line-clamp-2 mb-2 group-hover:text-[#FF5A1F] transition-colors">
-                                <a href="{{ route('products.show', $product->slug ?? $product->id) }}">
-                                    {{ $product->name }}
-                                </a>
-                            </h3>
-                            <div class="flex items-baseline gap-2 mb-3">
-                                <span class="text-base sm:text-lg font-black text-[#0F1654]">
-                                    Rs. {{ number_format($product->sale_price ?? $product->regular_price) }}
+                <div class="bg-white rounded-2xl border border-pulse-border p-4 shadow-subtle flex flex-col justify-between hover:shadow-card transition-shadow">
+                    <div>
+                        <div class="h-44 bg-amber-50/60 rounded-xl relative flex items-center justify-center mb-3 overflow-hidden p-3">
+                            @if($dDiscount > 0)
+                                <span class="absolute top-2 left-2 z-10 bg-pulse-orange text-white text-[10px] font-black px-2 py-0.5 rounded shadow-xs">
+                                    Save {{ $dDiscount }}%
                                 </span>
-                                @if($product->sale_price)
-                                    <span class="text-xs text-gray-400 line-through">
-                                        Rs. {{ number_format($product->regular_price) }}
-                                    </span>
-                                @endif
-                            </div>
+                            @endif
+                            @if($dItem->primary_image_url && !str_contains($dItem->primary_image_url, 'placeholder'))
+                                <img src="{{ $dItem->primary_image_url }}" alt="{{ $dItem->name }}" class="w-full h-full object-contain mix-blend-multiply" loading="lazy">
+                            @else
+                                <i class="fa-solid fa-tags text-5xl text-pulse-navy/80"></i>
+                            @endif
                         </div>
-
-                        <form action="{{ route('cart.add') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <input type="hidden" name="quantity" value="1">
-                            <button
-                                type="submit"
-                                id="deal-order-{{ $product->id }}"
-                                class="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B1F] to-[#FF4A0A] hover:opacity-95 shadow-xs transition-all active:scale-97"
-                            >
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                                <span>Order Deal</span>
-                            </button>
-                        </form>
+                        <span class="text-[10px] font-bold uppercase text-slate-400 block truncate">
+                            {{ $dItem->category?->name ?? 'Direct Deal' }}
+                        </span>
+                        <h4 class="text-xs font-bold text-pulse-navy mt-0.5 line-clamp-1 hover:text-pulse-orange transition-colors">
+                            <a href="{{ route('products.show', $dItem->slug ?? $dItem->id) }}">
+                                {{ $dItem->name }}
+                            </a>
+                        </h4>
+                        <div class="mt-2 flex items-baseline">
+                            <span class="text-lg font-black text-pulse-orange">
+                                Rs. {{ number_format($dItem->sale_price ?? $dItem->regular_price) }}
+                            </span>
+                            @if($dItem->sale_price)
+                                <span class="text-xs text-slate-400 line-through ml-2">
+                                    Rs. {{ number_format($dItem->regular_price) }}
+                                </span>
+                            @endif
+                        </div>
                     </div>
+                    <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-to-cart mt-4">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $dItem->id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="w-full bg-pulse-orange hover:bg-pulse-orange-dark text-white font-bold py-2 rounded-xl text-xs transition-colors flex items-center justify-center space-x-1.5 active:scale-98 shadow-sm">
+                            <i class="fa-solid fa-bag-shopping text-xs"></i>
+                            <span>Order Deal</span>
+                        </button>
+                    </form>
                 </div>
             @empty
-                <div class="col-span-full py-12 text-center bg-white rounded-2xl border border-gray-100">
-                    <p class="text-sm text-gray-500">Flash markdown deals will be released shortly!</p>
-                </div>
+                <p class="col-span-full text-center text-xs text-slate-400 py-6">Flash deals updating from central warehouse...</p>
             @endforelse
         </div>
     </div>
 </section>
+{{-- END: DealsAndSpecialOffers --}}
 
-{{-- 9. WHY SHOP DIRECTLY WITH SHOPPULSS (Deep Navy Band #0F1654) --}}
-<section id="why-us" class="py-16 px-4 bg-[#0F1654] text-white">
-    <div class="max-w-7xl mx-auto text-center">
-        <p class="text-xs font-bold uppercase tracking-wider text-[#0AA6B7] mb-2">Direct Retail Philosophy</p>
-        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black mb-3">Why Shop Directly with ShopPulss?</h2>
-        <p class="text-blue-200/80 text-xs sm:text-sm max-w-2xl mx-auto mb-12 leading-relaxed">
-            We operate as an exclusive direct-to-consumer store. We source, inspect, package, and dispatch 100% of our products ourselves to guarantee trust and eliminate counterfeit dropshipping.
-        </p>
-
+{{-- 9. BEGIN: DirectRetailPhilosophy --}}
+<section class="py-16 bg-pulse-navy text-white relative overflow-hidden" data-purpose="why-direct-retail" id="why-shop">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {{-- Section Title --}}
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-pulse-teal font-extrabold text-xs uppercase tracking-widest block mb-1">Direct Retail Philosophy</span>
+            <h2 class="text-3xl sm:text-4xl font-black tracking-tight">Why Shop Directly with ShopPulss?</h2>
+            <p class="text-slate-300 text-sm mt-3">We operate as an exclusive direct-to-consumer store. We source, inspect, package, and dispatch 100% of our products ourselves to guarantee trust and eliminate counterfeit dropshipping.</p>
+        </div>
+        {{-- 4 Core Pillars --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left flex flex-col justify-between">
-                <div class="w-12 h-12 rounded-2xl bg-[#0AA6B7]/20 text-[#0AA6B7] flex items-center justify-center mb-4">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <div class="bg-pulse-navy-surface/80 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-certificate"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-sm text-white mb-1.5">100% Brand Authentic</h3>
-                    <p class="text-blue-100/70 text-xs leading-relaxed">Direct relationships with official brand distributors. Zero random third-party vendors.</p>
-                </div>
+                <h3 class="text-base font-bold mb-2">100% Brand Authentic</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">Direct relationships with official brand distributors. Zero random third-party vendors.</p>
             </div>
-
-            <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left flex flex-col justify-between">
-                <div class="w-12 h-12 rounded-2xl bg-[#FF5A1F]/20 text-[#FF5A1F] flex items-center justify-center mb-4">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
+            <div class="bg-pulse-navy-surface/80 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-sm text-white mb-1.5">Cash on Delivery</h3>
-                    <p class="text-blue-100/70 text-xs leading-relaxed">Inspect your sealed shipment and pay comfortably at your doorstep anywhere in Pakistan.</p>
-                </div>
+                <h3 class="text-base font-bold mb-2">Cash on Delivery</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">Inspect your sealed shipment and pay comfortably at your doorstep anywhere in Pakistan.</p>
             </div>
-
-            <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left flex flex-col justify-between">
-                <div class="w-12 h-12 rounded-2xl bg-[#0AA6B7]/20 text-[#0AA6B7] flex items-center justify-center mb-4">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/></svg>
+            <div class="bg-pulse-navy-surface/80 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-repeat"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-sm text-white mb-1.5">7-Day Easy Returns</h3>
-                    <p class="text-blue-100/70 text-xs leading-relaxed">Full refund or replacement managed directly by our Karachi customer support team.</p>
-                </div>
+                <h3 class="text-base font-bold mb-2">7-Day Easy Returns</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">Full refund or replacement managed directly by our Karachi customer support team.</p>
             </div>
-
-            <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-left flex flex-col justify-between">
-                <div class="w-12 h-12 rounded-2xl bg-[#FF5A1F]/20 text-[#FF5A1F] flex items-center justify-center mb-4">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/><path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H11a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7h4l2 4v4h-6V7z"/></svg>
+            <div class="bg-pulse-navy-surface/80 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+                <div class="w-12 h-12 rounded-xl bg-pulse-orange/20 text-pulse-orange flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-bolt"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-sm text-white mb-1.5">Express Dispatch</h3>
-                    <p class="text-blue-100/70 text-xs leading-relaxed">Parcels shipped same-day via TCS, Leopards, and Swyft with real-time tracking.</p>
-                </div>
+                <h3 class="text-base font-bold mb-2">Express Dispatch</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">Parcels shipped same-day via TCS, Leopards, and Swyft with real-time tracking.</p>
             </div>
-
         </div>
     </div>
 </section>
+{{-- END: DirectRetailPhilosophy --}}
 
-{{-- 10. NEWSLETTER & VIP ACCESS BANNER --}}
-<section id="newsletter" class="py-12 px-4 bg-white">
-    <div class="max-w-7xl mx-auto">
-        <div class="rounded-3xl p-8 sm:p-12 bg-gradient-to-r from-[#FFF1EA] via-white to-[#F6F7FB] border border-[#FF5A1F]/20 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-xs">
-            <div class="space-y-1 text-center lg:text-left">
-                <h3 class="text-2xl sm:text-3xl font-black text-[#0F1654]">Get Exclusive Deals First! 🎉</h3>
-                <p class="text-gray-500 text-xs sm:text-sm">Subscribe to receive instant warehouse alerts and secret flash markdown coupons.</p>
+{{-- 10. BEGIN: NewsletterAndAssistance --}}
+<section class="py-12 bg-white" data-purpose="newsletter-assistance">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- Newsletter Card --}}
+        <div class="bg-slate-50 border border-pulse-border rounded-3xl p-6 sm:p-10 mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                <div class="lg:col-span-6 space-y-1">
+                    <h3 class="text-xl sm:text-2xl font-black text-pulse-navy flex items-center space-x-2">
+                        <span>Get Exclusive Deals First!</span>
+                        <span>🎉</span>
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-500">Subscribe to receive instant warehouse alerts and secret flash markdown coupons.</p>
+                </div>
+                <div class="lg:col-span-6">
+                    <form onsubmit="handleNewsletter(event, this)" class="flex flex-col sm:flex-row gap-2">
+                        <input class="flex-1 bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs focus:border-pulse-orange focus:ring-1 focus:ring-pulse-orange" placeholder="Enter your email address..." type="email" required>
+                        <button class="bg-pulse-navy hover:bg-pulse-navy-dark text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-colors whitespace-nowrap" type="submit">
+                            Subscribe →
+                        </button>
+                    </form>
+                </div>
             </div>
+        </div>
 
-            <form class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto" id="hero-newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed to ShopPulss VIP updates!');">
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Enter your email address..."
-                    required
-                    class="w-full sm:w-80 px-4 py-3 rounded-full bg-white border border-[#E6E8F2] text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#FF5A1F] focus:ring-2 focus:ring-[#FF5A1F]/20"
-                >
-                <button
-                    type="submit"
-                    id="newsletter-cta-btn"
-                    class="px-8 py-3 rounded-full text-white text-xs font-bold bg-[#0F1654] hover:bg-[#16206E] shadow-md transition-all hover:scale-102 flex-shrink-0"
-                >
-                    Subscribe →
-                </button>
-            </form>
+        {{-- Live Order Tracking & Direct WhatsApp Bar --}}
+        @php
+            $rawWhatsapp = \App\Models\Setting::get('whatsapp_number', '+923000000000');
+            $cleanWhatsapp = preg_replace('/[^0-9]/', '', $rawWhatsapp);
+            $helplinePhone = \App\Models\Setting::get('whatsapp_helpline', '+92 300 000-0000');
+        @endphp
+        <div class="bg-pulse-bg border border-pulse-border rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4" id="order-tracking">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <div>
+                    <div class="text-xs font-bold text-pulse-navy">Need help or advice before ordering?</div>
+                    <div class="text-[11px] text-slate-500">Chat directly with our verified customer operations desk on WhatsApp: <a class="font-semibold text-emerald-600" href="tel:{{ preg_replace('/[^0-9+]/', '', $helplinePhone) }}">{{ $helplinePhone }}</a></div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2.5 w-full sm:w-auto">
+                <a class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition-colors flex items-center space-x-1.5 shrink-0" href="https://wa.me/{{ $cleanWhatsapp }}" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>WhatsApp Helpline</span>
+                </a>
+                <form action="{{ route('orders.track') }}" method="GET" class="flex items-center space-x-1 flex-1 sm:flex-initial">
+                    <input class="w-32 sm:w-40 bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs placeholder:text-slate-400 focus:border-pulse-navy focus:ring-0" placeholder="Enter Order ID..." type="text" name="order_number" required>
+                    <button class="bg-pulse-navy hover:bg-pulse-navy-dark text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-colors" type="submit">
+                        Track
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </section>
+{{-- END: NewsletterAndAssistance --}}
 
 @endsection
 
 @push('scripts')
 <script>
-    // Live Countdown Timer for Deals
-    function initDealCountdown() {
-        let remainingSeconds = {{ isset($remainingSeconds) ? $remainingSeconds : 52319 }};
+    // Live countdown timer updater for Deal of the Day
+    document.addEventListener('DOMContentLoaded', () => {
+        const hoursEl = document.getElementById('deal-hours');
+        const minsEl = document.getElementById('deal-minutes');
+        const secsEl = document.getElementById('deal-seconds');
 
-        function tick() {
-            const h = Math.floor(remainingSeconds / 3600);
-            const m = Math.floor((remainingSeconds % 3600) / 60);
-            const s = Math.floor(remainingSeconds % 60);
+        if (!hoursEl || !minsEl || !secsEl) return;
 
-            const hEl = document.getElementById('cd-hours');
-            const mEl = document.getElementById('cd-mins');
-            const sEl = document.getElementById('cd-secs');
+        // Target: Midnight tonight or remaining seconds
+        const now = new Date();
+        const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
 
-            if (hEl) hEl.textContent = String(h).padStart(2, '0');
-            if (mEl) mEl.textContent = String(m).padStart(2, '0');
-            if (sEl) sEl.textContent = String(s).padStart(2, '0');
+        function updateCountdown() {
+            const currentTime = new Date();
+            const diff = Math.max(0, Math.floor((endOfDay - currentTime) / 1000));
 
-            if (remainingSeconds > 0) {
-                remainingSeconds--;
-                setTimeout(tick, 1000);
-            }
+            const hours = Math.floor(diff / 3600);
+            const minutes = Math.floor((diff % 3600) / 60);
+            const seconds = diff % 60;
+
+            hoursEl.textContent = String(hours).padStart(2, '0');
+            minsEl.textContent = String(minutes).padStart(2, '0');
+            secsEl.textContent = String(seconds).padStart(2, '0');
         }
-        tick();
-    }
-    initDealCountdown();
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    });
 </script>
 @endpush

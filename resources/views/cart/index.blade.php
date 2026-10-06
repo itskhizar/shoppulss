@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Shopping Cart - ShopPulss')
 @section('description', 'Review your selected items and proceed to checkout. 100% secure Cash on Delivery across Pakistan.')
@@ -39,28 +39,15 @@
             </a>
         </div>
     @else
-        {{-- Free Shipping Banner / Progress --}}
-        @php
-            $freeShippingThreshold = 2500;
-            $progress = min(100, round(($totals['subtotal'] / $freeShippingThreshold) * 100));
-            $difference = max(0, $freeShippingThreshold - $totals['subtotal']);
-        @endphp
-        <div class="bg-[#FFF1EA] rounded-2xl border border-[#FF5A1F]/20 p-4 mb-6 shadow-sm">
-            <div class="flex items-center justify-between text-xs mb-2">
-                <span class="font-bold {{ $totals['shipping_free'] ? 'text-emerald-700' : 'text-[#0F1654]' }} flex items-center gap-2">
-                    @if($totals['shipping_free'])
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        ðŸŽ‰ Congratulations! You have unlocked <strong>Free Nationwide Delivery</strong>!
-                    @else
-                        <span class="w-2 h-2 rounded-full bg-[#FF5A1F]"></span>
-                        Add <strong class="text-[#FF5A1F]">Rs. {{ number_format($difference) }}</strong> more to unlock Free Nationwide Delivery!
-                    @endif
+        {{-- Nationwide Delivery Info Banner --}}
+        <div class="bg-slate-50 rounded-2xl border border-slate-200 p-3.5 mb-6 flex items-center justify-between text-xs text-slate-700 shadow-2xs">
+            <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-teal-50 text-pulse-teal flex items-center justify-center text-sm shrink-0">
+                    <i class="fa-solid fa-truck-fast"></i>
                 </span>
-                <span class="font-extrabold text-[#0F1654]">{{ $progress }}%</span>
+                <span class="font-semibold text-pulse-navy">Nationwide Express Delivery with Cash on Delivery (COD) available across Pakistan.</span>
             </div>
-            <div class="w-full bg-white rounded-full h-2.5 overflow-hidden p-0.5 border border-[#FF5A1F]/15">
-                <div class="h-full rounded-full transition-all duration-500 {{ $totals['shipping_free'] ? 'bg-emerald-500' : 'bg-orange-grad' }}" style="width: {{ $progress }}%;"></div>
-            </div>
+            <span class="text-[11px] text-slate-400 font-semibold hidden sm:inline-block">Direct Single-Origin Fulfillment</span>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">

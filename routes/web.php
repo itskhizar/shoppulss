@@ -18,7 +18,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/product/{slug}', [ProductController::class, 'show']);
+Route::get('/categories', [ProductController::class, 'index'])->name('categories.index');
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+Route::get('/category/{slug}', [CategoryController::class, 'show']);
 Route::get('/search', [ProductController::class, 'index'])->name('search');
 
 // Track Order

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
+use App\Models\AuditLog;
 use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -119,6 +120,8 @@ class CategoryController extends Controller
             $category->attributes()->sync($validated['attribute_ids']);
         }
 
+        AuditLog::record('category.created', $category, "Category '{$category->name}' created", null, $category->toArray());
+
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully!');
     }
 
@@ -145,6 +148,8 @@ class CategoryController extends Controller
             }
         }
 
+        $oldValues = $category->only(['name', 'parent_id', 'description', 'status']);
+
         $category->update([
             'name' => $validated['name'],
             'parent_id' => $validated['parent_id'] ?? null,
@@ -153,6 +158,14 @@ class CategoryController extends Controller
         ]);
 
         $category->attributes()->sync($validated['attribute_ids'] ?? []);
+
+        AuditLog::record(
+            'category.updated',
+            $category,
+            "Category '{$category->name}' updated",
+            $oldValues,
+            $category->only(['name', 'parent_id', 'description', 'status'])
+        );
 
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully!');
     }
@@ -186,14 +199,21 @@ class CategoryController extends Controller
      */
     public function destroy(int $id): RedirectResponse
     {
-        $category = Category::withCount('products')->findOrFail($id);
+        $category = Category::withCount(['products', 'children'])->findOrFail($id);
+
+        if ($category->children_count > 0) {
+            return back()->with('error', 'Cannot delete category that contains subcategories. Please reassign or delete subcategories first.');
+        }
 
         if ($category->products_count > 0) {
             return back()->with('error', 'Cannot delete category that contains products.');
         }
 
+        $oldData = $category->toArray();
         $category->attributes()->detach();
         $category->delete();
+
+        AuditLog::record('category.deleted', null, "Category '{$category->name}' deleted", $oldData, null);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category deleted.');
     }
