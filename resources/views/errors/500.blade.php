@@ -16,8 +16,8 @@
             <a href="{{ route('home') }}" class="btn-primary">
                 Return to Storefront
             </a>
-            <a href="https://wa.me/923000000000" target="_blank" class="btn-secondary">
-                WhatsApp Support
+            <a href="https://wa.me/923328912706" target="_blank" class="btn-secondary">
+                WhatsApp Support (+923328912706)
             </a>
         </div>
     </div>

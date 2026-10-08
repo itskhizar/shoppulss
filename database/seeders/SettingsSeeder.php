@@ -14,7 +14,7 @@ class SettingsSeeder extends Seeder
             'store_name' => 'ShopPulss',
             'store_tagline' => 'Premium Essentials. Direct to You. Zero Middlemen.',
             'store_email' => 'support@shoppulss.com',
-            'store_phone' => '+92 300 0000000',
+            'store_phone' => '+923328912706',
             'store_address' => 'Karachi, Pakistan',
             'store_currency' => 'PKR',
             'store_timezone' => 'Asia/Karachi',
@@ -32,10 +32,10 @@ class SettingsSeeder extends Seeder
             // Social
             'facebook_url' => 'https://facebook.com/shoppulss',
             'instagram_url' => 'https://instagram.com/shoppulss',
-            'whatsapp_number' => '+923000000000',
+            'whatsapp_number' => '+923328912706',
             'twitter_url' => '',
             // Whatsapp
-            'whatsapp_helpline' => '+92 300 000-0000',
+            'whatsapp_helpline' => '+923328912706',
             // Payment
             'cod_enabled' => 'true',
             'easypaisa_enabled' => 'false',

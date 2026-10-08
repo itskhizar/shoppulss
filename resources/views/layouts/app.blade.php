@@ -30,10 +30,10 @@
     @php
         $settingsHelper = [
             'tagline' => \App\Models\Setting::get('store_tagline', 'Pakistan\'s Verified Direct Retail Hub'),
-            'phone' => \App\Models\Setting::get('store_phone', '+92 3328912706'),
+            'phone' => \App\Models\Setting::get('store_phone', '+923328912706'),
             'email' => \App\Models\Setting::get('store_email', 'devwordspace3300@gmail.com'),
             'whatsapp' => \App\Models\Setting::get('whatsapp_number', '+923328912706'),
-            'whatsapp_helpline' => \App\Models\Setting::get('whatsapp_helpline', '+92 3328912706'),
+            'whatsapp_helpline' => \App\Models\Setting::get('whatsapp_helpline', '+923328912706'),
             'facebook' => \App\Models\Setting::get('facebook_url', 'https://facebook.com/shoppulss'),
             'instagram' => \App\Models\Setting::get('instagram_url', 'https://instagram.com/shoppulss'),
         ];
@@ -101,29 +101,27 @@
                 <div class="hidden md:flex flex-1 max-w-2xl">
                     <form action="{{ route('search') }}" method="GET" class="w-full relative flex items-center" id="header-search-form">
                         <div class="relative w-full flex items-center">
-                            {{-- Category dropdown inside search --}}
-                            <div class="absolute left-1.5 z-20 hidden lg:block" id="search-cat-container">
-                                <button type="button" onclick="toggleSearchCatMenu()" id="search-cat-btn" class="text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-lg flex items-center space-x-1.5 transition-colors border border-transparent">
-                                    <span id="search-cat-label">{{ request('category') ? ($navCategories->firstWhere('slug', request('category'))?->name ?? 'Category') : 'All Categories' }}</span>
-                                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
-                                </button>
-                                <div id="search-cat-dropdown" class="hidden absolute left-0 top-full mt-1.5 w-60 bg-white rounded-xl shadow-card border border-pulse-border py-1.5 z-30 max-h-72 overflow-y-auto">
-                                    <button type="button" onclick="selectSearchCategory('', 'All Categories', '{{ route('products.index') }}')" class="w-full text-left px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-pulse-orange font-bold border-b border-slate-100 flex items-center justify-between">
-                                        <span>All Categories</span>
-                                        <i class="fa-solid fa-layer-group text-[10px] text-slate-400"></i>
-                                    </button>
+                            {{-- Category selector inside search --}}
+                            <div class="absolute left-1.5 z-30" id="search-cat-container">
+                                <select
+                                    name="category"
+                                    id="navbar-category-select"
+                                    onchange="handleNavbarCategoryChange(this)"
+                                    class="h-[38px] text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 pl-3 pr-7 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-pulse-orange/30 cursor-pointer transition-colors max-w-[145px] truncate"
+                                    title="Filter by category"
+                                    style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-position: right 0.5rem center; background-repeat: no-repeat; -webkit-appearance: none; -moz-appearance: none; appearance: none;"
+                                >
+                                    <option value="" class="font-bold text-slate-800">All Categories</option>
                                     @foreach($navCategories as $cat)
-                                        <button type="button" onclick="selectSearchCategory('{{ $cat->slug }}', '{{ addslashes($cat->name) }}', '{{ route('categories.show', $cat->slug) }}')" class="w-full text-left px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-pulse-orange font-medium flex items-center justify-between group">
-                                            <span class="truncate">{{ $cat->name }}</span>
-                                            <i class="fa-solid fa-arrow-right text-[9px] text-slate-300 group-hover:text-pulse-orange group-hover:translate-x-0.5 transition-all"></i>
-                                        </button>
+                                        <option value="{{ $cat->slug }}" {{ request('category') == $cat->slug ? 'selected' : '' }} class="font-medium text-slate-700">
+                                            {{ $cat->name }}
+                                        </option>
                                     @endforeach
-                                </div>
-                                <input type="hidden" name="category" id="search-category-input" value="{{ request('category') }}">
+                                </select>
                             </div>
 
                             <input
-                                class="w-full py-2.5 pl-4 lg:pl-36 pr-28 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:bg-white focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all placeholder:text-slate-400"
+                                class="w-full py-2.5 pl-[156px] pr-28 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:bg-white focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all placeholder:text-slate-400"
                                 placeholder="Search genuine gadgets, smartwatches, home decor, lifestyle..."
                                 type="search"
                                 name="q"
@@ -132,7 +130,7 @@
                             >
 
                             {{-- Search CTA Button --}}
-                            <button class="absolute right-1.5 bg-pulse-orange hover:bg-pulse-orange-dark text-white px-5 py-2 rounded-lg text-xs font-bold tracking-wide transition-all shadow-sm flex items-center space-x-1.5" type="submit">
+                            <button class="absolute right-1.5 bg-pulse-orange hover:bg-pulse-orange-dark text-white px-5 py-2 rounded-lg text-xs font-bold tracking-wide transition-all shadow-sm flex items-center space-x-1.5 cursor-pointer" type="submit">
                                 <i class="fa-solid fa-magnifying-glass text-xs"></i>
                                 <span>Search</span>
                             </button>
@@ -243,16 +241,16 @@
             </div>
 
             {{-- Secondary Navigation Bar --}}
-            <nav class="border-t border-slate-100 py-2.5 flex items-center justify-between text-xs font-semibold overflow-x-auto scrollbar-none" data-purpose="primary-navigation">
-                <div class="flex items-center space-x-5 lg:space-x-7 shrink-0">
-                    {{-- All Categories Dropdown Menu --}}
-                    <div class="relative" id="nav-cat-dropdown-container">
-                        <button type="button" onclick="toggleNavCategoriesMenu()" id="nav-cat-btn" class="flex items-center space-x-2 text-pulse-navy font-black bg-slate-100 hover:bg-pulse-orange hover:text-white px-3.5 py-1.5 rounded-xl transition-all shadow-2xs group cursor-pointer border border-slate-200/60">
+            <div class="border-t border-slate-100 py-2.5 flex items-center justify-between text-xs font-semibold relative" data-purpose="primary-navigation">
+                <div class="flex items-center space-x-4 lg:space-x-6 w-full">
+                    {{-- All Categories Dropdown Menu (Outside overflow-x-auto to prevent clipping) --}}
+                    <div class="relative shrink-0" id="nav-cat-dropdown-container">
+                        <button type="button" onclick="toggleNavCategoriesMenu(event)" id="nav-cat-btn" class="flex items-center space-x-2 text-pulse-navy font-black bg-slate-100 hover:bg-pulse-orange hover:text-white px-3.5 py-1.5 rounded-xl transition-all shadow-2xs group cursor-pointer border border-slate-200/60">
                             <i class="fa-solid fa-bars-staggered text-xs text-pulse-orange group-hover:text-white transition-colors"></i>
                             <span>All Categories</span>
                             <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 group-hover:text-white transition-transform" id="nav-cat-chevron"></i>
                         </button>
-                        <div id="nav-cat-dropdown-menu" class="hidden absolute left-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-card border border-pulse-border py-2 z-50">
+                        <div id="nav-cat-dropdown-menu" class="hidden absolute left-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-pulse-border py-2 z-[100]">
                             <div class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between">
                                 <span>Shop by Department</span>
                                 <span class="text-pulse-teal font-bold">{{ $navCategories->count() }} Categories</span>
@@ -275,24 +273,27 @@
                         </div>
                     </div>
 
-                    <a class="{{ request()->routeIs('home') && !request()->has('q') ? 'text-pulse-orange font-bold' : 'text-slate-700 hover:text-pulse-orange' }} flex items-center space-x-1.5 transition-colors" href="{{ route('home') }}">
-                        <span>Home</span>
-                    </a>
-                    <a class="{{ request()->routeIs('products.index') && !request()->has('q') ? 'text-pulse-orange font-bold' : 'text-slate-700 hover:text-pulse-orange' }} flex items-center space-x-1 transition-colors" href="{{ route('products.index') }}">
-                        <i class="fa-solid fa-store text-xs text-pulse-orange"></i>
-                        <span>Shop</span>
-                    </a>
-                    <a class="text-slate-700 hover:text-pulse-orange transition-colors flex items-center space-x-1" href="{{ route('home') }}#trending">
-                        <span>Trending Products</span>
-                    </a>
-                    <a class="text-slate-700 hover:text-pulse-orange transition-colors" href="{{ route('home') }}#new-arrivals">New Arrivals</a>
-                    <a class="text-slate-700 hover:text-pulse-orange transition-colors flex items-center space-x-1" href="{{ route('home') }}#deals">
-                        <span class="w-2 h-2 rounded-full bg-pulse-orange pulse-dot"></span>
-                        <span>Flash Deals</span>
-                    </a>
-                    <a class="text-slate-700 hover:text-pulse-orange transition-colors" href="{{ route('home') }}#why-shop">Why Direct Retail?</a>
+                    {{-- Horizontal Nav Links --}}
+                    <nav class="flex items-center space-x-5 lg:space-x-7 overflow-x-auto scrollbar-none py-0.5">
+                        <a class="{{ request()->routeIs('home') && !request()->has('q') ? 'text-pulse-orange font-bold' : 'text-slate-700 hover:text-pulse-orange' }} flex items-center space-x-1.5 transition-colors whitespace-nowrap" href="{{ route('home') }}">
+                            <span>Home</span>
+                        </a>
+                        <a class="{{ request()->routeIs('products.index') && !request()->has('q') ? 'text-pulse-orange font-bold' : 'text-slate-700 hover:text-pulse-orange' }} flex items-center space-x-1 transition-colors whitespace-nowrap" href="{{ route('products.index') }}">
+                            <i class="fa-solid fa-store text-xs text-pulse-orange"></i>
+                            <span>Shop</span>
+                        </a>
+                        <a class="text-slate-700 hover:text-pulse-orange transition-colors flex items-center space-x-1 whitespace-nowrap" href="{{ route('home') }}#trending">
+                            <span>Trending Products</span>
+                        </a>
+                        <a class="text-slate-700 hover:text-pulse-orange transition-colors whitespace-nowrap" href="{{ route('home') }}#new-arrivals">New Arrivals</a>
+                        <a class="text-slate-700 hover:text-pulse-orange transition-colors flex items-center space-x-1 whitespace-nowrap" href="{{ route('home') }}#deals">
+                            <span class="w-2 h-2 rounded-full bg-pulse-orange pulse-dot"></span>
+                            <span>Flash Deals</span>
+                        </a>
+                        <a class="text-slate-700 hover:text-pulse-orange transition-colors whitespace-nowrap" href="{{ route('home') }}#why-shop">Why Direct Retail?</a>
+                    </nav>
                 </div>
-            </nav>
+            </div>
         </div>
     </header>
     {{-- END: Main Sticky Header --}}
@@ -443,7 +444,7 @@
                     <span class="block text-[10px] text-slate-400 text-center mt-2.5">
                         <a href="https://wa.me/{{ $cleanWhatsapp }}" target="_blank" rel="noopener" class="text-pulse-teal hover:underline flex items-center justify-center gap-1.5">
                             <i class="fa-brands fa-whatsapp"></i>
-                            <span>Join WhatsApp VIP Channel</span>
+                            <span>WhatsApp Support ({{ $settingsHelper['whatsapp'] }})</span>
                         </a>
                     </span>
                 </div>
@@ -478,6 +479,12 @@
     {{-- Toast Notification Container --}}
     <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
+    {{-- Floating WhatsApp Action Button --}}
+    <a href="https://wa.me/{{ $cleanWhatsapp }}" target="_blank" rel="noopener" class="fixed bottom-6 left-6 z-40 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full p-3.5 shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 group focus:outline-none focus:ring-4 focus:ring-emerald-300 cursor-pointer" aria-label="Contact us on WhatsApp" title="WhatsApp: {{ $settingsHelper['whatsapp'] }}">
+        <i class="fa-brands fa-whatsapp text-2xl"></i>
+        <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:ml-2 text-xs font-bold transition-all duration-300 ease-in-out">WhatsApp: {{ $settingsHelper['whatsapp'] }}</span>
+    </a>
+
     {{-- Global Interactive Scripts --}}
     <script>
         // Mobile Drawer toggle
@@ -493,36 +500,26 @@
         }
 
         // Nav categories dropdown toggle in secondary nav
-        function toggleNavCategoriesMenu() {
+        function toggleNavCategoriesMenu(e) {
+            if (e) {
+                e.stopPropagation();
+            }
             const menu = document.getElementById('nav-cat-dropdown-menu');
             const chevron = document.getElementById('nav-cat-chevron');
             if (menu) menu.classList.toggle('hidden');
             if (chevron) chevron.classList.toggle('rotate-180');
         }
 
-        // Search category dropdown toggle
-        function toggleSearchCatMenu() {
-            const dropdown = document.getElementById('search-cat-dropdown');
-            if (dropdown) dropdown.classList.toggle('hidden');
-        }
-
-        function selectSearchCategory(slug, name, url = null) {
-            const label = document.getElementById('search-cat-label');
-            const input = document.getElementById('search-category-input');
-            const dropdown = document.getElementById('search-cat-dropdown');
-            const searchInput = document.querySelector('#header-search-form input[name="q"]');
-            const form = document.getElementById('header-search-form');
-
-            if (label) label.textContent = name;
-            if (input) input.value = slug;
-            if (dropdown) dropdown.classList.add('hidden');
-
-            // If user has typed a search query, submit search directly with selected category
-            if (searchInput && searchInput.value.trim().length > 0 && form) {
-                form.submit();
-            } else if (url) {
-                // If search query is empty, navigate to category page directly
-                window.location.href = url;
+        // Header Category Select Change Handler
+        function handleNavbarCategoryChange(select) {
+            const qInput = document.querySelector('#header-search-form input[name="q"]');
+            const q = qInput ? qInput.value.trim() : '';
+            if (q) {
+                document.getElementById('header-search-form').submit();
+            } else if (select.value) {
+                window.location.href = "{{ url('/categories') }}/" + encodeURIComponent(select.value);
+            } else {
+                window.location.href = "{{ route('products.index') }}";
             }
         }
 
@@ -532,12 +529,6 @@
             const userDropdown = document.getElementById('user-menu-dropdown');
             if (userContainer && userDropdown && !userContainer.contains(e.target)) {
                 userDropdown.classList.add('hidden');
-            }
-
-            const catContainer = document.getElementById('search-cat-container');
-            const catDropdown = document.getElementById('search-cat-dropdown');
-            if (catContainer && catDropdown && !catContainer.contains(e.target)) {
-                catDropdown.classList.add('hidden');
             }
 
             const navCatContainer = document.getElementById('nav-cat-dropdown-container');

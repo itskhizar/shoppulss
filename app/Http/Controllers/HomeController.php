@@ -56,7 +56,7 @@ class HomeController extends Controller
             ->get();
 
         $announcementText = Setting::get('announcement_text', '🚀 Free delivery over Rs 2,500 | 💰 COD available nationwide');
-        $whatsappNumber = Setting::get('whatsapp_helpline', '+92 300 000-0000');
+        $whatsappNumber = Setting::get('whatsapp_helpline', '+923328912706');
 
         return view('pages.home', compact(
             'featuredCategories',
