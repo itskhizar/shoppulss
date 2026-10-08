@@ -1,8 +1,8 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Track Your Order - ShopPulss')
-@section('description', 'Track your ShopPulss order in real-time. Enter your order number to get live delivery status updates.')
-@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
+@section('description', 'Track your ShopPulss order in real-time. Enter your order number to get live delivery status updates across Pakistan.')
+@section('robots', request()->hasAny(['order_number', 'phone', 'email']) ? 'noindex, follow' : 'index, follow')
 
 @section('content')
 {{-- Header --}}

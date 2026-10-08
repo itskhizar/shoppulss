@@ -8,9 +8,13 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SitemapController;
+use App\Services\Seo\SeoService;
 use Illuminate\Support\Facades\Route;
 
 // --- Public Storefront Routes ---
@@ -22,6 +26,38 @@ Route::get('/categories', [ProductController::class, 'index'])->name('categories
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/category/{slug}', [CategoryController::class, 'show']);
 Route::get('/search', [ProductController::class, 'index'])->name('search');
+
+// --- Legal, Trust & Informational Routes ---
+Route::get('/about-us', [PageController::class, 'about'])->name('about');
+Route::get('/contact-us', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact-us', [ContactController::class, 'submit'])->name('contact.submit');
+Route::get('/faq', [PageController::class, 'faq'])->name('faq');
+Route::get('/customer-support', [PageController::class, 'support'])->name('support');
+
+// Canonical Policy Routes
+Route::get('/privacy-policy', fn (SeoService $seo) => app(PageController::class)->show('privacy-policy', $seo))->name('policy.privacy');
+Route::get('/terms-and-conditions', fn (SeoService $seo) => app(PageController::class)->show('terms-and-conditions', $seo))->name('policy.terms');
+Route::get('/shipping-delivery-policy', fn (SeoService $seo) => app(PageController::class)->show('shipping-delivery-policy', $seo))->name('policy.shipping');
+Route::get('/return-refund-policy', fn (SeoService $seo) => app(PageController::class)->show('return-refund-policy', $seo))->name('policy.returns');
+Route::get('/payment-policy', fn (SeoService $seo) => app(PageController::class)->show('payment-policy', $seo))->name('policy.payment');
+Route::get('/warranty-policy', fn (SeoService $seo) => app(PageController::class)->show('warranty-policy', $seo))->name('policy.warranty');
+Route::get('/cookie-policy', fn (SeoService $seo) => app(PageController::class)->show('cookie-policy', $seo))->name('policy.cookies');
+Route::get('/accessibility', fn (SeoService $seo) => app(PageController::class)->show('accessibility', $seo))->name('policy.accessibility');
+Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');
+
+// --- XML Sitemaps ---
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
+Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
+Route::get('/sitemap-categories.xml', [SitemapController::class, 'categories'])->name('sitemap.categories');
+Route::get('/sitemap-products.xml', [SitemapController::class, 'products'])->name('sitemap.products');
+
+// --- Robots.txt Dynamic Endpoint ---
+Route::get('/robots.txt', function () {
+    $sitemapUrl = url('/sitemap.xml');
+    $content = "User-agent: *\nAllow: /\nAllow: /images/\nAllow: /build/\n\n# Non-public / Private Areas\nDisallow: /admin/\nDisallow: /cart\nDisallow: /cart/\nDisallow: /checkout\nDisallow: /checkout/\nDisallow: /account/\nDisallow: /search\nDisallow: /api/\nDisallow: /login\nDisallow: /register\nDisallow: /forgot-password\nDisallow: /reset-password/\n\nSitemap: {$sitemapUrl}\n";
+
+    return response($content, 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
+});
 
 // Track Order
 Route::get('/track-order', [OrderController::class, 'track'])->name('orders.track');

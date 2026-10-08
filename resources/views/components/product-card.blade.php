@@ -11,9 +11,10 @@
     $productUrl = route('products.show', $product->slug ?? $product->id);
     $inStock = $product->stock_quantity > 0;
     
-    // Rating
-    $rating = 4.8;
-    $reviewCount = 32;
+    // Rating (Truthful: only compute if real reviews exist)
+    $hasReviews = $product->relationLoaded('approvedReviews') && $product->approvedReviews->isNotEmpty();
+    $rating = $hasReviews ? round($product->approvedReviews->avg('rating'), 1) : null;
+    $reviewCount = $hasReviews ? $product->approvedReviews->count() : 0;
 
     // Image URL with fallback
     $imageUrl = $product->primary_image_url ?? $product->images->first()?->image_url;
@@ -78,12 +79,19 @@
             <a href="{{ $productUrl }}">{{ $product->name }}</a>
         </h3>
 
-        {{-- Rating --}}
-        <div class="flex items-center space-x-1 text-amber-400 text-[11px] mt-1">
-            <i class="fa-solid fa-star"></i>
-            <span class="font-bold text-slate-700 ml-0.5">{{ number_format((float) $rating, 1) }}</span>
-            <span class="text-slate-400">({{ $reviewCount }})</span>
-        </div>
+        {{-- Rating (Truthful: Only displayed if real reviews exist) --}}
+        @if($reviewCount > 0 && $rating)
+            <div class="flex items-center space-x-1 text-amber-400 text-[11px] mt-1">
+                <i class="fa-solid fa-star"></i>
+                <span class="font-bold text-slate-700 ml-0.5">{{ number_format((float) $rating, 1) }}</span>
+                <span class="text-slate-400">({{ $reviewCount }})</span>
+            </div>
+        @else
+            <div class="flex items-center space-x-1 text-slate-400 text-[11px] mt-1">
+                <i class="fa-solid fa-shield-halved text-pulse-teal text-[10px]"></i>
+                <span class="text-[10px] font-medium text-slate-500">Central Warehouse Stock</span>
+            </div>
+        @endif
     </div>
 
     {{-- Bottom Price & Add To Cart --}}

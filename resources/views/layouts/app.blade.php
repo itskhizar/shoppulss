@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'ShopPulss | Direct Retail Store - 100% Authentic Products & Nationwide COD')</title>
-    <meta name="description" content="@yield('description', 'Pakistan\'s premier direct-to-consumer store. 100% genuine products, Cash on Delivery nationwide, 7-day easy returns.')">
+    <x-seo-meta />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
@@ -394,39 +393,51 @@
                     </div>
                 </div>
 
-                {{-- Shop Categories (From DB) --}}
-                <div>
-                    <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">Shop Categories</h4>
-                    <ul class="space-y-2">
-                        @foreach($navCategories->take(6) as $fCat)
-                            <li>
-                                <a class="hover:text-white transition-colors" href="{{ route('categories.show', $fCat->slug) }}">
-                                    {{ $fCat->name }}
-                                </a>
-                            </li>
-                        @endforeach
-                        <li>
-                            <a class="text-pulse-orange font-semibold hover:underline" href="{{ route('products.index', ['sort' => 'sale']) }}">
-                                ⚡ Daily Deals
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
                 {{-- Customer Care --}}
                 <div>
                     <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">Customer Care</h4>
                     <ul class="space-y-2">
+                        <li><a class="hover:text-white transition-colors" href="{{ route('contact') }}">Contact Us</a></li>
                         <li><a class="hover:text-white transition-colors" href="{{ route('orders.track') }}">Track My Order</a></li>
+                        <li><a class="hover:text-white transition-colors" href="{{ route('faq') }}">FAQ</a></li>
+                        <li><a class="hover:text-white transition-colors" href="{{ route('support') }}">Help Center</a></li>
                         <li><a class="hover:text-white transition-colors" href="{{ route('products.index') }}">Complete Catalog</a></li>
                         <li><a class="hover:text-white transition-colors" href="{{ route('cart.index') }}">Shopping Cart</a></li>
-                        @auth
-                            <li><a class="hover:text-white transition-colors" href="{{ route('account.orders') }}">Order History</a></li>
-                            <li><a class="hover:text-white transition-colors" href="{{ route('account.profile') }}">My Profile</a></li>
-                        @else
-                            <li><a class="hover:text-white transition-colors" href="{{ route('login') }}">Sign In / Register</a></li>
-                        @endauth
-                        <li><a class="hover:text-white transition-colors" href="#why-shop">Authenticity Guarantee</a></li>
+                    </ul>
+                </div>
+
+                {{-- Policies --}}
+                <div>
+                    <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">Policies</h4>
+                    <ul class="space-y-2">
+                        <li><a class="hover:text-white transition-colors" href="{{ route('policy.shipping') }}">Shipping & Delivery</a></li>
+                        <li><a class="hover:text-white transition-colors" href="{{ route('policy.returns') }}">Returns & Refunds</a></li>
+                        <li><a class="hover:text-white transition-colors" href="{{ route('policy.payment') }}">Payment Policy</a></li>
+                        <li><a class="hover:text-white transition-colors" href="{{ route('policy.warranty') }}">Warranty Policy</a></li>
+                        <li><a class="hover:text-white transition-colors" href="{{ route('policy.privacy') }}">Privacy Policy</a></li>
+                        <li><a class="hover:text-white transition-colors" href="{{ route('policy.terms') }}">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+
+                {{-- Company & Trust --}}
+                <div>
+                    <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a class="hover:text-white transition-colors" href="{{ route('about') }}">About ShopPulss</a></li>
+                        <li><a class="hover:text-white transition-colors" href="{{ route('policy.cookies') }}">Cookie Policy</a></li>
+                        <li><a class="hover:text-white transition-colors" href="{{ route('policy.accessibility') }}">Accessibility</a></li>
+                        @if($navCategories->isNotEmpty())
+                            <li>
+                                <a class="text-pulse-orange font-semibold hover:underline" href="{{ route('categories.show', $navCategories->first()->slug) }}">
+                                    Explore {{ $navCategories->first()->name }}
+                                </a>
+                            </li>
+                        @endif
+                        <li>
+                            <a class="hover:text-white transition-colors text-pulse-teal font-medium" href="{{ route('products.index', ['sort' => 'sale']) }}">
+                                ⚡ Daily Deals
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
@@ -436,7 +447,7 @@
                     <p class="text-[11px] text-slate-400 mb-3">Get direct alerts for warehouse flash sales and authentic product drops.</p>
                     <form class="space-y-2" id="footer-newsletter-form" onsubmit="handleNewsletter(event, this)">
                         <input class="w-full bg-white/5 border border-white/15 rounded-lg px-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-pulse-orange" placeholder="Enter your email" type="email" required>
-                        <button class="w-full bg-pulse-orange hover:bg-pulse-orange-dark text-white font-extrabold py-2.5 rounded-lg text-xs uppercase tracking-wider transition-colors" type="submit">
+                        <button class="w-full bg-pulse-orange hover:bg-pulse-orange-dark text-white font-extrabold py-2.5 rounded-lg text-xs uppercase tracking-wider transition-colors cursor-pointer" type="submit">
                             SUBSCRIBE NOW
                         </button>
                     </form>
@@ -449,26 +460,34 @@
                 </div>
             </div>
 
-            {{-- Trust Badges & Guarantee Micro Strip (Free Delivery Removed Per Prompt) --}}
+            {{-- Trust Badges & Guarantee Micro Strip --}}
             <div class="py-6 flex flex-wrap items-center justify-between text-slate-400 text-[11px] gap-4 border-b border-white/5">
                 <div class="flex items-center space-x-6 flex-wrap gap-y-2">
-                    <span class="flex items-center space-x-1.5"><i class="fa-solid fa-check text-emerald-400"></i><span>100% Brand Authentic</span></span>
-                    <span class="flex items-center space-x-1.5"><i class="fa-solid fa-check text-pulse-orange"></i><span>Cash on Delivery (COD)</span></span>
-                    <span class="flex items-center space-x-1.5"><i class="fa-solid fa-check text-pulse-teal"></i><span>7-Day Easy Returns</span></span>
-                    <span class="flex items-center space-x-1.5"><i class="fa-solid fa-check text-blue-400"></i><span>Nationwide Express Logistics</span></span>
+                    <a href="{{ route('about') }}" class="flex items-center space-x-1.5 hover:text-white transition-colors"><i class="fa-solid fa-shield-halved text-emerald-400"></i><span>Direct Retail Store</span></a>
+                    <a href="{{ route('policy.payment') }}" class="flex items-center space-x-1.5 hover:text-white transition-colors"><i class="fa-solid fa-money-bill-wave text-pulse-orange"></i><span>Cash on Delivery (COD)</span></a>
+                    <a href="{{ route('policy.returns') }}" class="flex items-center space-x-1.5 hover:text-white transition-colors"><i class="fa-solid fa-rotate-left text-pulse-teal"></i><span>7-Day Return Assistance</span></a>
+                    <a href="{{ route('policy.shipping') }}" class="flex items-center space-x-1.5 hover:text-white transition-colors"><i class="fa-solid fa-truck-fast text-blue-400"></i><span>Nationwide Express Logistics</span></a>
                 </div>
                 <div class="text-slate-500 text-[10px]">
-                    Fulfillment: ShopPulss Direct Logistics Hub
+                    Fulfillment: ShopPulss Central Karachi Logistics Hub
                 </div>
             </div>
 
-            {{-- Bottom Credits and Legal --}}
-            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2">
-                <p>© {{ date('Y') }} ShopPulss. All Rights Reserved. Single-store direct logistics.</p>
-                <div class="flex items-center space-x-4">
-                    <a class="hover:text-slate-300 transition-colors" href="#">Privacy Policy</a>
-                    <a class="hover:text-slate-300 transition-colors" href="#">Terms of Service</a>
-                    <a class="hover:text-slate-300 transition-colors" href="#">Return Policy</a>
+            {{-- Bottom Credits and Legal Links --}}
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-3">
+                <p>© {{ date('Y') }} ShopPulss. All Rights Reserved. Single-store direct logistics in Pakistan.</p>
+                <div class="flex items-center space-x-3.5 flex-wrap">
+                    <a class="hover:text-slate-300 transition-colors" href="{{ route('policy.privacy') }}">Privacy Policy</a>
+                    <span class="text-slate-700">·</span>
+                    <a class="hover:text-slate-300 transition-colors" href="{{ route('policy.terms') }}">Terms & Conditions</a>
+                    <span class="text-slate-700">·</span>
+                    <a class="hover:text-slate-300 transition-colors" href="{{ route('policy.returns') }}">Return Policy</a>
+                    <span class="text-slate-700">·</span>
+                    <a class="hover:text-slate-300 transition-colors" href="{{ route('policy.shipping') }}">Shipping Policy</a>
+                    <span class="text-slate-700">·</span>
+                    <a class="hover:text-slate-300 transition-colors" href="{{ route('policy.cookies') }}">Cookie Policy</a>
+                    <span class="text-slate-700">·</span>
+                    <a class="hover:text-slate-300 transition-colors" href="{{ route('policy.accessibility') }}">Accessibility</a>
                 </div>
             </div>
         </div>

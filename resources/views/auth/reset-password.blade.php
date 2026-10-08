@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Reset Password - ShopPulss')
+@section('robots', 'noindex, follow')
 
 @section('content')
 <div class="min-h-[65vh] py-14 px-4 flex items-center justify-center bg-[#F6F7FB]">

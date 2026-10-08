@@ -1,8 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'ShopPulss | Direct Retail Store - 100% Authentic Products & Nationwide COD')
-@section('description', 'Shop authentic electronics, smart gadgets, fashion, and lifestyle essentials shipped directly from our central Karachi fulfillment hub. Cash on Delivery available nationwide across Pakistan.')
-
 @section('content')
 
 @php

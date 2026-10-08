@@ -1,8 +1,5 @@
 @extends('layouts.app')
 
-@section('title', $category->name . ' - ShopPulss Direct Retail')
-@section('description', $category->description ?? "Explore {$category->name} with 100% authentic inventory and Cash on Delivery nationwide.")
-
 @section('content')
 <div class="bg-white border-b border-pulse-border py-6 sm:py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

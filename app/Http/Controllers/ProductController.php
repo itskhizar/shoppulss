@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\Seo\SeoService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -12,13 +13,23 @@ class ProductController extends Controller
     /**
      * Product catalog & search with filtering and sorting.
      */
-    public function index(Request $request): View
+    public function index(Request $request, SeoService $seo): View
     {
-        $query = Product::published()
-            ->with(['images', 'category']);
-
         // Search keyword
         $search = $request->get('q');
+        if ($search) {
+            $seo->forSearch($search);
+        } else {
+            $seo->setTitle('Online Shopping in Pakistan | All Products | ShopPulss')
+                ->setDescription('Explore our complete direct retail catalog with genuine electronics, mobile accessories, audio gear, and lifestyle essentials. Nationwide COD across Pakistan.')
+                ->setCanonical(route('products.index'))
+                ->addBreadcrumb('Home', route('home'))
+                ->addBreadcrumb('Shop', route('products.index'))
+                ->setRobots('index, follow');
+        }
+
+        $query = Product::published()
+            ->with(['images', 'category']);
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
@@ -65,7 +76,7 @@ class ProductController extends Controller
     /**
      * Show product detail page.
      */
-    public function show(string $slug): View
+    public function show(string $slug, SeoService $seo): View
     {
         $product = Product::published()
             ->with([
@@ -80,6 +91,8 @@ class ProductController extends Controller
                 }
             })
             ->firstOrFail();
+
+        $seo->forProduct($product);
 
         // Related products from same category
         $relatedProducts = Product::published()

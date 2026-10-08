@@ -5,8 +5,6 @@
     $hasActiveFilters = request()->hasAny(['category', 'min_price', 'max_price', 'q', 'sort']) && (request('sort') !== 'newest' || request('category') || request('min_price') || request('max_price') || request('q'));
 @endphp
 
-@section('title', ($currentCategory ? $currentCategory->name . ' - ' : ($search ? "Search: '{$search}' - " : 'Shop Direct Catalog - ')) . 'ShopPulss')
-@section('description', 'Browse authentic direct retail products inspected and shipped directly across Pakistan with Cash on Delivery.')
 
 @section('content')
 {{-- Catalog Top Bar --}}

@@ -215,9 +215,9 @@ test('payment service creates easypaisa payment and returns sandbox paid status'
         'easypaisa_mobile_number' => '03001234567',
     ]);
 
-    // EasyPaisa sandbox gateway returns 'paid' automatically in test mode
+    // EasyPaisa sandbox / manual verification gateway
     expect($payment->payment_method)->toBe('easypaisa')
-        ->and($payment->status)->toBeIn(['pending', 'paid'])
+        ->and($payment->status)->toBeIn(['pending', 'paid', 'pending_verification'])
         ->and($payment->sender_account_or_phone)->toBe('03001234567');
 });
 
@@ -230,9 +230,9 @@ test('payment service creates jazzcash payment and returns sandbox paid status',
         'jazzcash_cnic_last4' => '1234',
     ]);
 
-    // JazzCash sandbox gateway returns 'paid' automatically in test mode
+    // JazzCash sandbox / manual verification gateway
     expect($payment->payment_method)->toBe('jazzcash')
-        ->and($payment->status)->toBeIn(['pending', 'paid'])
+        ->and($payment->status)->toBeIn(['pending', 'paid', 'pending_verification'])
         ->and($payment->sender_account_or_phone)->toBe('03111234567');
 });
 

@@ -1,2 +1,21 @@
 User-agent: *
-Disallow:
+Allow: /
+Allow: /images/
+Allow: /build/
+
+# Private / Non-Public / Sensitive Paths
+Disallow: /admin/
+Disallow: /cart
+Disallow: /cart/
+Disallow: /checkout
+Disallow: /checkout/
+Disallow: /account/
+Disallow: /search
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password/
+
+# Sitemap index
+Sitemap: https://shoppulss.com/sitemap.xml

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\Seo\SeoService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -12,11 +13,13 @@ class CategoryController extends Controller
     /**
      * Show products in a category.
      */
-    public function show(Request $request, string $slug): View
+    public function show(Request $request, string $slug, SeoService $seo): View
     {
         $category = Category::where('slug', $slug)
             ->with(['children', 'parent'])
             ->firstOrFail();
+
+        $seo->forCategory($category, (int) $request->get('page', 1));
 
         // Get category IDs including children
         $categoryIds = $category->children->pluck('id')->prepend($category->id)->all();

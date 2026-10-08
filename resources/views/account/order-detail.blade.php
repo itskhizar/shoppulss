@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Order ' . $order->order_number . ' - ShopPulss')
+@section('robots', 'noindex, follow')
 
 @section('content')
 <div class="bg-white border-b border-[#E6E8F2] py-5">

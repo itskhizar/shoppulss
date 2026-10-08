@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Shopping Cart - ShopPulss')
-@section('description', 'Review your selected items and proceed to checkout. 100% secure Cash on Delivery across Pakistan.')
-@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
+@section('description', 'Review your selected items and proceed to checkout.')
+@section('robots', 'noindex, follow')
 
 @section('content')
 {{-- Cart Header & Breadcrumbs --}}
