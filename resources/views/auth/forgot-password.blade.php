@@ -8,7 +8,7 @@
         <div class="bg-white rounded-3xl shadow-sp-card border border-[#E6E8F2] p-8 sm:p-9">
             <div class="text-center mb-8">
                 <a href="{{ route('home') }}" class="inline-block mb-3">
-                    <img src="{{ asset('images/shoppulss-logo.svg') }}" alt="ShopPulss" class="h-10 w-auto mx-auto">
+                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-10 w-auto mx-auto object-contain">
                 </a>
                 <h1 class="text-2xl font-black text-[#0F1654]">Forgot Password</h1>
                 <p class="text-xs text-gray-500 mt-1">Enter your registered email address and we'll send you a password reset link.</p>

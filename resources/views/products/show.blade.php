@@ -147,7 +147,7 @@
                 @endif
 
                 {{-- Purchase Form --}}
-                <form action="{{ route('cart.add') }}" method="POST" class="space-y-4 pt-1">
+                <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-to-cart space-y-4 pt-1">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
 

@@ -11,6 +11,17 @@
             <h1 class="text-xl font-black text-gray-900" style="color: #0F1B4D;">Payments & Verification ({{ $payments->total() }})</h1>
             <p class="text-xs text-gray-500">Monitor Bank Transfers, EasyPaisa, JazzCash, and COD cash collections</p>
         </div>
+        <div>
+            <button
+                type="button"
+                onclick="openAddPaymentModal()"
+                class="h-10 px-4 bg-[#FF5A1F] hover:bg-[#e04e17] text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+                id="add-payment-btn"
+            >
+                <i class="fa-solid fa-plus text-xs"></i>
+                <span>Add Payment Record</span>
+            </button>
+        </div>
     </div>
 
     {{-- Status Tabs --}}
@@ -56,6 +67,7 @@
                 <option value="easypaisa" {{ request('method') === 'easypaisa' ? 'selected' : '' }}>EasyPaisa</option>
                 <option value="jazzcash" {{ request('method') === 'jazzcash' ? 'selected' : '' }}>JazzCash</option>
                 <option value="cod" {{ request('method') === 'cod' ? 'selected' : '' }}>Cash on Delivery</option>
+                <option value="cash" {{ request('method') === 'cash' ? 'selected' : '' }}>Cash (Direct)</option>
                 <option value="card" {{ request('method') === 'card' ? 'selected' : '' }}>Credit / Debit Card</option>
             </select>
 
@@ -137,6 +149,7 @@
                             </td>
                             <td class="py-3.5 px-4 text-right">
                                 <div class="flex items-center justify-end gap-1.5">
+                                    {{-- Action: Verify Pending Verification Payment --}}
                                     @if($p->status === 'pending_verification')
                                         <form method="POST" action="{{ route('admin.payments.verify', $p->id) }}" class="inline">
                                             @csrf
@@ -148,7 +161,32 @@
                                                 ✓ Verify
                                             </button>
                                         </form>
+                                        <form method="POST" action="{{ route('admin.payments.reject', $p->id) }}" class="inline" onsubmit="return confirm('Are you sure you want to reject this payment record?')">
+                                            @csrf
+                                            <button
+                                                type="submit"
+                                                class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-rose-50 text-rose-600 hover:bg-rose-100 transition-colors"
+                                                title="Reject Payment"
+                                            >
+                                                ✕
+                                            </button>
+                                        </form>
                                     @endif
+
+                                    {{-- Action: Record COD Payment as Paid --}}
+                                    @if($p->status === 'pending' && $p->payment_method === 'cod')
+                                        <form method="POST" action="{{ route('admin.payments.cod', $p->id) }}" class="inline">
+                                            @csrf
+                                            <button
+                                                type="submit"
+                                                class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-xs"
+                                                title="Mark Cash Collected (Paid)"
+                                            >
+                                                ✓ Collect COD
+                                            </button>
+                                        </form>
+                                    @endif
+
                                     <a
                                         href="{{ route('admin.orders.show', $p->order_id) }}"
                                         class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
@@ -177,4 +215,203 @@
     </div>
 
 </div>
+
+{{-- Add Payment Modal --}}
+<div id="addPaymentModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-gray-100 space-y-5 animate-in fade-in zoom-in-95 duration-150" onclick="event.stopPropagation()">
+        <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-orange-100 text-pulse-orange flex items-center justify-center text-sm font-bold">
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-black text-gray-900" style="color: #0F1B4D;">Add Manual Payment</h3>
+                    <p class="text-[11px] text-gray-500">Record received cash, bank transfer, EasyPaisa, or JazzCash</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeAddPaymentModal()" class="p-2 text-gray-400 hover:text-gray-700 rounded-xl hover:bg-gray-100">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+        </div>
+
+        <form method="POST" action="{{ route('admin.payments.store') }}" class="space-y-4">
+            @csrf
+
+            {{-- Order Selector --}}
+            <div>
+                <label for="modal_order_id" class="block text-xs font-bold text-gray-700 mb-1">Select Order *</label>
+                <select
+                    id="modal_order_id"
+                    name="order_id"
+                    required
+                    class="w-full h-10 px-3 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#FF5A1F] focus:ring-1 focus:ring-[#FF5A1F]"
+                    onchange="onOrderSelectChange(this)"
+                >
+                    <option value="">-- Choose an Order --</option>
+                    @foreach($recentOrders as $ro)
+                        <option
+                            value="{{ $ro->id }}"
+                            data-amount="{{ (float)$ro->total_amount }}"
+                            data-method="{{ $ro->payment_method }}"
+                        >
+                            {{ $ro->order_number }} — {{ $ro->customer_name }} (Rs. {{ number_format($ro->total_amount) }} · {{ strtoupper($ro->payment_status) }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {{-- Payment Method --}}
+                <div>
+                    <label for="modal_payment_method" class="block text-xs font-bold text-gray-700 mb-1">Payment Method *</label>
+                    <select
+                        id="modal_payment_method"
+                        name="payment_method"
+                        required
+                        class="w-full h-10 px-3 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#FF5A1F] focus:ring-1 focus:ring-[#FF5A1F]"
+                    >
+                        <option value="cod">Cash on Delivery (COD)</option>
+                        <option value="easypaisa">EasyPaisa</option>
+                        <option value="jazzcash">JazzCash</option>
+                        <option value="bank_transfer">Direct Bank Transfer</option>
+                        <option value="cash">Direct Cash / In-Person</option>
+                        <option value="card">Credit / Debit Card</option>
+                    </select>
+                </div>
+
+                {{-- Payment Status --}}
+                <div>
+                    <label for="modal_status" class="block text-xs font-bold text-gray-700 mb-1">Payment Status *</label>
+                    <select
+                        id="modal_status"
+                        name="status"
+                        required
+                        class="w-full h-10 px-3 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#FF5A1F] focus:ring-1 focus:ring-[#FF5A1F]"
+                    >
+                        <option value="paid" selected>Paid / Verified</option>
+                        <option value="pending_verification">Pending Verification</option>
+                        <option value="pending">Pending</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {{-- Amount --}}
+                <div>
+                    <label for="modal_amount" class="block text-xs font-bold text-gray-700 mb-1">Amount (PKR) *</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="modal_amount"
+                        name="amount"
+                        required
+                        placeholder="0.00"
+                        class="w-full h-10 px-3 rounded-xl border border-gray-200 text-xs font-mono font-bold focus:outline-none focus:border-[#FF5A1F] focus:ring-1 focus:ring-[#FF5A1F]"
+                    >
+                </div>
+
+                {{-- Transaction Reference --}}
+                <div>
+                    <label for="modal_transaction_reference" class="block text-xs font-bold text-gray-700 mb-1">Transaction Ref / TID</label>
+                    <input
+                        type="text"
+                        id="modal_transaction_reference"
+                        name="transaction_reference"
+                        placeholder="e.g. TID-123456 or Slip #"
+                        class="w-full h-10 px-3 rounded-xl border border-gray-200 text-xs font-mono focus:outline-none focus:border-[#FF5A1F] focus:ring-1 focus:ring-[#FF5A1F]"
+                    >
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {{-- Bank / Wallet Name --}}
+                <div>
+                    <label for="modal_bank_name" class="block text-xs font-bold text-gray-700 mb-1">Bank / Wallet Provider</label>
+                    <input
+                        type="text"
+                        id="modal_bank_name"
+                        name="bank_name"
+                        placeholder="e.g. EasyPaisa, JazzCash, Meezan"
+                        class="w-full h-10 px-3 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#FF5A1F] focus:ring-1 focus:ring-[#FF5A1F]"
+                    >
+                </div>
+
+                {{-- Sender Account / Mobile --}}
+                <div>
+                    <label for="modal_sender_account_or_phone" class="block text-xs font-bold text-gray-700 mb-1">Sender Mobile / Account</label>
+                    <input
+                        type="text"
+                        id="modal_sender_account_or_phone"
+                        name="sender_account_or_phone"
+                        placeholder="03XXXXXXXXX"
+                        class="w-full h-10 px-3 rounded-xl border border-gray-200 text-xs font-mono focus:outline-none focus:border-[#FF5A1F] focus:ring-1 focus:ring-[#FF5A1F]"
+                    >
+                </div>
+            </div>
+
+            {{-- Notes --}}
+            <div>
+                <label for="modal_notes" class="block text-xs font-bold text-gray-700 mb-1">Verification / Collection Notes</label>
+                <input
+                    type="text"
+                    id="modal_notes"
+                    name="notes"
+                    placeholder="e.g. Received via rider or verified on app"
+                    class="w-full h-10 px-3 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#FF5A1F] focus:ring-1 focus:ring-[#FF5A1F]"
+                >
+            </div>
+
+            <div class="pt-2 flex items-center justify-end gap-2 border-t border-gray-100">
+                <button
+                    type="button"
+                    onclick="closeAddPaymentModal()"
+                    class="px-4 py-2 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="submit"
+                    class="px-5 py-2 rounded-xl bg-[#FF5A1F] hover:bg-[#e04e17] text-white text-xs font-bold shadow-sm transition-all"
+                >
+                    Save Payment Record
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openAddPaymentModal() {
+        const modal = document.getElementById('addPaymentModal');
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeAddPaymentModal() {
+        const modal = document.getElementById('addPaymentModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function onOrderSelectChange(select) {
+        const option = select.options[select.selectedIndex];
+        if (!option) return;
+        const amount = option.getAttribute('data-amount');
+        const method = option.getAttribute('data-method');
+        if (amount) {
+            const amountInput = document.getElementById('modal_amount');
+            if (amountInput) amountInput.value = amount;
+        }
+        if (method) {
+            const methodSelect = document.getElementById('modal_payment_method');
+            if (methodSelect && [...methodSelect.options].some(o => o.value === method)) {
+                methodSelect.value = method;
+            }
+        }
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAddPaymentModal();
+    });
+</script>
 @endsection

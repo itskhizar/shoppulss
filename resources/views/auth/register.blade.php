@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Create Account - ShopPulss')
 @section('description', 'Join ShopPulss and enjoy exclusive member benefits, order tracking, and personalized deals on authentic products.')
@@ -10,7 +10,7 @@
         <div class="bg-white rounded-3xl shadow-sp-card border border-[#E6E8F2] p-8 sm:p-9">
             <div class="text-center mb-8">
                 <a href="{{ route('home') }}" class="inline-block mb-3">
-                    <img src="{{ asset('images/shoppulss-logo.svg') }}" alt="ShopPulss" class="h-10 w-auto mx-auto">
+                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-10 w-auto mx-auto object-contain">
                 </a>
                 <h1 class="text-2xl font-black text-[#0F1654]">Create an Account</h1>
                 <p class="text-xs text-gray-500 mt-1">Join ShopPulss for expedited checkout, real-time tracking, and exclusive discounts</p>

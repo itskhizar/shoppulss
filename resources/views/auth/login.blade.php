@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Sign In - ShopPulss')
 @section('description', 'Sign in to your ShopPulss account to track orders, manage returns, and access exclusive member deals.')
@@ -11,7 +11,7 @@
         <div class="bg-white rounded-3xl shadow-sp-card border border-[#E6E8F2] p-8 sm:p-9">
             <div class="text-center mb-8">
                 <a href="{{ route('home') }}" class="inline-block mb-3">
-                    <img src="{{ asset('images/shoppulss-logo.svg') }}" alt="ShopPulss" class="h-10 w-auto mx-auto">
+                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-10 w-auto mx-auto object-contain">
                 </a>
                 <h1 class="text-2xl font-black text-[#0F1654]">Welcome Back</h1>
                 <p class="text-xs text-gray-500 mt-1">Sign in to track orders, manage addresses, and access VIP deals</p>
@@ -81,12 +81,6 @@
             <div class="mt-6 pt-6 border-t border-[#E6E8F2] text-center text-xs text-gray-500">
                 Don't have an account yet?
                 <a href="{{ route('register') }}" class="font-bold text-[#FF5A1F] hover:underline ml-1">Create Account</a>
-            </div>
-
-            {{-- Demo credentials hint for convenience --}}
-            <div class="mt-6 p-3.5 bg-[#FFF1EA] rounded-2xl border border-[#FF5A1F]/20 text-[11px] text-gray-700 leading-relaxed">
-                <span class="font-black text-[#0F1654]">ðŸ”‘ Demo Admin Login:</span><br>
-                Email: <code class="bg-white/80 px-1.5 py-0.5 rounded font-mono text-[#0F1654] font-bold">admin@shoppulss.com</code> &nbsp;|&nbsp; Password: <code class="bg-white/80 px-1.5 py-0.5 rounded font-mono text-[#0F1654] font-bold">password</code>
             </div>
         </div>
     </div>

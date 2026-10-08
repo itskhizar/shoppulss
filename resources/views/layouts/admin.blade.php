@@ -28,7 +28,7 @@
             {{-- Brand Logo Header --}}
             <div class="h-16 flex items-center px-5 border-b border-white/10 gap-2.5 flex-shrink-0">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 group">
-                    <img src="{{ asset('images/shoppulss-logo-white.svg') }}" alt="ShopPulss" class="h-8 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-8 w-auto object-contain">
                     <div class="hidden items-center gap-2">
                         <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#FF6B1F] to-[#FF4A0A] flex items-center justify-center text-white text-xs font-black shadow-sm">S</div>
                         <div class="flex flex-col">
@@ -169,7 +169,7 @@
         <div class="flex-1 flex flex-col min-h-0">
             <div class="h-16 flex items-center justify-between px-5 border-b border-white/10 flex-shrink-0">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
-                    <img src="{{ asset('images/shoppulss-logo-white.svg') }}" alt="ShopPulss" class="h-7 w-auto">
+                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-7 w-auto object-contain">
                 </a>
                 <button type="button" onclick="toggleMobileSidebar()" class="p-2 text-blue-200 hover:text-white rounded-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>

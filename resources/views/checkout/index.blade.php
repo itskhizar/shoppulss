@@ -288,25 +288,53 @@
                                             <span class="font-black text-sm text-[#0F1654]">EasyPaisa Mobile Account</span>
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">Instant</span>
                                         </div>
-                                        <span class="text-xs font-bold text-emerald-600">EasyPaisa Gateway</span>
+                                        <span class="text-xs font-bold text-emerald-600">EasyPaisa Manual Transfer / Direct</span>
                                     </div>
                                     <p class="text-xs text-gray-500 mt-1">Pay instantly through your EasyPaisa wallet. Enter your registered mobile number below.</p>
                                 </div>
                             </div>
 
-                            <div id="panel-easypaisa" class="hidden mt-4 pt-4 border-t border-[#E6E8F2] space-y-3">
-                                <div class="max-w-xs">
-                                    <label for="easypaisa_mobile_number" class="sp-label">EasyPaisa Registered Mobile Number *</label>
-                                    <input
-                                        type="tel"
-                                        id="easypaisa_mobile_number"
-                                        name="easypaisa_mobile_number"
-                                        value="{{ old('easypaisa_mobile_number', $user?->phone) }}"
-                                        placeholder="03XXXXXXXXX"
-                                        class="sp-input font-mono text-xs"
-                                    >
-                                    <p class="text-[10px] text-gray-400 mt-1">You will receive an instant approval prompt on your EasyPaisa app / phone.</p>
+                            <div id="panel-easypaisa" class="hidden mt-4 pt-4 border-t border-[#E6E8F2] space-y-4">
+                                {{-- Official ShopPulss EasyPaisa Details Notice --}}
+                                <div class="p-4 bg-emerald-50/60 rounded-2xl border border-emerald-200/80 text-xs space-y-2">
+                                    <div class="font-bold text-emerald-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
+                                        <i class="fa-solid fa-mobile-screen-button text-emerald-600"></i>
+                                        Official ShopPulss EasyPaisa Account Details
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-800 pt-1">
+                                        <div><span class="text-slate-500">Account Title:</span> <strong>{{ $settings['easypaisa_account_title'] ?? 'ShopPulss / Muhammad Khizar' }}</strong></div>
+                                        <div><span class="text-slate-500">EasyPaisa Mobile Number:</span> <strong class="font-mono text-emerald-800">{{ $settings['easypaisa_account_number'] ?? ($settings['store_phone'] ?? '03328912706') }}</strong></div>
+                                    </div>
+                                    <p class="text-[11px] text-emerald-950 pt-1 border-t border-emerald-200/60 leading-relaxed">
+                                        Please send <strong>Rs. {{ number_format($totals['total']) }}</strong> to our EasyPaisa account and provide your sender registered mobile number & Transaction ID below for manual verification.
+                                    </p>
                                 </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="easypaisa_mobile_number" class="sp-label">EasyPaisa Registered Mobile Number *</label>
+                                        <input
+                                            type="tel"
+                                            id="easypaisa_mobile_number"
+                                            name="easypaisa_mobile_number"
+                                            value="{{ old('easypaisa_mobile_number', $user?->phone) }}"
+                                            placeholder="03XXXXXXXXX"
+                                            class="sp-input font-mono text-xs"
+                                        >
+                                    </div>
+                                    <div>
+                                        <label for="easypaisa_transaction_id" class="sp-label">Transaction ID / TID (Optional)</label>
+                                        <input
+                                            type="text"
+                                            id="easypaisa_transaction_id"
+                                            name="easypaisa_transaction_id"
+                                            value="{{ old('easypaisa_transaction_id') }}"
+                                            placeholder="e.g. 1234567890"
+                                            class="sp-input font-mono text-xs"
+                                        >
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-gray-500">You will receive an instant approval prompt on your EasyPaisa app / phone or SMS receipt.</p>
                             </div>
                         </label>
 
@@ -320,14 +348,29 @@
                                             <span class="font-black text-sm text-[#0F1654]">JazzCash Mobile Account</span>
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800">Instant</span>
                                         </div>
-                                        <span class="text-xs font-bold text-amber-600">JazzCash Gateway</span>
+                                        <span class="text-xs font-bold text-amber-600">JazzCash Manual Transfer / Direct</span>
                                     </div>
                                     <p class="text-xs text-gray-500 mt-1">Pay directly from your JazzCash wallet using your mobile number and CNIC verification.</p>
                                 </div>
                             </div>
 
-                            <div id="panel-jazzcash" class="hidden mt-4 pt-4 border-t border-[#E6E8F2] space-y-3">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
+                            <div id="panel-jazzcash" class="hidden mt-4 pt-4 border-t border-[#E6E8F2] space-y-4">
+                                {{-- Official ShopPulss JazzCash Details Notice --}}
+                                <div class="p-4 bg-amber-50/60 rounded-2xl border border-amber-200/80 text-xs space-y-2">
+                                    <div class="font-bold text-amber-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
+                                        <i class="fa-solid fa-wallet text-amber-600"></i>
+                                        Official ShopPulss JazzCash Account Details
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-800 pt-1">
+                                        <div><span class="text-slate-500">Account Title:</span> <strong>{{ $settings['jazzcash_account_title'] ?? 'ShopPulss / Muhammad Khizar' }}</strong></div>
+                                        <div><span class="text-slate-500">JazzCash Mobile Number:</span> <strong class="font-mono text-amber-800">{{ $settings['jazzcash_account_number'] ?? ($settings['store_phone'] ?? '03328912706') }}</strong></div>
+                                    </div>
+                                    <p class="text-[11px] text-amber-950 pt-1 border-t border-amber-200/60 leading-relaxed">
+                                        Please send <strong>Rs. {{ number_format($totals['total']) }}</strong> to our JazzCash account and provide your sender registered mobile number & Transaction ID below for manual verification.
+                                    </p>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                     <div>
                                         <label for="jazzcash_mobile_number" class="sp-label">JazzCash Mobile Number *</label>
                                         <input
@@ -351,8 +394,19 @@
                                             class="sp-input font-mono text-xs"
                                         >
                                     </div>
+                                    <div>
+                                        <label for="jazzcash_transaction_id" class="sp-label">Transaction ID / TID (Optional)</label>
+                                        <input
+                                            type="text"
+                                            id="jazzcash_transaction_id"
+                                            name="jazzcash_transaction_id"
+                                            value="{{ old('jazzcash_transaction_id') }}"
+                                            placeholder="e.g. 1234567890"
+                                            class="sp-input font-mono text-xs"
+                                        >
+                                    </div>
                                 </div>
-                                <p class="text-[10px] text-gray-400">An MPIN authorization prompt will appear on your JazzCash mobile screen.</p>
+                                <p class="text-[10px] text-gray-500">Pay directly from your JazzCash wallet using your mobile number and CNIC verification.</p>
                             </div>
                         </label>
 

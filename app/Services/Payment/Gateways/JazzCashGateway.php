@@ -79,20 +79,22 @@ class JazzCashGateway implements PaymentGatewayInterface
             }
         }
 
-        // Test/Sandbox Mode: Generate valid JazzCash transaction ID
-        $txId = 'JC'.date('md').rand(100000, 999999);
+        // Manual verification mode for JazzCash
+        $userTxId = trim($payload['jazzcash_transaction_id'] ?? $payload['transaction_reference'] ?? '');
+        $txId = $userTxId ?: ('JC'.date('md').rand(100000, 999999));
 
         return [
             'success' => true,
-            'status' => 'paid',
+            'status' => 'pending_verification',
             'transaction_id' => $txId,
-            'message' => 'JazzCash payment confirmed (Test/Sandbox mode active).',
+            'message' => 'JazzCash details received. Order awaiting admin payment verification.',
             'redirect_url' => null,
             'data' => [
                 'provider' => 'jazzcash',
                 'account' => $mobileNumber,
                 'cnic_last4' => $cnicLast4,
-                'mode' => 'sandbox_verified',
+                'transaction_reference' => $userTxId,
+                'mode' => 'manual_verification',
             ],
         ];
     }

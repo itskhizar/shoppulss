@@ -74,10 +74,12 @@ class CheckoutController extends Controller
 
             // EasyPaisa fields
             'easypaisa_mobile_number' => ['nullable', 'required_if:payment_method,easypaisa', 'string', 'max:25'],
+            'easypaisa_transaction_id' => ['nullable', 'string', 'max:100'],
 
             // JazzCash fields
             'jazzcash_mobile_number' => ['nullable', 'required_if:payment_method,jazzcash', 'string', 'max:25'],
             'jazzcash_cnic_last4' => ['nullable', 'string', 'max:4'],
+            'jazzcash_transaction_id' => ['nullable', 'string', 'max:100'],
         ]);
 
         // Validate product availability and stock before proceeding
@@ -209,8 +211,8 @@ class CheckoutController extends Controller
 
         $successMsg = match ($validated['payment_method']) {
             'bank_transfer' => 'Thank you! Your order has been placed. We will verify your bank transfer shortly.',
-            'easypaisa' => 'Thank you! Your EasyPaisa transaction has been confirmed.',
-            'jazzcash' => 'Thank you! Your JazzCash transaction has been confirmed.',
+            'easypaisa' => 'Thank you! Your order has been placed. We will verify your EasyPaisa payment shortly.',
+            'jazzcash' => 'Thank you! Your order has been placed. We will verify your JazzCash payment shortly.',
             default => 'Thank you! Your order has been placed successfully.',
         };
 

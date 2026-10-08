@@ -41,10 +41,15 @@ class CartController extends Controller
         );
 
         if ($request->wantsJson()) {
+            $cart = $this->cartService->getCart();
+            $totals = $this->cartService->getTotals($cart);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Item added to cart!',
                 'cart_count' => $this->cartService->getCount(),
+                'cart_total' => (float) ($totals['subtotal'] ?? 0),
+                'cart_total_formatted' => 'Rs. '.number_format($totals['subtotal'] ?? 0),
             ]);
         }
 
@@ -83,9 +88,14 @@ class CartController extends Controller
         $this->cartService->removeItem($itemId);
 
         if ($request->wantsJson()) {
+            $cart = $this->cartService->getCart();
+            $totals = $this->cartService->getTotals($cart);
+
             return response()->json([
                 'success' => true,
                 'cart_count' => $this->cartService->getCount(),
+                'cart_total' => (float) ($totals['subtotal'] ?? 0),
+                'cart_total_formatted' => 'Rs. '.number_format($totals['subtotal'] ?? 0),
             ]);
         }
 

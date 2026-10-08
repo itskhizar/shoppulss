@@ -51,19 +51,21 @@ class EasyPaisaGateway implements PaymentGatewayInterface
             }
         }
 
-        // Test/Sandbox Mode: Generate standard EasyPaisa transaction confirmation
-        $txId = 'EP'.date('md').rand(100000, 999999);
+        // Manual verification mode for EasyPaisa
+        $userTxId = trim($payload['easypaisa_transaction_id'] ?? $payload['transaction_reference'] ?? '');
+        $txId = $userTxId ?: ('EP'.date('md').rand(100000, 999999));
 
         return [
             'success' => true,
-            'status' => 'paid',
+            'status' => 'pending_verification',
             'transaction_id' => $txId,
-            'message' => 'EasyPaisa payment processed successfully (Test/Sandbox mode active).',
+            'message' => 'EasyPaisa details received. Order awaiting admin payment verification.',
             'redirect_url' => null,
             'data' => [
                 'provider' => 'easypaisa',
                 'account' => $mobileNumber,
-                'mode' => 'sandbox_verified',
+                'transaction_reference' => $userTxId,
+                'mode' => 'manual_verification',
             ],
         ];
     }

@@ -94,7 +94,7 @@
 
                 {{-- Brand Logo --}}
                 <a class="flex items-center space-x-2.5 shrink-0 group" href="{{ route('home') }}">
-                    <img src="{{ asset('images/shoppulss-logo.svg') }}" alt="ShopPulss" class="h-10 sm:h-11 w-auto object-contain transition-transform group-hover:scale-102" onerror="this.onerror=null;this.src='{{ asset('images/shoppulss-logo.png') }}';">
+                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-10 sm:h-11 w-auto object-contain transition-transform group-hover:scale-102">
                 </a>
 
                 {{-- Center Search Bar --}}
@@ -107,20 +107,16 @@
                                     <span id="search-cat-label">{{ request('category') ? ($navCategories->firstWhere('slug', request('category'))?->name ?? 'Category') : 'All Categories' }}</span>
                                     <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
                                 </button>
-                                <div id="search-cat-dropdown" class="hidden absolute left-0 top-full mt-1.5 w-56 bg-white rounded-xl shadow-card border border-pulse-border py-1.5 z-30 max-h-64 overflow-y-auto">
-                                    <button type="button" onclick="selectSearchCategory('', 'All Categories')" class="w-full text-left px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-pulse-orange font-bold border-b border-slate-100 flex items-center justify-between">
+                                <div id="search-cat-dropdown" class="hidden absolute left-0 top-full mt-1.5 w-60 bg-white rounded-xl shadow-card border border-pulse-border py-1.5 z-30 max-h-72 overflow-y-auto">
+                                    <button type="button" onclick="selectSearchCategory('', 'All Categories', '{{ route('products.index') }}')" class="w-full text-left px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-pulse-orange font-bold border-b border-slate-100 flex items-center justify-between">
                                         <span>All Categories</span>
                                         <i class="fa-solid fa-layer-group text-[10px] text-slate-400"></i>
                                     </button>
                                     @foreach($navCategories as $cat)
-                                        <div class="flex items-center justify-between px-3.5 py-1.5 text-xs text-slate-700 hover:bg-slate-50 group">
-                                            <button type="button" onclick="selectSearchCategory('{{ $cat->slug }}', '{{ addslashes($cat->name) }}')" class="flex-1 text-left truncate hover:text-pulse-orange font-medium">
-                                                {{ $cat->name }}
-                                            </button>
-                                            <a href="{{ route('categories.show', $cat->slug) }}" class="text-[10px] text-slate-400 hover:text-pulse-orange p-1" title="Browse category">
-                                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                            </a>
-                                        </div>
+                                        <button type="button" onclick="selectSearchCategory('{{ $cat->slug }}', '{{ addslashes($cat->name) }}', '{{ route('categories.show', $cat->slug) }}')" class="w-full text-left px-3.5 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-pulse-orange font-medium flex items-center justify-between group">
+                                            <span class="truncate">{{ $cat->name }}</span>
+                                            <i class="fa-solid fa-arrow-right text-[9px] text-slate-300 group-hover:text-pulse-orange group-hover:translate-x-0.5 transition-all"></i>
+                                        </button>
                                     @endforeach
                                 </div>
                                 <input type="hidden" name="category" id="search-category-input" value="{{ request('category') }}">
@@ -223,8 +219,8 @@
                             @endif
                         </div>
                         <div class="hidden sm:block text-left text-xs leading-none">
-                            <span class="text-[10px] text-slate-300 block font-normal">{{ $cartCount > 0 ? 'Cart Total' : 'Cart' }}</span>
-                            <span id="nav-cart-total" class="font-bold text-white text-xs mt-0.5 block">{{ $cartCount > 0 ? 'Rs. ' . number_format($cartTotals['subtotal']) : 'Rs. 0' }}</span>
+                            <span id="nav-cart-label" class="text-[10px] text-slate-300 block font-normal">{{ $cartCount > 0 ? 'Cart Total' : 'Cart' }}</span>
+                            <span id="nav-cart-total" class="font-bold text-white text-xs mt-0.5 block transition-colors">{{ $cartCount > 0 ? 'Rs. ' . number_format($cartTotals['subtotal']) : 'Rs. 0' }}</span>
                         </div>
                     </a>
                 </div>
@@ -248,7 +244,37 @@
 
             {{-- Secondary Navigation Bar --}}
             <nav class="border-t border-slate-100 py-2.5 flex items-center justify-between text-xs font-semibold overflow-x-auto scrollbar-none" data-purpose="primary-navigation">
-                <div class="flex items-center space-x-7 shrink-0">
+                <div class="flex items-center space-x-5 lg:space-x-7 shrink-0">
+                    {{-- All Categories Dropdown Menu --}}
+                    <div class="relative" id="nav-cat-dropdown-container">
+                        <button type="button" onclick="toggleNavCategoriesMenu()" id="nav-cat-btn" class="flex items-center space-x-2 text-pulse-navy font-black bg-slate-100 hover:bg-pulse-orange hover:text-white px-3.5 py-1.5 rounded-xl transition-all shadow-2xs group cursor-pointer border border-slate-200/60">
+                            <i class="fa-solid fa-bars-staggered text-xs text-pulse-orange group-hover:text-white transition-colors"></i>
+                            <span>All Categories</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 group-hover:text-white transition-transform" id="nav-cat-chevron"></i>
+                        </button>
+                        <div id="nav-cat-dropdown-menu" class="hidden absolute left-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-card border border-pulse-border py-2 z-50">
+                            <div class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between">
+                                <span>Shop by Department</span>
+                                <span class="text-pulse-teal font-bold">{{ $navCategories->count() }} Categories</span>
+                            </div>
+                            <div class="max-h-80 overflow-y-auto py-1">
+                                <a href="{{ route('products.index') }}" class="flex items-center justify-between px-4 py-2.5 text-xs font-bold text-pulse-navy hover:bg-pulse-orange-light hover:text-pulse-orange transition-colors">
+                                    <span class="flex items-center gap-2">
+                                        <i class="fa-solid fa-border-all text-xs text-pulse-orange"></i>
+                                        <span>All Products / Catalog</span>
+                                    </span>
+                                    <i class="fa-solid fa-arrow-right text-[10px] text-slate-400"></i>
+                                </a>
+                                @foreach($navCategories as $cat)
+                                    <a href="{{ route('categories.show', $cat->slug) }}" class="flex items-center justify-between px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-pulse-orange font-medium transition-colors group">
+                                        <span class="truncate">{{ $cat->name }}</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover:text-pulse-orange group-hover:translate-x-0.5 transition-all"></i>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
                     <a class="{{ request()->routeIs('home') && !request()->has('q') ? 'text-pulse-orange font-bold' : 'text-slate-700 hover:text-pulse-orange' }} flex items-center space-x-1.5 transition-colors" href="{{ route('home') }}">
                         <span>Home</span>
                     </a>
@@ -260,7 +286,6 @@
                         <span>Trending Products</span>
                     </a>
                     <a class="text-slate-700 hover:text-pulse-orange transition-colors" href="{{ route('home') }}#new-arrivals">New Arrivals</a>
-                    <a class="text-slate-700 hover:text-pulse-orange transition-colors" href="{{ route('home') }}#categories">Categories</a>
                     <a class="text-slate-700 hover:text-pulse-orange transition-colors flex items-center space-x-1" href="{{ route('home') }}#deals">
                         <span class="w-2 h-2 rounded-full bg-pulse-orange pulse-dot"></span>
                         <span>Flash Deals</span>
@@ -336,7 +361,7 @@
                 <div class="lg:col-span-2 space-y-4">
                     <div class="flex items-center space-x-2">
                         <a href="{{ route('home') }}" class="inline-block">
-                            <img src="{{ asset('images/shoppulss-logo-white.svg') }}" alt="ShopPulss" class="h-9 w-auto object-contain" onerror="this.onerror=null;this.src='{{ asset('images/shoppulss-logo.png') }}';">
+                            <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-9 sm:h-10 w-auto object-contain">
                         </a>
                     </div>
                     <p class="text-slate-400 text-xs leading-relaxed max-w-sm">
@@ -467,19 +492,38 @@
             if (dropdown) dropdown.classList.toggle('hidden');
         }
 
+        // Nav categories dropdown toggle in secondary nav
+        function toggleNavCategoriesMenu() {
+            const menu = document.getElementById('nav-cat-dropdown-menu');
+            const chevron = document.getElementById('nav-cat-chevron');
+            if (menu) menu.classList.toggle('hidden');
+            if (chevron) chevron.classList.toggle('rotate-180');
+        }
+
         // Search category dropdown toggle
         function toggleSearchCatMenu() {
             const dropdown = document.getElementById('search-cat-dropdown');
             if (dropdown) dropdown.classList.toggle('hidden');
         }
 
-        function selectSearchCategory(slug, name) {
+        function selectSearchCategory(slug, name, url = null) {
             const label = document.getElementById('search-cat-label');
             const input = document.getElementById('search-category-input');
             const dropdown = document.getElementById('search-cat-dropdown');
+            const searchInput = document.querySelector('#header-search-form input[name="q"]');
+            const form = document.getElementById('header-search-form');
+
             if (label) label.textContent = name;
             if (input) input.value = slug;
             if (dropdown) dropdown.classList.add('hidden');
+
+            // If user has typed a search query, submit search directly with selected category
+            if (searchInput && searchInput.value.trim().length > 0 && form) {
+                form.submit();
+            } else if (url) {
+                // If search query is empty, navigate to category page directly
+                window.location.href = url;
+            }
         }
 
         // Close dropdowns on outer click
@@ -494,6 +538,14 @@
             const catDropdown = document.getElementById('search-cat-dropdown');
             if (catContainer && catDropdown && !catContainer.contains(e.target)) {
                 catDropdown.classList.add('hidden');
+            }
+
+            const navCatContainer = document.getElementById('nav-cat-dropdown-container');
+            const navCatMenu = document.getElementById('nav-cat-dropdown-menu');
+            const navCatChevron = document.getElementById('nav-cat-chevron');
+            if (navCatContainer && navCatMenu && !navCatContainer.contains(e.target)) {
+                navCatMenu.classList.add('hidden');
+                if (navCatChevron) navCatChevron.classList.remove('rotate-180');
             }
         });
 
@@ -631,12 +683,29 @@
                 const data = await response.json();
                 if (data.success) {
                     showToast(data.message || 'Item added to cart!');
-                    // Update cart badge
+                    // Update cart badge and total price
                     const countEl = document.getElementById('nav-cart-count');
+                    const totalEl = document.getElementById('nav-cart-total');
+                    const labelEl = document.getElementById('nav-cart-label');
+
                     if (countEl && data.cart_count !== undefined) {
                         countEl.textContent = data.cart_count;
+                        if (data.cart_count > 0) {
+                            countEl.classList.remove('hidden');
+                            countEl.classList.add('flex');
+                        }
                         countEl.classList.add('scale-125');
                         setTimeout(() => countEl.classList.remove('scale-125'), 300);
+                    }
+
+                    if (totalEl && data.cart_total_formatted !== undefined) {
+                        totalEl.textContent = data.cart_total_formatted;
+                        totalEl.classList.add('text-pulse-orange');
+                        setTimeout(() => totalEl.classList.remove('text-pulse-orange'), 400);
+                    }
+
+                    if (labelEl && data.cart_count !== undefined) {
+                        labelEl.textContent = data.cart_count > 0 ? 'Cart Total' : 'Cart';
                     }
                 } else {
                     showToast(data.message || 'Could not add item to cart', 'error');

@@ -90,8 +90,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
         // Payments & Verification Management
         Route::get('/payments', [Admin\PaymentController::class, 'index'])->name('payments.index');
+        Route::post('/payments', [Admin\PaymentController::class, 'store'])->name('payments.store');
         Route::post('/payments/{id}/verify', [Admin\PaymentController::class, 'verify'])->name('payments.verify');
         Route::post('/payments/{id}/reject', [Admin\PaymentController::class, 'reject'])->name('payments.reject');
+        Route::post('/payments/{id}/cod', [Admin\PaymentController::class, 'recordCod'])->name('payments.cod');
     });
 
     // Customers (Order Manager, Support Agent & above)

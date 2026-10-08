@@ -83,7 +83,7 @@ class PaymentService
                     'order_id' => $order->id,
                     'from_status' => $order->status,
                     'to_status' => $order->status,
-                    'reason' => 'Direct Bank Transfer submitted with Ref: '.($txId ?: 'Awaiting slip').'. Pending admin verification.',
+                    'reason' => $payment->method_label.' details submitted with Ref: '.($txId ?: 'Awaiting confirmation').'. Pending admin verification.',
                     'changed_by' => $order->user_id,
                     'created_at' => now(),
                 ]);
