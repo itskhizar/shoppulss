@@ -92,8 +92,15 @@
                 </button>
 
                 {{-- Brand Logo --}}
-                <a class="flex items-center space-x-2.5 shrink-0 group" href="{{ route('home') }}">
-                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-8 sm:h-10 w-auto object-contain transition-transform group-hover:scale-102">
+                <a class="flex items-center shrink-0 group" href="{{ route('home') }}" aria-label="ShopPulss Home">
+                    <img
+                        src="{{ asset('images/shoppulss-logo.svg') }}"
+                        alt="ShopPulss"
+                        width="165"
+                        height="36"
+                        class="site-logo-header h-7 sm:h-9 md:h-10 w-auto max-w-[130px] sm:max-w-[165px] md:max-w-[185px] object-contain transition-transform group-hover:scale-102"
+                        style="height: 34px; max-height: 38px; width: auto; max-width: 165px; object-fit: contain;"
+                    >
                 </a>
 
                 {{-- Center Search Bar (Unified Input Group, Clean Separation) --}}
@@ -300,7 +307,14 @@
     <div id="mobile-drawer-backdrop" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden transition-opacity lg:hidden" onclick="toggleMobileDrawer()">
         <div class="w-80 max-w-[85vw] h-full bg-white shadow-card-hover flex flex-col" onclick="event.stopPropagation()">
             <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-                <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-8 w-auto">
+                <img
+                    src="{{ asset('images/shoppulss-logo.svg') }}"
+                    alt="ShopPulss"
+                    width="140"
+                    height="30"
+                    class="site-logo-drawer h-7 sm:h-8 w-auto max-w-[140px] object-contain"
+                    style="height: 30px; max-height: 32px; width: auto; max-width: 140px; object-fit: contain;"
+                >
                 <button type="button" onclick="toggleMobileDrawer()" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
@@ -355,18 +369,25 @@
     {{-- BEGIN: Global Footer (Navy) --}}
     <footer class="bg-pulse-navy-dark text-slate-400 text-xs pt-16 pb-8 border-t border-white/5 mt-auto" data-purpose="site-footer">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-12 border-b border-white/10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 pb-12 border-b border-white/10">
                 {{-- Brand Info --}}
-                <div class="lg:col-span-2 space-y-4">
+                <div class="space-y-4">
                     <div class="flex items-center space-x-2">
-                        <a href="{{ route('home') }}" class="inline-block">
-                            <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-9 sm:h-10 w-auto object-contain">
+                        <a href="{{ route('home') }}" class="inline-block" aria-label="ShopPulss Home">
+                            <img
+                                src="{{ asset('images/shoppulss-logo-white.svg') }}"
+                                alt="ShopPulss"
+                                width="165"
+                                height="34"
+                                class="site-logo-footer h-8 sm:h-9 w-auto max-w-[165px] object-contain"
+                                style="height: 34px; max-height: 38px; width: auto; max-width: 165px; object-fit: contain;"
+                            >
                         </a>
                     </div>
                     <p class="text-slate-400 text-xs leading-relaxed max-w-sm">
                         Pakistan's premier direct-to-consumer store. We inspect, authenticate, and fulfill every item directly from our central Karachi fulfillment warehouse with zero marketplace middlemen.
                     </p>
-                    <div class="space-y-1.5 pt-1 text-xs">
+                    <div class="space-y-2 pt-1 text-xs">
                         <div class="flex items-center space-x-2 text-slate-300">
                             <i class="fa-solid fa-phone text-pulse-orange w-4"></i>
                             <a href="tel:+923328912706" class="hover:text-white font-medium transition-colors">+923328912706</a>
@@ -374,6 +395,10 @@
                         <div class="flex items-center space-x-2 text-slate-300">
                             <i class="fa-solid fa-envelope text-pulse-teal w-4"></i>
                             <a href="mailto:{{ $settingsHelper['email'] }}" class="hover:text-white font-medium transition-colors">{{ $settingsHelper['email'] }}</a>
+                        </div>
+                        <div class="flex items-center space-x-2 text-slate-300">
+                            <i class="fa-brands fa-whatsapp text-emerald-400 w-4"></i>
+                            <a href="https://wa.me/923328912706" target="_blank" rel="noopener" class="hover:text-white font-medium transition-colors">WhatsApp: +923328912706</a>
                         </div>
                     </div>
                     <div class="flex items-center space-x-3 text-white pt-1">
@@ -439,24 +464,6 @@
                             </a>
                         </li>
                     </ul>
-                </div>
-
-                {{-- Stay Updated --}}
-                <div>
-                    <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-3">Stay Updated</h4>
-                    <p class="text-[11px] text-slate-400 mb-3">Get direct alerts for warehouse flash sales and authentic product drops.</p>
-                    <form class="space-y-2" id="footer-newsletter-form" onsubmit="handleNewsletter(event, this)">
-                        <input class="w-full bg-white/5 border border-white/15 rounded-lg px-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-pulse-orange" placeholder="Enter your email" type="email" required>
-                        <button class="w-full bg-pulse-orange hover:bg-pulse-orange-dark text-white font-extrabold py-2.5 rounded-lg text-xs uppercase tracking-wider transition-colors cursor-pointer" type="submit">
-                            SUBSCRIBE NOW
-                        </button>
-                    </form>
-                    <span class="block text-[10px] text-slate-400 text-center mt-2.5">
-                        <a href="https://wa.me/923328912706" target="_blank" rel="noopener" class="text-pulse-teal hover:underline flex items-center justify-center gap-1.5">
-                            <i class="fa-brands fa-whatsapp"></i>
-                            <span>WhatsApp Support (+923328912706)</span>
-                        </a>
-                    </span>
                 </div>
             </div>
 

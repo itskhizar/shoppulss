@@ -27,8 +27,15 @@
         <div class="flex-1 flex flex-col min-h-0">
             {{-- Brand Logo Header --}}
             <div class="h-16 flex items-center px-5 border-b border-white/10 gap-2.5 flex-shrink-0">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 group">
-                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-8 w-auto object-contain">
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 group" aria-label="ShopPulss Admin">
+                    <img
+                        src="{{ asset('images/shoppulss-logo-white.svg') }}"
+                        alt="ShopPulss"
+                        width="150"
+                        height="32"
+                        class="h-8 w-auto max-w-[150px] object-contain"
+                        style="height: 32px; max-height: 34px; width: auto; max-width: 150px; object-fit: contain;"
+                    >
                     <div class="hidden items-center gap-2">
                         <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#FF6B1F] to-[#FF4A0A] flex items-center justify-center text-white text-xs font-black shadow-sm">S</div>
                         <div class="flex flex-col">
@@ -168,8 +175,15 @@
     <aside id="mobileSidebar" class="fixed inset-y-0 left-0 w-72 bg-[#0F1654] text-white z-50 flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
         <div class="flex-1 flex flex-col min-h-0">
             <div class="h-16 flex items-center justify-between px-5 border-b border-white/10 flex-shrink-0">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
-                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-7 w-auto object-contain">
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2" aria-label="ShopPulss Admin">
+                    <img
+                        src="{{ asset('images/shoppulss-logo-white.svg') }}"
+                        alt="ShopPulss"
+                        width="140"
+                        height="28"
+                        class="h-7 w-auto max-w-[140px] object-contain"
+                        style="height: 28px; max-height: 30px; width: auto; max-width: 140px; object-fit: contain;"
+                    >
                 </a>
                 <button type="button" onclick="toggleMobileSidebar()" class="p-2 text-blue-200 hover:text-white rounded-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>

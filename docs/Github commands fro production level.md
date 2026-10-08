@@ -91,3 +91,21 @@ php artisan db:seed --class=PageSeeder --force
 
 # 5. Re-optimize the application for production
 php artisan optimize
+
+
+cd /var/www/shoppulss
+
+# 1. Pull the new code + compiled production CSS bundle
+git pull origin main
+
+# 2. Clear cached routes, views, and config
+php artisan optimize:clear
+
+# 3. Run the database migrations (creates pages & redirects tables)
+php artisan migrate --force
+
+# 4. Seed the legal policy pages and 301 alias mappings
+php artisan db:seed --class=PageSeeder --force
+
+# 5. Re-optimize the application for production
+php artisan optimize

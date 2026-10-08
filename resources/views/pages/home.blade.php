@@ -611,30 +611,9 @@
 </section>
 {{-- END: DirectRetailPhilosophy --}}
 
-{{-- 10. BEGIN: NewsletterAndAssistance --}}
-<section class="py-12 bg-white" data-purpose="newsletter-assistance">
+{{-- 10. BEGIN: LiveAssistanceAndOrderTracking --}}
+<section class="py-10 bg-white" data-purpose="assistance-tracking">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {{-- Newsletter Card --}}
-        <div class="bg-slate-50 border border-pulse-border rounded-3xl p-6 sm:p-10 mb-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                <div class="lg:col-span-6 space-y-1">
-                    <h3 class="text-xl sm:text-2xl font-black text-pulse-navy flex items-center space-x-2">
-                        <span>Get Exclusive Deals First!</span>
-                        <span>🎉</span>
-                    </h3>
-                    <p class="text-xs sm:text-sm text-slate-500">Subscribe to receive instant warehouse alerts and secret flash markdown coupons.</p>
-                </div>
-                <div class="lg:col-span-6">
-                    <form onsubmit="handleNewsletter(event, this)" class="flex flex-col sm:flex-row gap-2">
-                        <input class="flex-1 bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs focus:border-pulse-orange focus:ring-1 focus:ring-pulse-orange" placeholder="Enter your email address..." type="email" required>
-                        <button class="bg-pulse-navy hover:bg-pulse-navy-dark text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-colors whitespace-nowrap" type="submit">
-                            Subscribe →
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
         {{-- Live Order Tracking & Direct WhatsApp Bar --}}
         @php
             $cleanWhatsapp = '923328912706';

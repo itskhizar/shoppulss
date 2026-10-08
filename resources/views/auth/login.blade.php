@@ -10,8 +10,15 @@
         {{-- Card --}}
         <div class="bg-white rounded-3xl shadow-sp-card border border-[#E6E8F2] p-8 sm:p-9">
             <div class="text-center mb-8">
-                <a href="{{ route('home') }}" class="inline-block mb-3">
-                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-10 w-auto mx-auto object-contain">
+                <a href="{{ route('home') }}" class="inline-block mb-3" aria-label="ShopPulss Home">
+                    <img
+                        src="{{ asset('images/shoppulss-logo.svg') }}"
+                        alt="ShopPulss"
+                        width="165"
+                        height="38"
+                        class="site-logo-header h-9 sm:h-10 w-auto mx-auto max-w-[165px] object-contain"
+                        style="height: 36px; max-height: 40px; width: auto; max-width: 165px; object-fit: contain;"
+                    >
                 </a>
                 <h1 class="text-2xl font-black text-[#0F1654]">Welcome Back</h1>
                 <p class="text-xs text-gray-500 mt-1">Sign in to track orders, manage addresses, and access VIP deals</p>
