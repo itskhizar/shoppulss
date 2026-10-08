@@ -1,8 +1,5 @@
 @extends('layouts.app')
 
-@section('title', $product->name . ' - ShopPulss')
-@section('description', $product->short_description ?? substr(strip_tags($product->description), 0, 160))
-
 @section('content')
 <div class="bg-white border-b border-[#E6E8F2] py-4">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
@@ -83,17 +80,30 @@
 
                     {{-- Ratings, SKU & Stock --}}
                     <div class="flex items-center gap-4 mt-3 text-xs text-gray-500 flex-wrap">
-                        <div class="flex items-center gap-1.5 text-amber-500">
-                            <div class="flex items-center">
-                                @for($i = 1; $i <= 5; $i++)
-                                    <svg class="w-4 h-4 {{ $i <= ($product->rating_cache ?? 5) ? 'fill-amber-400' : 'fill-gray-200' }}" viewBox="0 0 20 20">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                    </svg>
-                                @endfor
+                        @php
+                            $prodReviews = $product->relationLoaded('approvedReviews') ? $product->approvedReviews : $product->approvedReviews()->get();
+                            $hasRealReviews = $prodReviews->isNotEmpty();
+                            $avgProdRating = $hasRealReviews ? round($prodReviews->avg('rating'), 1) : null;
+                            $countProdReviews = $hasRealReviews ? $prodReviews->count() : 0;
+                        @endphp
+                        @if($hasRealReviews)
+                            <div class="flex items-center gap-1.5 text-amber-500">
+                                <div class="flex items-center">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <svg class="w-4 h-4 {{ $i <= $avgProdRating ? 'fill-amber-400' : 'fill-gray-200' }}" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                        </svg>
+                                    @endfor
+                                </div>
+                                <span class="font-black text-[#0F1654] ml-1">{{ number_format($avgProdRating, 1) }}</span>
+                                <span class="text-gray-400">({{ $countProdReviews }} verified {{ Str::plural('review', $countProdReviews) }})</span>
                             </div>
-                            <span class="font-black text-[#0F1654] ml-1">{{ number_format($product->rating_cache ?? 5.0, 1) }}</span>
-                            <span class="text-gray-400">({{ $product->rating_count ?? 12 }} reviews)</span>
-                        </div>
+                        @else
+                            <div class="flex items-center gap-1.5 text-slate-500 text-xs">
+                                <i class="fa-solid fa-shield-halved text-pulse-teal"></i>
+                                <span class="font-semibold text-slate-600">Central Warehouse Stock</span>
+                            </div>
+                        @endif
                         <span class="text-gray-300">•</span>
                         <div>SKU: <span class="font-mono font-bold text-gray-700">{{ $product->sku ?? ('SKU-' . $product->id) }}</span></div>
                         <span class="text-gray-300">•</span>
@@ -210,32 +220,32 @@
                     </div>
                 </form>
 
-                {{-- Trust Badges Box --}}
+                {{-- Trust Badges Box (Linked to Official Policy Pages) --}}
                 <div class="grid grid-cols-2 gap-3 pt-6 border-t border-[#E6E8F2] text-xs text-gray-700">
-                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-[#F6F7FB] border border-[#E6E8F2]">
+                    <a href="{{ url('/about-us') }}" class="flex items-center gap-3 p-3 rounded-2xl bg-[#F6F7FB] border border-[#E6E8F2] hover:border-pulse-teal transition-colors group">
                         <div class="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-[#0AA6B7] shadow-xs flex-shrink-0">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"/></svg>
+                            <i class="fa-solid fa-shield-halved text-sm"></i>
                         </div>
-                        <span class="font-bold text-[#0F1654]">100% Brand Authentic</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-[#F6F7FB] border border-[#E6E8F2]">
+                        <span class="font-bold text-[#0F1654] group-hover:text-pulse-teal transition-colors">Direct Store Retail</span>
+                    </a>
+                    <a href="{{ url('/payment-policy') }}" class="flex items-center gap-3 p-3 rounded-2xl bg-[#F6F7FB] border border-[#E6E8F2] hover:border-pulse-orange transition-colors group">
                         <div class="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-[#FF5A1F] shadow-xs flex-shrink-0">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
+                            <i class="fa-solid fa-money-bill-wave text-sm"></i>
                         </div>
-                        <span class="font-bold text-[#0F1654]">Cash on Delivery (COD)</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-[#F6F7FB] border border-[#E6E8F2]">
+                        <span class="font-bold text-[#0F1654] group-hover:text-pulse-orange transition-colors">Cash on Delivery (COD)</span>
+                    </a>
+                    <a href="{{ url('/shipping-delivery-policy') }}" class="flex items-center gap-3 p-3 rounded-2xl bg-[#F6F7FB] border border-[#E6E8F2] hover:border-pulse-teal transition-colors group">
                         <div class="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-[#0AA6B7] shadow-xs flex-shrink-0">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/><path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H11a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7h4l2 4v4h-6V7z"/></svg>
+                            <i class="fa-solid fa-truck-fast text-sm"></i>
                         </div>
-                        <span class="font-bold text-[#0F1654]">Nationwide Express Delivery</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-[#F6F7FB] border border-[#E6E8F2]">
+                        <span class="font-bold text-[#0F1654] group-hover:text-pulse-teal transition-colors">Nationwide Logistics</span>
+                    </a>
+                    <a href="{{ url('/return-refund-policy') }}" class="flex items-center gap-3 p-3 rounded-2xl bg-[#F6F7FB] border border-[#E6E8F2] hover:border-pulse-orange transition-colors group">
                         <div class="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-[#FF5A1F] shadow-xs flex-shrink-0">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/></svg>
+                            <i class="fa-solid fa-rotate-left text-sm"></i>
                         </div>
-                        <span class="font-bold text-[#0F1654]">7-Day Easy Returns</span>
-                    </div>
+                        <span class="font-bold text-[#0F1654] group-hover:text-pulse-orange transition-colors">7-Day Easy Returns</span>
+                    </a>
                 </div>
 
             </div>

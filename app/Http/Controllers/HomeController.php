@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Setting;
+use App\Services\Seo\SeoService;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -12,8 +13,10 @@ class HomeController extends Controller
     /**
      * Show the application homepage.
      */
-    public function index(): View
+    public function index(SeoService $seo): View
     {
+        $seo->forHome();
+
         $featuredCategories = Category::active()
             ->featured()
             ->parents()

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
             ProductSeeder::class,
             CourierSeeder::class,
+            PageSeeder::class,
         ]);
 
         // Create or get super admin user

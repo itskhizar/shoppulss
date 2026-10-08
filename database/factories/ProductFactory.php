@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -32,7 +31,6 @@ class ProductFactory extends Factory
             'short_description' => fake()->sentence(12),
             'description' => fake()->paragraphs(3, true),
             'category_id' => Category::factory(),
-            'brand_id' => Brand::factory(),
             'regular_price' => $regularPrice,
             'sale_price' => $salePrice,
             'cost_price' => round($regularPrice * 0.55, 2),

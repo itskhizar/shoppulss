@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Sign In - ShopPulss')
-@section('description', 'Sign in to your ShopPulss account to track orders, manage returns, and access exclusive member deals.')
-@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
+@section('description', 'Sign in to your ShopPulss account to track orders and manage returns.')
+@section('robots', 'noindex, follow')
 
 @section('content')
 <div class="min-h-[72vh] py-14 px-4 flex items-center justify-center bg-[#F6F7FB]">

@@ -1,8 +1,8 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'My Account - ShopPulss')
 @section('description', 'Manage your ShopPulss account, track orders, and update your profile.')
-@section('keywords', 'online shopping Pakistan, Cash on Delivery, ShopPulss, direct retail')
+@section('robots', 'noindex, follow')
 
 @section('content')
 <div class="bg-white border-b border-[#E6E8F2] py-5">
