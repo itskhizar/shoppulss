@@ -30,14 +30,14 @@
     @php
         $settingsHelper = [
             'tagline' => \App\Models\Setting::get('store_tagline', 'Pakistan\'s Verified Direct Retail Hub'),
-            'phone' => \App\Models\Setting::get('store_phone', '+923328912706'),
+            'phone' => '+923328912706',
             'email' => \App\Models\Setting::get('store_email', 'devwordspace3300@gmail.com'),
-            'whatsapp' => \App\Models\Setting::get('whatsapp_number', '+923328912706'),
-            'whatsapp_helpline' => \App\Models\Setting::get('whatsapp_helpline', '+923328912706'),
+            'whatsapp' => '+923328912706',
+            'whatsapp_helpline' => '+923328912706',
             'facebook' => \App\Models\Setting::get('facebook_url', 'https://facebook.com/shoppulss'),
             'instagram' => \App\Models\Setting::get('instagram_url', 'https://instagram.com/shoppulss'),
         ];
-        $cleanWhatsapp = preg_replace('/[^0-9]/', '', $settingsHelper['whatsapp']);
+        $cleanWhatsapp = '923328912706';
 
         // Database-driven cart values
         $cartService = app(\App\Services\CartService::class);
@@ -73,9 +73,9 @@
                     <span>Track Order</span>
                 </a>
                 <span class="text-slate-600">|</span>
-                <a class="hover:text-pulse-orange flex items-center space-x-1 font-semibold text-white transition-colors" href="tel:{{ preg_replace('/[^0-9+]/', '', $settingsHelper['phone']) }}">
+                <a class="hover:text-pulse-orange flex items-center space-x-1 font-semibold text-white transition-colors" href="tel:+923328912706">
                     <i class="fa-solid fa-headset text-pulse-orange"></i>
-                    <span>{{ $settingsHelper['phone'] }}</span>
+                    <span>+923328912706</span>
                 </a>
             </div>
         </div>
@@ -97,44 +97,43 @@
                     <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-10 sm:h-11 w-auto object-contain transition-transform group-hover:scale-102">
                 </a>
 
-                {{-- Center Search Bar --}}
+                {{-- Center Search Bar (Unified Input Group, Clean Separation) --}}
                 <div class="hidden md:flex flex-1 max-w-2xl">
-                    <form action="{{ route('search') }}" method="GET" class="w-full relative flex items-center" id="header-search-form">
-                        <div class="relative w-full flex items-center">
-                            {{-- Category selector inside search --}}
-                            <div class="absolute left-1.5 z-30" id="search-cat-container">
-                                <select
-                                    name="category"
-                                    id="navbar-category-select"
-                                    onchange="handleNavbarCategoryChange(this)"
-                                    class="h-[38px] text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 pl-3 pr-7 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-pulse-orange/30 cursor-pointer transition-colors max-w-[145px] truncate"
-                                    title="Filter by category"
-                                    style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-position: right 0.5rem center; background-repeat: no-repeat; -webkit-appearance: none; -moz-appearance: none; appearance: none;"
-                                >
-                                    <option value="" class="font-bold text-slate-800">All Categories</option>
-                                    @foreach($navCategories as $cat)
-                                        <option value="{{ $cat->slug }}" {{ request('category') == $cat->slug ? 'selected' : '' }} class="font-medium text-slate-700">
-                                            {{ $cat->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <input
-                                class="w-full py-2.5 pl-[156px] pr-28 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:bg-white focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all placeholder:text-slate-400"
-                                placeholder="Search genuine gadgets, smartwatches, home decor, lifestyle..."
-                                type="search"
-                                name="q"
-                                value="{{ request('q') }}"
-                                autocomplete="off"
+                    <form action="{{ route('search') }}" method="GET" class="w-full flex items-center rounded-xl border border-slate-200 bg-slate-50 focus-within:bg-white focus-within:border-pulse-orange focus-within:ring-2 focus-within:ring-pulse-orange/20 transition-all overflow-hidden shadow-2xs" id="header-search-form">
+                        {{-- Category Select on the left --}}
+                        <div class="shrink-0 border-r border-slate-200 bg-slate-100/90 hover:bg-slate-200/80 transition-colors">
+                            <select
+                                name="category"
+                                id="navbar-category-select"
+                                onchange="handleNavbarCategoryChange(this)"
+                                class="h-10 text-xs font-bold text-slate-700 bg-transparent pl-3.5 pr-8 border-0 focus:outline-none focus:ring-0 cursor-pointer"
+                                title="Filter by category"
+                                style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-position: right 0.6rem center; background-repeat: no-repeat; -webkit-appearance: none; -moz-appearance: none; appearance: none;"
                             >
-
-                            {{-- Search CTA Button --}}
-                            <button class="absolute right-1.5 bg-pulse-orange hover:bg-pulse-orange-dark text-white px-5 py-2 rounded-lg text-xs font-bold tracking-wide transition-all shadow-sm flex items-center space-x-1.5 cursor-pointer" type="submit">
-                                <i class="fa-solid fa-magnifying-glass text-xs"></i>
-                                <span>Search</span>
-                            </button>
+                                <option value="" class="font-bold text-slate-800">All Categories</option>
+                                @foreach($navCategories as $cat)
+                                    <option value="{{ $cat->slug }}" {{ request('category') == $cat->slug ? 'selected' : '' }} class="font-medium text-slate-700">
+                                        {{ $cat->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
+
+                        {{-- Search Text Input in the middle (Never overlaps) --}}
+                        <input
+                            class="flex-1 min-w-0 h-10 px-4 bg-transparent border-0 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+                            placeholder="Search genuine gadgets, smartwatches, lifestyle..."
+                            type="search"
+                            name="q"
+                            value="{{ request('q') }}"
+                            autocomplete="off"
+                        >
+
+                        {{-- Search CTA Button on the right --}}
+                        <button class="shrink-0 bg-pulse-orange hover:bg-pulse-orange-dark text-white px-5 h-10 text-xs font-bold tracking-wide transition-all flex items-center space-x-1.5 cursor-pointer shadow-xs" type="submit">
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                            <span>Search</span>
+                        </button>
                     </form>
                 </div>
 
@@ -371,7 +370,7 @@
                     <div class="space-y-1.5 pt-1 text-xs">
                         <div class="flex items-center space-x-2 text-slate-300">
                             <i class="fa-solid fa-phone text-pulse-orange w-4"></i>
-                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $settingsHelper['phone']) }}" class="hover:text-white font-medium transition-colors">{{ $settingsHelper['phone'] }}</a>
+                            <a href="tel:+923328912706" class="hover:text-white font-medium transition-colors">+923328912706</a>
                         </div>
                         <div class="flex items-center space-x-2 text-slate-300">
                             <i class="fa-solid fa-envelope text-pulse-teal w-4"></i>
@@ -442,9 +441,9 @@
                         </button>
                     </form>
                     <span class="block text-[10px] text-slate-400 text-center mt-2.5">
-                        <a href="https://wa.me/{{ $cleanWhatsapp }}" target="_blank" rel="noopener" class="text-pulse-teal hover:underline flex items-center justify-center gap-1.5">
+                        <a href="https://wa.me/923328912706" target="_blank" rel="noopener" class="text-pulse-teal hover:underline flex items-center justify-center gap-1.5">
                             <i class="fa-brands fa-whatsapp"></i>
-                            <span>WhatsApp Support ({{ $settingsHelper['whatsapp'] }})</span>
+                            <span>WhatsApp Support (+923328912706)</span>
                         </a>
                     </span>
                 </div>
@@ -479,12 +478,6 @@
     {{-- Toast Notification Container --}}
     <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    {{-- Floating WhatsApp Action Button --}}
-    <a href="https://wa.me/{{ $cleanWhatsapp }}" target="_blank" rel="noopener" class="fixed bottom-6 left-6 z-40 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full p-3.5 shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 group focus:outline-none focus:ring-4 focus:ring-emerald-300 cursor-pointer" aria-label="Contact us on WhatsApp" title="WhatsApp: {{ $settingsHelper['whatsapp'] }}">
-        <i class="fa-brands fa-whatsapp text-2xl"></i>
-        <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:ml-2 text-xs font-bold transition-all duration-300 ease-in-out">WhatsApp: {{ $settingsHelper['whatsapp'] }}</span>
-    </a>
-
     {{-- Global Interactive Scripts --}}
     <script>
         // Mobile Drawer toggle
@@ -503,11 +496,20 @@
         function toggleNavCategoriesMenu(e) {
             if (e) {
                 e.stopPropagation();
+                e.preventDefault();
             }
             const menu = document.getElementById('nav-cat-dropdown-menu');
             const chevron = document.getElementById('nav-cat-chevron');
-            if (menu) menu.classList.toggle('hidden');
-            if (chevron) chevron.classList.toggle('rotate-180');
+            if (menu) {
+                const isHidden = menu.classList.contains('hidden');
+                if (isHidden) {
+                    menu.classList.remove('hidden');
+                    if (chevron) chevron.classList.add('rotate-180');
+                } else {
+                    menu.classList.add('hidden');
+                    if (chevron) chevron.classList.remove('rotate-180');
+                }
+            }
         }
 
         // Header Category Select Change Handler
@@ -715,6 +717,21 @@
         // Initialize state
         document.addEventListener('DOMContentLoaded', () => {
             updateWishlistBadge();
+
+            // Support hover & click on All Categories dropdown
+            const navCatContainer = document.getElementById('nav-cat-dropdown-container');
+            const navCatMenu = document.getElementById('nav-cat-dropdown-menu');
+            const navCatChevron = document.getElementById('nav-cat-chevron');
+            if (navCatContainer && navCatMenu) {
+                navCatContainer.addEventListener('mouseenter', () => {
+                    navCatMenu.classList.remove('hidden');
+                    if (navCatChevron) navCatChevron.classList.add('rotate-180');
+                });
+                navCatContainer.addEventListener('mouseleave', () => {
+                    navCatMenu.classList.add('hidden');
+                    if (navCatChevron) navCatChevron.classList.remove('rotate-180');
+                });
+            }
 
             // Sync hearts on loaded products
             try {
