@@ -138,6 +138,10 @@ img:not([class*="h-"]):not([height]):not(.site-logo-header):not(.site-logo-foote
     object-fit: contain !important;
 }
 
+#nav-cat-dropdown-menu.force-open {
+    display: block !important;
+}
+
 ::selection { background: #FF5A1F; color: #fff; }
 :focus-visible { outline: 2.5px solid #FF5A1F; outline-offset: 2px; border-radius: 4px; }
 

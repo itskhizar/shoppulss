@@ -29,7 +29,7 @@
             <div class="h-16 flex items-center px-5 border-b border-white/10 gap-2.5 flex-shrink-0">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 group" aria-label="ShopPulss Admin">
                     <img
-                        src="{{ asset('images/shoppulss-logo-white.svg') }}"
+                        src="{{ asset('images/shoppulss-logo-white.png') }}"
                         alt="ShopPulss"
                         width="150"
                         height="32"
@@ -177,7 +177,7 @@
             <div class="h-16 flex items-center justify-between px-5 border-b border-white/10 flex-shrink-0">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2" aria-label="ShopPulss Admin">
                     <img
-                        src="{{ asset('images/shoppulss-logo-white.svg') }}"
+                        src="{{ asset('images/shoppulss-logo-white.png') }}"
                         alt="ShopPulss"
                         width="140"
                         height="28"

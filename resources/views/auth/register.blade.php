@@ -11,7 +11,7 @@
             <div class="text-center mb-8">
                 <a href="{{ route('home') }}" class="inline-block mb-3" aria-label="ShopPulss Home">
                     <img
-                        src="{{ asset('images/shoppulss-logo.svg') }}"
+                        src="{{ asset('images/shoppulss-logo.png') }}"
                         alt="ShopPulss"
                         width="165"
                         height="38"

@@ -55,15 +55,15 @@
     {{-- BEGIN: Top Utility Bar (Navy) --}}
     <aside class="bg-pulse-navy-dark text-white py-1.5 sm:py-2 border-b border-white/10" data-purpose="top-utility-bar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-[11px] sm:text-xs">
-            <div class="flex items-center space-x-3 sm:space-x-6 truncate mr-2">
-                <span class="flex items-center space-x-1.5 font-medium text-slate-300 truncate">
-                    <i class="fa-solid fa-shield-halved text-pulse-teal shrink-0"></i>
-                    <span class="truncate">{{ $settingsHelper['tagline'] ?: "Pakistan's Verified Direct Retail Hub" }}</span>
+            <div class="flex items-center space-x-3 sm:space-x-5 truncate mr-2">
+                <span class="flex items-center space-x-1.5 font-bold text-slate-200 truncate">
+                    <i class="fa-solid fa-truck-fast text-pulse-orange shrink-0"></i>
+                    <span class="truncate">Free Express Shipping Nationwide</span>
                 </span>
-                <span class="hidden md:inline-block text-slate-600">|</span>
-                <span class="hidden md:flex items-center space-x-1.5 text-emerald-400 font-medium shrink-0">
+                <span class="text-slate-600">|</span>
+                <span class="flex items-center space-x-1.5 text-emerald-400 font-bold shrink-0">
                     <i class="fa-solid fa-money-bill-wave"></i>
-                    <span>Cash on Delivery (COD) Nationwide</span>
+                    <span>Cash on Delivery (COD) Available</span>
                 </span>
             </div>
             <div class="flex items-center space-x-3 sm:space-x-5 text-slate-300 shrink-0">
@@ -94,7 +94,7 @@
                 {{-- Brand Logo --}}
                 <a class="flex items-center shrink-0 group" href="{{ route('home') }}" aria-label="ShopPulss Home">
                     <img
-                        src="{{ asset('images/shoppulss-logo.svg') }}"
+                        src="{{ asset('images/shoppulss-logo.png') }}"
                         alt="ShopPulss"
                         width="165"
                         height="36"
@@ -247,55 +247,74 @@
 
             {{-- Secondary Navigation Bar (Desktop only, mobile handled by Drawer) --}}
             <div class="border-t border-slate-100 py-2.5 hidden lg:flex items-center justify-between text-xs font-semibold relative" data-purpose="primary-navigation">
-                <div class="flex items-center space-x-4 lg:space-x-6 w-full">
-                    {{-- All Categories Dropdown Menu (Outside overflow-x-auto to prevent clipping) --}}
-                    <div class="relative shrink-0" id="nav-cat-dropdown-container">
-                        <button type="button" onclick="toggleNavCategoriesMenu(event)" id="nav-cat-btn" class="flex items-center space-x-2 text-pulse-navy font-black bg-slate-100 hover:bg-pulse-orange hover:text-white px-3.5 py-1.5 rounded-xl transition-all shadow-2xs group cursor-pointer border border-slate-200/60">
-                            <i class="fa-solid fa-bars-staggered text-xs text-pulse-orange group-hover:text-white transition-colors"></i>
+                <div class="flex items-center space-x-3 lg:space-x-5 w-full">
+                    {{-- All Categories Dropdown Menu (Works seamlessly on BOTH Hover and Click) --}}
+                    <div class="relative shrink-0 group/navcat" id="nav-cat-dropdown-container">
+                        <button
+                            type="button"
+                            onclick="toggleNavCategoriesMenu(event)"
+                            id="nav-cat-btn"
+                            class="flex items-center space-x-2 text-pulse-navy font-black bg-slate-100 hover:bg-pulse-orange hover:text-white group-hover/navcat:bg-pulse-orange group-hover/navcat:text-white px-3.5 py-1.5 rounded-xl transition-all shadow-2xs cursor-pointer border border-slate-200/60"
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                        >
+                            <i class="fa-solid fa-bars-staggered text-xs text-pulse-orange group-hover/navcat:text-white transition-colors"></i>
                             <span>All Categories</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 group-hover:text-white transition-transform" id="nav-cat-chevron"></i>
+                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 group-hover/navcat:text-white group-hover/navcat:rotate-180 transition-transform duration-200" id="nav-cat-chevron"></i>
                         </button>
-                        <div id="nav-cat-dropdown-menu" class="hidden absolute left-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-pulse-border py-2 z-[100]">
-                            <div class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between">
-                                <span>Shop by Department</span>
-                                <span class="text-pulse-teal font-bold">{{ $navCategories->count() }} Categories</span>
-                            </div>
-                            <div class="max-h-80 overflow-y-auto py-1">
-                                <a href="{{ route('products.index') }}" class="flex items-center justify-between px-4 py-2.5 text-xs font-bold text-pulse-navy hover:bg-pulse-orange-light hover:text-pulse-orange transition-colors">
-                                    <span class="flex items-center gap-2">
-                                        <i class="fa-solid fa-border-all text-xs text-pulse-orange"></i>
-                                        <span>All Products / Catalog</span>
-                                    </span>
-                                    <i class="fa-solid fa-arrow-right text-[10px] text-slate-400"></i>
-                                </a>
-                                @foreach($navCategories as $cat)
-                                    <a href="{{ route('categories.show', $cat->slug) }}" class="flex items-center justify-between px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-pulse-orange font-medium transition-colors group">
-                                        <span class="truncate">{{ $cat->name }}</span>
-                                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover:text-pulse-orange group-hover:translate-x-0.5 transition-all"></i>
+
+                        {{-- Dropdown Menu (Seamless Invisible Hover Bridge + High z-index) --}}
+                        <div
+                            id="nav-cat-dropdown-menu"
+                            class="hidden group-hover/navcat:block absolute left-0 top-full pt-1.5 w-64 z-[100]"
+                        >
+                            <div class="bg-white rounded-2xl shadow-2xl border border-pulse-border py-2 overflow-hidden ring-1 ring-black/5">
+                                <div class="px-4 py-2 text-[10px] font-black uppercase tracking-wider text-slate-400 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+                                    <span>Shop by Department</span>
+                                    <span class="text-pulse-teal font-bold bg-teal-50 px-2 py-0.5 rounded-full">{{ $navCategories->count() }} Categories</span>
+                                </div>
+                                <div class="max-h-80 overflow-y-auto py-1">
+                                    <a href="{{ route('products.index') }}" class="flex items-center justify-between px-4 py-2.5 text-xs font-bold text-pulse-navy hover:bg-orange-50 hover:text-pulse-orange transition-colors">
+                                        <span class="flex items-center gap-2">
+                                            <i class="fa-solid fa-border-all text-xs text-pulse-orange"></i>
+                                            <span>All Products / Catalog</span>
+                                        </span>
+                                        <i class="fa-solid fa-arrow-right text-[10px] text-slate-400"></i>
                                     </a>
-                                @endforeach
+                                    @foreach($navCategories as $cat)
+                                        <a href="{{ route('categories.show', $cat->slug) }}" class="flex items-center justify-between px-4 py-2 text-xs text-slate-700 hover:bg-orange-50 hover:text-pulse-orange font-medium transition-colors group/item">
+                                            <span class="truncate">{{ $cat->name }}</span>
+                                            <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover/item:text-pulse-orange group-hover/item:translate-x-0.5 transition-all"></i>
+                                        </a>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Horizontal Nav Links --}}
-                    <nav class="flex items-center space-x-5 lg:space-x-7 overflow-x-auto scrollbar-none py-0.5">
-                        <a class="{{ request()->routeIs('home') && !request()->has('q') ? 'text-pulse-orange font-bold' : 'text-slate-700 hover:text-pulse-orange' }} flex items-center space-x-1.5 transition-colors whitespace-nowrap" href="{{ route('home') }}">
+                    {{-- Horizontal Nav Links with Refined Hover Pills & Active States --}}
+                    <nav class="flex items-center space-x-1.5 lg:space-x-2 overflow-x-auto scrollbar-none py-0.5">
+                        <a class="{{ request()->routeIs('home') && !request()->has('q') && !request()->has('category') ? 'text-pulse-orange font-black bg-orange-50/90 shadow-2xs' : 'text-slate-700 hover:text-pulse-orange hover:bg-slate-100/80 font-bold' }} px-3 py-1.5 rounded-xl flex items-center space-x-1.5 transition-all whitespace-nowrap text-xs" href="{{ route('home') }}">
+                            <i class="fa-solid fa-house text-xs {{ request()->routeIs('home') && !request()->has('q') && !request()->has('category') ? 'text-pulse-orange' : 'text-slate-400' }}"></i>
                             <span>Home</span>
                         </a>
-                        <a class="{{ request()->routeIs('products.index') && !request()->has('q') ? 'text-pulse-orange font-bold' : 'text-slate-700 hover:text-pulse-orange' }} flex items-center space-x-1 transition-colors whitespace-nowrap" href="{{ route('products.index') }}">
+                        <a class="{{ request()->routeIs('products.index') && !request()->has('q') && !request()->has('sort') ? 'text-pulse-orange font-black bg-orange-50/90 shadow-2xs' : 'text-slate-700 hover:text-pulse-orange hover:bg-slate-100/80 font-bold' }} px-3 py-1.5 rounded-xl flex items-center space-x-1.5 transition-all whitespace-nowrap text-xs" href="{{ route('products.index') }}">
                             <i class="fa-solid fa-store text-xs text-pulse-orange"></i>
                             <span>Shop</span>
                         </a>
-                        <a class="text-slate-700 hover:text-pulse-orange transition-colors flex items-center space-x-1 whitespace-nowrap" href="{{ route('home') }}#trending">
+                        <a class="text-slate-700 hover:text-pulse-orange hover:bg-slate-100/80 font-bold px-3 py-1.5 rounded-xl flex items-center space-x-1.5 transition-all whitespace-nowrap text-xs" href="{{ route('home') }}#trending">
                             <span>Trending Products</span>
                         </a>
-                        <a class="text-slate-700 hover:text-pulse-orange transition-colors whitespace-nowrap" href="{{ route('home') }}#new-arrivals">New Arrivals</a>
-                        <a class="text-slate-700 hover:text-pulse-orange transition-colors flex items-center space-x-1 whitespace-nowrap" href="{{ route('home') }}#deals">
-                            <span class="w-2 h-2 rounded-full bg-pulse-orange pulse-dot"></span>
-                            <span>Flash Deals</span>
+                        <a class="text-slate-700 hover:text-pulse-orange hover:bg-slate-100/80 font-bold px-3 py-1.5 rounded-xl transition-all whitespace-nowrap text-xs" href="{{ route('home') }}#new-arrivals">
+                            <span>New Arrivals</span>
                         </a>
-                        <a class="text-slate-700 hover:text-pulse-orange transition-colors whitespace-nowrap" href="{{ route('home') }}#why-shop">Why Direct Retail?</a>
+                        <a class="text-slate-700 hover:text-pulse-orange hover:bg-slate-100/80 font-bold px-3 py-1.5 rounded-xl flex items-center space-x-1.5 transition-all whitespace-nowrap text-xs" href="{{ route('home') }}#deals">
+                            <span class="w-2 h-2 rounded-full bg-pulse-orange pulse-dot"></span>
+                            <span class="text-pulse-orange font-black">Flash Deals</span>
+                        </a>
+                        <a class="text-slate-700 hover:text-pulse-orange hover:bg-slate-100/80 font-bold px-3 py-1.5 rounded-xl transition-all whitespace-nowrap text-xs" href="{{ route('home') }}#why-shop">
+                            <span>Why Direct Retail?</span>
+                        </a>
                     </nav>
                 </div>
             </div>
@@ -308,7 +327,7 @@
         <div class="w-80 max-w-[85vw] h-full bg-white shadow-card-hover flex flex-col" onclick="event.stopPropagation()">
             <div class="p-5 border-b border-slate-100 flex items-center justify-between">
                 <img
-                    src="{{ asset('images/shoppulss-logo.svg') }}"
+                    src="{{ asset('images/shoppulss-logo.png') }}"
                     alt="ShopPulss"
                     width="140"
                     height="30"
@@ -375,7 +394,7 @@
                     <div class="flex items-center space-x-2">
                         <a href="{{ route('home') }}" class="inline-block" aria-label="ShopPulss Home">
                             <img
-                                src="{{ asset('images/shoppulss-logo-white.svg') }}"
+                                src="{{ asset('images/shoppulss-logo-white.png') }}"
                                 alt="ShopPulss"
                                 width="165"
                                 height="34"
@@ -527,13 +546,13 @@
             const menu = document.getElementById('nav-cat-dropdown-menu');
             const chevron = document.getElementById('nav-cat-chevron');
             if (menu) {
-                const isHidden = menu.classList.contains('hidden');
-                if (isHidden) {
-                    menu.classList.remove('hidden');
-                    if (chevron) chevron.classList.add('rotate-180');
-                } else {
-                    menu.classList.add('hidden');
+                const isForceOpen = menu.classList.contains('force-open');
+                if (isForceOpen) {
+                    menu.classList.remove('force-open', '!block');
                     if (chevron) chevron.classList.remove('rotate-180');
+                } else {
+                    menu.classList.add('force-open', '!block');
+                    if (chevron) chevron.classList.add('rotate-180');
                 }
             }
         }
@@ -563,7 +582,7 @@
             const navCatMenu = document.getElementById('nav-cat-dropdown-menu');
             const navCatChevron = document.getElementById('nav-cat-chevron');
             if (navCatContainer && navCatMenu && !navCatContainer.contains(e.target)) {
-                navCatMenu.classList.add('hidden');
+                navCatMenu.classList.remove('force-open', '!block');
                 if (navCatChevron) navCatChevron.classList.remove('rotate-180');
             }
         });
