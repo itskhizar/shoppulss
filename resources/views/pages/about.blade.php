@@ -13,28 +13,28 @@
 </div>
 
 {{-- Hero Section --}}
-<section class="bg-gradient-to-b from-white to-slate-50 border-b border-pulse-border py-14 lg:py-20">
+<section class="bg-gradient-to-b from-white to-slate-50 border-b border-pulse-border py-10 sm:py-14 lg:py-20">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-pulse-orange/10 text-pulse-orange border border-pulse-orange/20 mb-4">
+        <span class="inline-flex items-center px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-pulse-orange/10 text-pulse-orange border border-pulse-orange/20 mb-3 sm:mb-4">
             <i class="fa-solid fa-store mr-1.5 text-[11px]"></i> Direct Retail Storefront
         </span>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-pulse-navy tracking-tight leading-tight">
+        <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black text-pulse-navy tracking-tight leading-tight">
             About ShopPulss
         </h1>
-        <p class="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+        <p class="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
             Your destination for curated consumer technology, gadgets, and everyday lifestyle essentials in Pakistan, backed by central warehouse fulfillment and direct customer support.
         </p>
     </div>
 </section>
 
 {{-- Main Content & Principles --}}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
         {{-- Left Narrative (7 Cols) --}}
-        <div class="lg:col-span-7 space-y-8">
-            <div class="bg-white rounded-3xl border border-pulse-border p-6 sm:p-10 shadow-subtle space-y-6">
-                <h2 class="text-xl sm:text-2xl font-black text-pulse-navy">
+        <div class="lg:col-span-7 space-y-6 sm:space-y-8 min-w-0 w-full">
+            <div class="bg-white rounded-2xl sm:rounded-3xl border border-pulse-border p-5 sm:p-8 lg:p-10 shadow-subtle space-y-5 sm:space-y-6">
+                <h2 class="text-lg sm:text-2xl font-black text-pulse-navy">
                     A Fresh Approach to Online Shopping in Pakistan
                 </h2>
                 <p class="text-sm text-slate-600 leading-relaxed">
@@ -91,9 +91,9 @@
         </div>
 
         {{-- Right Column: Categories & Support (5 Cols) --}}
-        <div class="lg:col-span-5 space-y-6">
+        <div class="lg:col-span-5 space-y-6 min-w-0 w-full">
             {{-- Explore Active Catalog Categories --}}
-            <div class="bg-white rounded-3xl border border-pulse-border p-6 sm:p-8 shadow-subtle space-y-4">
+            <div class="bg-white rounded-2xl sm:rounded-3xl border border-pulse-border p-5 sm:p-8 shadow-subtle space-y-4">
                 <h2 class="text-base font-black text-pulse-navy flex items-center">
                     <i class="fa-solid fa-layer-group text-pulse-teal mr-2 text-sm"></i>
                     Explore Popular Categories

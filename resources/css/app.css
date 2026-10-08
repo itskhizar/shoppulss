@@ -74,7 +74,12 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+}
 body {
     background-color: var(--sp-bg);
     color: var(--sp-ink);
@@ -84,10 +89,80 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
 }
-img { max-width: 100%; }
+img { max-width: 100%; height: auto; }
 ::selection { background: #FF5A1F; color: #fff; }
 :focus-visible { outline: 2.5px solid #FF5A1F; outline-offset: 2px; border-radius: 4px; }
+
+/* Policy & CMS Content Typography & Layout */
+.policy-content {
+    font-size: 0.9375rem;
+    line-height: 1.8;
+    color: #334155;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+.policy-content h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0F1654;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #E8EAF2;
+    line-height: 1.35;
+}
+@media (min-width: 640px) {
+    .policy-content h2 {
+        font-size: 1.5rem;
+    }
+}
+.policy-content h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0F1654;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+.policy-content p {
+    margin-bottom: 1rem;
+    color: #475569;
+    line-height: 1.75;
+}
+.policy-content ul, .policy-content ol {
+    margin-left: 1.25rem;
+    margin-bottom: 1.25rem;
+    padding-left: 0.25rem;
+}
+.policy-content ul {
+    list-style-type: disc;
+}
+.policy-content ol {
+    list-style-type: decimal;
+}
+.policy-content li {
+    margin-bottom: 0.5rem;
+    color: #475569;
+    line-height: 1.65;
+}
+.policy-content a {
+    color: #FF5A1F;
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color 0.15s;
+}
+.policy-content a:hover {
+    color: #E04710;
+}
+.policy-content strong {
+    color: #0F1654;
+    font-weight: 700;
+}
 
 .bg-orange-grad { background: linear-gradient(135deg, #FF6B1F 0%, #FF4A0A 100%); }
 .bg-navy-grad { background: linear-gradient(135deg, #0F1654 0%, #16206E 100%); }

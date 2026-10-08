@@ -69,3 +69,25 @@ Then run:
 git pull origin main
 
 You should see the new commit:
+
+
+
+
+
+Antigravuty cmmnds 
+cd /var/www/shoppulss
+
+# 1. Pull the latest route aliases from main
+git pull origin main
+
+# 2. Clear the compiled route, config, and view cache
+php artisan optimize:clear
+
+# 3. Run the database migrations (creates pages and redirects tables)
+php artisan migrate --force
+
+# 4. Seed the 10 legal policy pages and 301 alias mappings
+php artisan db:seed --class=PageSeeder --force
+
+# 5. Re-optimize the application for production
+php artisan optimize

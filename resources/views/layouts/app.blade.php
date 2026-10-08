@@ -53,23 +53,23 @@
     @endphp
 
     {{-- BEGIN: Top Utility Bar (Navy) --}}
-    <aside class="bg-pulse-navy-dark text-white text-xs py-2 border-b border-white/10" data-purpose="top-utility-bar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-y-1">
-            <div class="flex items-center space-x-6">
-                <span class="flex items-center space-x-1.5 font-medium text-slate-300">
-                    <i class="fa-solid fa-shield-halved text-pulse-teal"></i>
-                    <span>{{ $settingsHelper['tagline'] ?: "Pakistan's Verified Direct Retail Hub" }}</span>
+    <aside class="bg-pulse-navy-dark text-white py-1.5 sm:py-2 border-b border-white/10" data-purpose="top-utility-bar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-[11px] sm:text-xs">
+            <div class="flex items-center space-x-3 sm:space-x-6 truncate mr-2">
+                <span class="flex items-center space-x-1.5 font-medium text-slate-300 truncate">
+                    <i class="fa-solid fa-shield-halved text-pulse-teal shrink-0"></i>
+                    <span class="truncate">{{ $settingsHelper['tagline'] ?: "Pakistan's Verified Direct Retail Hub" }}</span>
                 </span>
                 <span class="hidden md:inline-block text-slate-600">|</span>
-                <span class="flex items-center space-x-1.5 text-emerald-400 font-medium">
+                <span class="hidden md:flex items-center space-x-1.5 text-emerald-400 font-medium shrink-0">
                     <i class="fa-solid fa-money-bill-wave"></i>
                     <span>Cash on Delivery (COD) Nationwide</span>
                 </span>
             </div>
-            <div class="flex items-center space-x-5 text-slate-300">
+            <div class="flex items-center space-x-3 sm:space-x-5 text-slate-300 shrink-0">
                 <a class="hover:text-white flex items-center space-x-1 transition-colors" href="{{ route('orders.track') }}">
                     <i class="fa-solid fa-location-crosshairs text-slate-400 text-xs"></i>
-                    <span>Track Order</span>
+                    <span class="hidden sm:inline">Track Order</span>
                 </a>
                 <span class="text-slate-600">|</span>
                 <a class="hover:text-pulse-orange flex items-center space-x-1 font-semibold text-white transition-colors" href="tel:+923328912706">
@@ -82,9 +82,9 @@
     {{-- END: Top Utility Bar --}}
 
     {{-- BEGIN: Main Sticky Header --}}
-    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-pulse-border shadow-sm transition-all duration-200" id="site-header" data-purpose="site-header">
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-pulse-border shadow-xs transition-all duration-200" id="site-header" data-purpose="site-header">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20 gap-4 lg:gap-8">
+            <div class="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4 lg:gap-8">
 
                 {{-- Mobile Drawer Toggle --}}
                 <button type="button" onclick="toggleMobileDrawer()" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition-colors focus:outline-none" aria-label="Toggle navigation">
@@ -93,7 +93,7 @@
 
                 {{-- Brand Logo --}}
                 <a class="flex items-center space-x-2.5 shrink-0 group" href="{{ route('home') }}">
-                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-10 sm:h-11 w-auto object-contain transition-transform group-hover:scale-102">
+                    <img src="{{ asset('images/shoppulss-logo.png') }}" alt="ShopPulss" class="h-8 sm:h-10 w-auto object-contain transition-transform group-hover:scale-102">
                 </a>
 
                 {{-- Center Search Bar (Unified Input Group, Clean Separation) --}}
@@ -238,8 +238,8 @@
                 </form>
             </div>
 
-            {{-- Secondary Navigation Bar --}}
-            <div class="border-t border-slate-100 py-2.5 flex items-center justify-between text-xs font-semibold relative" data-purpose="primary-navigation">
+            {{-- Secondary Navigation Bar (Desktop only, mobile handled by Drawer) --}}
+            <div class="border-t border-slate-100 py-2.5 hidden lg:flex items-center justify-between text-xs font-semibold relative" data-purpose="primary-navigation">
                 <div class="flex items-center space-x-4 lg:space-x-6 w-full">
                     {{-- All Categories Dropdown Menu (Outside overflow-x-auto to prevent clipping) --}}
                     <div class="relative shrink-0" id="nav-cat-dropdown-container">
@@ -348,7 +348,7 @@
     </div>
 
     {{-- Main Content --}}
-    <main class="flex-1">
+    <main class="flex-1 w-full max-w-full overflow-x-hidden">
         @yield('content')
     </main>
 

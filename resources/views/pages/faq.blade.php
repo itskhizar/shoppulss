@@ -13,31 +13,31 @@
 </div>
 
 {{-- Header Banner --}}
-<section class="bg-gradient-to-b from-white to-slate-50 border-b border-pulse-border py-12 lg:py-16">
+<section class="bg-gradient-to-b from-white to-slate-50 border-b border-pulse-border py-10 sm:py-14 lg:py-16">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-pulse-teal/10 text-pulse-teal border border-pulse-teal/20 mb-3">
+        <span class="inline-flex items-center px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-pulse-teal/10 text-pulse-teal border border-pulse-teal/20 mb-3">
             <i class="fa-solid fa-circle-question mr-1.5 text-[11px]"></i> Help & Knowledge Base
         </span>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-pulse-navy tracking-tight">
+        <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black text-pulse-navy tracking-tight">
             Frequently Asked Questions
         </h1>
-        <p class="mt-3 text-sm sm:text-base text-slate-500 max-w-xl mx-auto leading-relaxed">
+        <p class="mt-3 text-xs sm:text-base text-slate-500 max-w-xl mx-auto leading-relaxed">
             Instant answers to common customer questions regarding shopping, delivery timelines, Cash on Delivery, and return procedures in Pakistan.
         </p>
     </div>
 </section>
 
 {{-- Accordion Sections --}}
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-10">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 space-y-6 sm:space-y-10 w-full">
 
     @php $index = 0; @endphp
     @foreach($faqSections as $sectionTitle => $questions)
-        <div class="bg-white rounded-3xl border border-pulse-border p-6 sm:p-8 shadow-subtle">
-            <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
-                <div class="w-8 h-8 rounded-xl bg-pulse-orange/10 text-pulse-orange flex items-center justify-center font-bold text-xs">
+        <div class="bg-white rounded-2xl sm:rounded-3xl border border-pulse-border p-4 sm:p-7 shadow-subtle">
+            <div class="flex items-center space-x-3 border-b border-slate-100 pb-3 sm:pb-4 mb-4 sm:mb-6">
+                <div class="w-8 h-8 rounded-xl bg-pulse-orange/10 text-pulse-orange flex items-center justify-center font-bold text-xs shrink-0">
                     <i class="fa-solid fa-folder-open"></i>
                 </div>
-                <h2 class="text-base sm:text-lg font-black text-pulse-navy">
+                <h2 class="text-sm sm:text-lg font-black text-pulse-navy">
                     {{ $sectionTitle }}
                 </h2>
             </div>

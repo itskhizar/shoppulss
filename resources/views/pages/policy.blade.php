@@ -14,61 +14,89 @@
     </div>
 </div>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 lg:py-14 w-full">
+    @php
+        $policyLinks = [
+            ['slug' => 'shipping-delivery-policy', 'title' => 'Shipping & Delivery', 'icon' => 'fa-truck-fast'],
+            ['slug' => 'return-refund-policy', 'title' => 'Returns & Refunds', 'icon' => 'fa-arrow-rotate-left'],
+            ['slug' => 'payment-policy', 'title' => 'Payment & COD', 'icon' => 'fa-wallet'],
+            ['slug' => 'warranty-policy', 'title' => 'Warranty', 'icon' => 'fa-award'],
+            ['slug' => 'privacy-policy', 'title' => 'Privacy', 'icon' => 'fa-user-shield'],
+            ['slug' => 'terms-and-conditions', 'title' => 'Terms', 'icon' => 'fa-file-lines'],
+            ['slug' => 'cookie-policy', 'title' => 'Cookies', 'icon' => 'fa-cookie-bite'],
+            ['slug' => 'accessibility', 'title' => 'Accessibility', 'icon' => 'fa-universal-access'],
+        ];
+    @endphp
+
+    {{-- Mobile Horizontal Policy Pill Switcher (Swipeable on phones) --}}
+    <div class="lg:hidden mb-6">
+        <div class="flex items-center space-x-2 overflow-x-auto scrollbar-none pb-2 -mx-4 px-4">
+            @foreach($policyLinks as $mLink)
+                <a
+                    href="{{ url('/' . $mLink['slug']) }}"
+                    class="shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 {{ request()->is($mLink['slug']) ? 'bg-pulse-orange text-white shadow-xs' : 'bg-white border border-slate-200 text-slate-700 hover:border-pulse-orange' }}"
+                >
+                    <i class="fa-solid {{ $mLink['icon'] }} text-[11px]"></i>
+                    <span>{{ $mLink['title'] }}</span>
+                </a>
+            @endforeach
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
         {{-- Left Content Area (8 Cols) --}}
-        <article class="lg:col-span-8 bg-white rounded-3xl border border-pulse-border p-6 sm:p-10 shadow-subtle">
+        <article class="lg:col-span-8 bg-white rounded-2xl sm:rounded-3xl border border-pulse-border p-5 sm:p-8 lg:p-10 shadow-subtle min-w-0 w-full">
             {{-- Header Badge & Metadata --}}
-            <header class="border-b border-slate-100 pb-6 mb-8">
-                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-pulse-teal/10 text-pulse-teal border border-pulse-teal/20">
-                        <i class="fa-solid fa-shield-check mr-1.5 text-[11px]"></i> Official Store Policy
+            <header class="border-b border-slate-100 pb-5 mb-6 sm:pb-6 sm:mb-8">
+                <div class="flex flex-wrap items-center justify-between gap-2.5 mb-3">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-pulse-teal/10 text-pulse-teal border border-pulse-teal/20">
+                        <i class="fa-solid fa-shield-check mr-1.5 text-[10px] sm:text-[11px]"></i> Official Store Policy
                     </span>
-                    <span class="text-xs text-slate-400 flex items-center">
+                    <span class="text-[11px] sm:text-xs text-slate-400 flex items-center">
                         <i class="fa-regular fa-clock mr-1.5 text-slate-400"></i>
                         Last updated: <strong class="text-slate-600 ml-1">{{ $page->effective_date_formatted }}</strong>
                     </span>
                 </div>
 
                 {{-- Page H1 --}}
-                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-pulse-navy tracking-tight leading-tight">
+                <h1 class="text-xl sm:text-3xl lg:text-4xl font-black text-pulse-navy tracking-tight leading-tight">
                     {{ $page->title }}
                 </h1>
 
                 @if($page->summary)
-                    <p class="mt-3 text-sm text-slate-500 leading-relaxed">
+                    <p class="mt-3 text-xs sm:text-sm text-slate-500 leading-relaxed">
                         {{ $page->summary }}
                     </p>
                 @endif
             </header>
 
             {{-- Policy Body Content with Enhanced Formatting --}}
-            <div class="policy-content text-slate-700 text-sm leading-relaxed space-y-6">
+            <div class="policy-content space-y-4 sm:space-y-6">
                 {!! $renderedBody !!}
             </div>
 
             {{-- Post-Policy Support Card --}}
-            <div class="mt-12 pt-8 border-t border-slate-100 bg-slate-50 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-100 bg-slate-50/70 rounded-2xl p-5 sm:p-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
                 <div>
-                    <h3 class="text-base font-bold text-pulse-navy">Questions about this policy?</h3>
+                    <h3 class="text-sm sm:text-base font-bold text-pulse-navy">Questions about this policy?</h3>
                     <p class="text-xs text-slate-500 mt-1">Our support desk in Karachi is ready to assist you regarding any order or policy inquiry.</p>
                 </div>
-                <div class="flex items-center gap-3 shrink-0">
-                    <a href="{{ route('contact') }}" class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:border-pulse-orange hover:text-pulse-orange transition-all shadow-2xs">
+                <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                    <a href="{{ route('contact') }}" class="flex-1 sm:flex-initial inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:border-pulse-orange hover:text-pulse-orange transition-all shadow-2xs">
                         <i class="fa-solid fa-envelope mr-1.5 text-xs text-pulse-teal"></i> Contact Us
                     </a>
-                    <a href="https://wa.me/923328912706" target="_blank" rel="noopener" class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors shadow-2xs">
+                    <a href="https://wa.me/923328912706" target="_blank" rel="noopener" class="flex-1 sm:flex-initial inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors shadow-2xs">
                         <i class="fa-brands fa-whatsapp mr-1.5 text-sm"></i> WhatsApp
                     </a>
                 </div>
             </div>
         </article>
 
-        {{-- Right Sidebar Navigation (4 Cols) --}}
-        <aside class="lg:col-span-4 space-y-6 sticky top-28">
+        {{-- Right Sidebar Navigation (4 Cols, Desktop Sticky) --}}
+        <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-28 min-w-0 w-full">
             {{-- Quick Links Card --}}
-            <div class="bg-white rounded-3xl border border-pulse-border p-6 shadow-subtle">
+            <div class="bg-white rounded-2xl sm:rounded-3xl border border-pulse-border p-5 sm:p-6 shadow-subtle">
                 <h2 class="text-xs font-black text-pulse-navy uppercase tracking-wider mb-4 flex items-center">
                     <i class="fa-solid fa-scale-balanced mr-2 text-pulse-orange"></i> Store Policies & Legal
                 </h2>

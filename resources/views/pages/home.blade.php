@@ -51,7 +51,7 @@
                 </div>
 
                 {{-- Bold Headline --}}
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-pulse-navy tracking-tight leading-[1.08]">
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-pulse-navy tracking-tight leading-[1.12]">
                     Discover Products <br>
                     <span class="bg-gradient-to-r from-pulse-orange via-amber-500 to-pulse-orange bg-clip-text text-transparent">
                         You'll Love.
@@ -59,18 +59,18 @@
                 </h1>
 
                 {{-- Value Statement --}}
-                <p class="text-base sm:text-lg text-slate-600 font-body max-w-xl leading-relaxed">
+                <p class="text-sm sm:text-lg text-slate-600 font-body max-w-xl leading-relaxed">
                     Shop direct authentic electronics, smart gadgets, and lifestyle essentials. 
                     <strong class="text-slate-800 font-semibold">100% genuine inventory</strong> inspected and shipped straight from our central fulfillment hub nationwide.
                 </p>
 
                 {{-- Action CTAs --}}
-                <div class="pt-2 flex flex-wrap items-center gap-4">
-                    <a class="bg-pulse-orange hover:bg-pulse-orange-dark text-white px-8 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-orange-glow hover:shadow-lg flex items-center space-x-2 group" href="#trending">
+                <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+                    <a class="bg-pulse-orange hover:bg-pulse-orange-dark text-white px-8 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-orange-glow hover:shadow-lg flex items-center justify-center space-x-2 group" href="#trending">
                         <span>Shop Now</span>
                         <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
                     </a>
-                    <a class="bg-white hover:bg-slate-50 text-pulse-navy border border-slate-300 hover:border-slate-400 px-7 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-subtle" href="#categories">
+                    <a class="bg-white hover:bg-slate-50 text-pulse-navy border border-slate-300 hover:border-slate-400 px-7 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-subtle text-center" href="#categories">
                         Explore Collection
                     </a>
                 </div>
@@ -130,13 +130,13 @@
                             </a>
 
                             {{-- Floating Tag 1 (Top Left) --}}
-                            <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-md border border-slate-200 px-3.5 py-2 rounded-xl shadow-lg flex items-center space-x-3 pointer-events-none">
-                                <div class="w-8 h-8 rounded-lg bg-orange-100 text-pulse-orange flex items-center justify-center font-bold text-xs">
+                            <div class="absolute top-3 sm:top-4 left-3 sm:left-4 bg-white/95 backdrop-blur-md border border-slate-200 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl shadow-lg flex items-center space-x-2 sm:space-x-3 pointer-events-none">
+                                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-orange-100 text-pulse-orange flex items-center justify-center font-bold text-xs shrink-0">
                                     <i class="fa-solid fa-bolt"></i>
                                 </div>
                                 <div>
-                                    <span class="block text-[10px] text-slate-400 font-semibold uppercase">{{ $heroProduct->category?->name ?? 'Smart Series' }}</span>
-                                    <span class="text-xs font-extrabold text-pulse-navy">Rs. {{ number_format($heroProduct->effective_price) }}</span>
+                                    <span class="block text-[9px] sm:text-[10px] text-slate-400 font-semibold uppercase">{{ $heroProduct->category?->name ?? 'Smart Series' }}</span>
+                                    <span class="text-[11px] sm:text-xs font-extrabold text-pulse-navy">Rs. {{ number_format($heroProduct->effective_price) }}</span>
                                 </div>
                             </div>
                         @else
@@ -149,9 +149,9 @@
                             </div>
                         @endif
 
-                        {{-- Floating Tag 2 (Top Right) --}}
-                        <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-md border border-slate-200 px-3.5 py-2 rounded-xl shadow-lg flex items-center space-x-2.5 pointer-events-none">
-                            <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs">
+                        {{-- Floating Tag 2 (Top Right - hidden on mobile to avoid overlap) --}}
+                        <div class="hidden sm:flex absolute top-4 right-4 bg-white/95 backdrop-blur-md border border-slate-200 px-3.5 py-2 rounded-xl shadow-lg items-center space-x-2.5 pointer-events-none">
+                            <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xs shrink-0">
                                 <i class="fa-solid fa-shield-check"></i>
                             </div>
                             <div>
@@ -161,21 +161,21 @@
                         </div>
 
                         {{-- Floating Bottom Hub Bar --}}
-                        <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md border border-slate-200 px-4 py-2.5 rounded-xl shadow-md flex items-center justify-between pointer-events-none">
-                            <div class="flex items-center space-x-2 text-xs font-bold text-pulse-navy">
-                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 bg-white/95 backdrop-blur-md border border-slate-200 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-md flex items-center justify-between pointer-events-none">
+                            <div class="flex items-center space-x-2 text-[11px] sm:text-xs font-bold text-pulse-navy">
+                                <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
                                 <span>Authentic Stock Verified</span>
                             </div>
-                            <div class="text-[11px] font-semibold text-pulse-orange">
+                            <div class="text-[10px] sm:text-[11px] font-semibold text-pulse-orange">
                                 Express Dispatch <i class="fa-solid fa-bolt ml-0.5"></i>
                             </div>
                         </div>
                     </div>
 
                     {{-- Bento Mini Grid Below Main Card --}}
-                    <div class="grid grid-cols-2 gap-3.5 mt-4">
-                        <div class="bg-white border border-slate-200 p-3.5 rounded-xl flex items-center space-x-3 hover:border-pulse-orange/40 transition-colors">
-                            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm shrink-0">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 mt-3 sm:mt-4">
+                        <div class="bg-white border border-slate-200 p-3 sm:p-3.5 rounded-xl flex items-center space-x-3 hover:border-pulse-orange/40 transition-colors">
+                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm shrink-0">
                                 <i class="fa-solid fa-box-open"></i>
                             </div>
                             <div>
@@ -183,8 +183,8 @@
                                 <div class="text-[10px] text-slate-500">Intact Seals Guaranteed</div>
                             </div>
                         </div>
-                        <div class="bg-white border border-slate-200 p-3.5 rounded-xl flex items-center space-x-3 hover:border-pulse-orange/40 transition-colors">
-                            <div class="w-10 h-10 rounded-lg bg-orange-50 text-pulse-orange flex items-center justify-center text-sm shrink-0">
+                        <div class="bg-white border border-slate-200 p-3 sm:p-3.5 rounded-xl flex items-center space-x-3 hover:border-pulse-orange/40 transition-colors">
+                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-orange-50 text-pulse-orange flex items-center justify-center text-sm shrink-0">
                                 <i class="fa-solid fa-truck-fast"></i>
                             </div>
                             <div>
@@ -201,16 +201,16 @@
 {{-- END: HeroSection --}}
 
 {{-- 2. BEGIN: TrustGuarantees --}}
-<section class="py-6 bg-white border-b border-slate-200" data-purpose="trust-badges">
+<section class="py-5 sm:py-6 bg-white border-b border-slate-200" data-purpose="trust-badges">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-8">
-            <div class="flex items-center space-x-3.5 p-2">
-                <div class="w-12 h-12 rounded-xl bg-orange-50 text-pulse-orange flex items-center justify-center text-xl shrink-0">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-8">
+            <div class="flex items-center space-x-2.5 sm:space-x-3.5 p-1 sm:p-2">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-orange-50 text-pulse-orange flex items-center justify-center text-lg sm:text-xl shrink-0">
                     <i class="fa-solid fa-truck-fast"></i>
                 </div>
                 <div>
                     <h4 class="text-xs sm:text-sm font-bold text-pulse-navy">Free Express Shipping</h4>
-                    <p class="text-[11px] text-slate-500">On all orders over Rs. 2,500</p>
+                    <p class="text-[10px] sm:text-[11px] text-slate-500">Orders over Rs. 2,500</p>
                 </div>
             </div>
             <div class="flex items-center space-x-3.5 p-2">

@@ -12,25 +12,25 @@
     </div>
 </div>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
-    <div class="max-w-3xl mx-auto text-center mb-12">
-        <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-pulse-teal/10 text-pulse-teal border border-pulse-teal/20 mb-3">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 w-full">
+    <div class="max-w-3xl mx-auto text-center mb-8 sm:mb-12">
+        <span class="inline-flex items-center px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-pulse-teal/10 text-pulse-teal border border-pulse-teal/20 mb-3">
             <i class="fa-solid fa-headset mr-1.5 text-[11px]"></i> Customer Assistance
         </span>
         <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-pulse-navy tracking-tight">
             Contact ShopPulss Support
         </h1>
-        <p class="mt-3 text-sm text-slate-500 leading-relaxed max-w-xl mx-auto">
+        <p class="mt-3 text-xs sm:text-sm text-slate-500 leading-relaxed max-w-xl mx-auto">
             Need help tracking a shipment, inquiring about product availability, or processing a return? Our Karachi support desk is here for you.
         </p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
         {{-- Left: Contact Channels & Operational Details (5 cols) --}}
-        <div class="lg:col-span-5 space-y-6">
+        <div class="lg:col-span-5 space-y-6 min-w-0 w-full">
             {{-- Quick Channels Card --}}
-            <div class="bg-white rounded-3xl border border-pulse-border p-6 sm:p-8 shadow-subtle space-y-6">
+            <div class="bg-white rounded-2xl sm:rounded-3xl border border-pulse-border p-5 sm:p-8 shadow-subtle space-y-5 sm:space-y-6">
                 <h2 class="text-base font-black text-pulse-navy">
                     Official Contact Channels
                 </h2>
@@ -128,10 +128,10 @@
         </div>
 
         {{-- Right: Contact Form (7 cols) --}}
-        <div class="lg:col-span-7">
-            <div class="bg-white rounded-3xl border border-pulse-border p-6 sm:p-10 shadow-subtle">
-                <h2 class="text-xl font-black text-pulse-navy mb-2">Send an Inquiry</h2>
-                <p class="text-xs text-slate-500 mb-6">
+        <div class="lg:col-span-7 min-w-0 w-full">
+            <div class="bg-white rounded-2xl sm:rounded-3xl border border-pulse-border p-5 sm:p-8 lg:p-10 shadow-subtle">
+                <h2 class="text-lg sm:text-xl font-black text-pulse-navy mb-1 sm:mb-2">Send an Inquiry</h2>
+                <p class="text-xs text-slate-500 mb-5 sm:mb-6">
                     Fill out the form below. Our support team logs each inquiry and responds to your email or WhatsApp number.
                 </p>
 
@@ -178,7 +178,7 @@
                                 name="name"
                                 value="{{ old('name') }}"
                                 required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('name') ? 'border-rose-300 bg-rose-50/30' : 'border-slate-200 bg-slate-50' }} text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all"
+                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('name') ? 'border-rose-300 bg-rose-50/30' : 'border-slate-200 bg-slate-50' }} text-base sm:text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all"
                                 placeholder="e.g. Khurram Shahzad"
                             >
                             @error('name')
@@ -196,7 +196,7 @@
                                 name="email"
                                 value="{{ old('email') }}"
                                 required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('email') ? 'border-rose-300 bg-rose-50/30' : 'border-slate-200 bg-slate-50' }} text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all"
+                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('email') ? 'border-rose-300 bg-rose-50/30' : 'border-slate-200 bg-slate-50' }} text-base sm:text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all"
                                 placeholder="name@example.com"
                             >
                             @error('email')
@@ -216,7 +216,7 @@
                                 id="contact_phone"
                                 name="phone"
                                 value="{{ old('phone') }}"
-                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all"
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-base sm:text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all"
                                 placeholder="0300 1234567"
                             >
                             @error('phone')
@@ -232,7 +232,7 @@
                                 id="contact_subject"
                                 name="subject"
                                 required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('subject') ? 'border-rose-300 bg-rose-50/30' : 'border-slate-200 bg-slate-50' }} text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all"
+                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('subject') ? 'border-rose-300 bg-rose-50/30' : 'border-slate-200 bg-slate-50' }} text-base sm:text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all"
                             >
                                 <option value="">Select a topic</option>
                                 <option value="Order Tracking & Status" {{ old('subject') == 'Order Tracking & Status' ? 'selected' : '' }}>Order Tracking & Delivery Status</option>
@@ -257,7 +257,7 @@
                             name="message"
                             rows="5"
                             required
-                            class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('message') ? 'border-rose-300 bg-rose-50/30' : 'border-slate-200 bg-slate-50' }} text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all"
+                            class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('message') ? 'border-rose-300 bg-rose-50/30' : 'border-slate-200 bg-slate-50' }} text-base sm:text-xs text-slate-800 focus:bg-white focus:outline-none focus:border-pulse-orange focus:ring-2 focus:ring-pulse-orange/20 transition-all"
                             placeholder="Please include your Order Number (if applicable) and describe how we can assist you..."
                         >{{ old('message') }}</textarea>
                         @error('message')
