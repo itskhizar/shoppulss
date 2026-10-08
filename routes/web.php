@@ -29,10 +29,14 @@ Route::get('/search', [ProductController::class, 'index'])->name('search');
 
 // --- Legal, Trust & Informational Routes ---
 Route::get('/about-us', [PageController::class, 'about'])->name('about');
+Route::get('/about', [PageController::class, 'about']);
 Route::get('/contact-us', [ContactController::class, 'show'])->name('contact');
+Route::get('/contact', [ContactController::class, 'show']);
 Route::post('/contact-us', [ContactController::class, 'submit'])->name('contact.submit');
+Route::post('/contact', [ContactController::class, 'submit']);
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 Route::get('/customer-support', [PageController::class, 'support'])->name('support');
+Route::get('/help', [PageController::class, 'support']);
 
 // Canonical Policy Routes
 Route::get('/privacy-policy', fn (SeoService $seo) => app(PageController::class)->show('privacy-policy', $seo))->name('policy.privacy');
