@@ -134,7 +134,9 @@ class CategoryController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:100'],
+            'slug' => ['nullable', 'string', 'max:120'],
             'parent_id' => ['nullable', 'exists:categories,id', 'not_in:'.$id],
+            'display_order' => ['nullable', 'integer', 'min:0'],
             'description' => ['nullable', 'string', 'max:500'],
             'is_active' => ['boolean'],
             'attribute_ids' => ['nullable', 'array'],
@@ -148,11 +150,21 @@ class CategoryController extends Controller
             }
         }
 
-        $oldValues = $category->only(['name', 'parent_id', 'description', 'status']);
+        $slug = $request->filled('slug') ? Str::slug($request->input('slug')) : Str::slug($validated['name']);
+        $originalSlug = $slug;
+        $counter = 1;
+        while (Category::where('slug', $slug)->where('id', '!=', $id)->exists()) {
+            $slug = "{$originalSlug}-{$counter}";
+            $counter++;
+        }
+
+        $oldValues = $category->only(['name', 'slug', 'parent_id', 'display_order', 'description', 'status']);
 
         $category->update([
             'name' => $validated['name'],
+            'slug' => $slug,
             'parent_id' => $validated['parent_id'] ?? null,
+            'display_order' => $validated['display_order'] ?? $category->display_order,
             'description' => $validated['description'] ?? null,
             'status' => $request->boolean('is_active', true) ? 'active' : 'inactive',
         ]);
@@ -164,10 +176,10 @@ class CategoryController extends Controller
             $category,
             "Category '{$category->name}' updated",
             $oldValues,
-            $category->only(['name', 'parent_id', 'description', 'status'])
+            $category->only(['name', 'slug', 'parent_id', 'display_order', 'description', 'status'])
         );
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully!');
+        return redirect()->route('admin.categories.index')->with('success', "Category '{$category->name}' updated successfully!");
     }
 
     /**

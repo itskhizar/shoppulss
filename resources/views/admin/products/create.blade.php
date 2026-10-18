@@ -388,9 +388,9 @@ if (imagesInput) {
     });
 }
 
-function compressImageFile(file, maxDimension = 2000, quality = 0.85) {
+function compressImageFile(file, maxDimension = 1600, quality = 0.8) {
     if (!file.type.startsWith('image/')) return Promise.resolve(file);
-    if (file.size <= 1024 * 1024) return Promise.resolve(file); // Under 1MB does not need compression
+    if (file.size <= 250 * 1024) return Promise.resolve(file); // Under 250KB is already lightweight
 
     return new Promise((resolve) => {
         const img = new Image();
@@ -434,21 +434,20 @@ function compressImageFile(file, maxDimension = 2000, quality = 0.85) {
 }
 
 if (productForm && imagesInput) {
+    let isSubmitting = false;
     productForm.addEventListener('submit', async function(e) {
+        if (isSubmitting) return;
         if (!imagesInput.files || imagesInput.files.length === 0) return;
         
-        let needsCompression = false;
-        for (let i = 0; i < imagesInput.files.length; i++) {
-            if (imagesInput.files[i].size > 1024 * 1024) {
-                needsCompression = true;
-                break;
-            }
-        }
+        const filesArray = Array.from(imagesInput.files);
+        const totalSize = filesArray.reduce((acc, f) => acc + f.size, 0);
+        const hasLargeFile = filesArray.some(f => f.size > 250 * 1024);
         
-        if (needsCompression) {
+        // If total upload > 500KB or any single file > 250KB, compress to prevent Nginx 413
+        if (totalSize > 500 * 1024 || hasLargeFile) {
             e.preventDefault();
+            isSubmitting = true;
             const submitBtn = productForm.querySelector('button[type="submit"]');
-            const origHtml = submitBtn ? submitBtn.innerHTML : '';
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = `
@@ -460,8 +459,8 @@ if (productForm && imagesInput) {
             }
             try {
                 const dt = new DataTransfer();
-                for (let i = 0; i < imagesInput.files.length; i++) {
-                    const compressed = await compressImageFile(imagesInput.files[i]);
+                for (let i = 0; i < filesArray.length; i++) {
+                    const compressed = await compressImageFile(filesArray[i]);
                     dt.items.add(compressed);
                 }
                 imagesInput.files = dt.files;

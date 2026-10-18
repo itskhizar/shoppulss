@@ -77,10 +77,10 @@
 
             @forelse($parentCategories as $parent)
                 {{-- Parent Category Block --}}
-                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                <div class="bg-white rounded-2xl border {{ $selectedCategory?->id === $parent->id ? 'ring-2 ring-[#00A8B8] border-[#00A8B8] shadow-md' : 'border-gray-200 shadow-sm' }} overflow-hidden transition-all">
 
                     {{-- Parent Header Row --}}
-                    <div class="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-[#0F1B4D]/5 to-transparent border-b border-gray-100">
+                    <div class="flex items-center justify-between px-5 py-4 {{ $selectedCategory?->id === $parent->id ? 'bg-teal-50/50' : 'bg-gradient-to-r from-[#0F1B4D]/5 to-transparent' }} border-b border-gray-100">
                         <div class="flex items-center gap-3 min-w-0">
                             {{-- Parent icon --}}
                             <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: #0F1B4D;">
@@ -91,6 +91,9 @@
                                     <span class="font-black text-sm text-gray-900">{{ $parent->name }}</span>
                                     <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-[#0F1B4D] text-white tracking-wider">Parent</span>
                                     <span class="text-[11px] text-gray-400 font-mono">/{{ $parent->slug }}</span>
+                                    @if($parent->display_order)
+                                        <span class="text-[10px] text-gray-400">Order: {{ $parent->display_order }}</span>
+                                    @endif
                                 </div>
                                 <div class="flex items-center gap-3 mt-1 flex-wrap">
                                     <span class="text-[11px] text-gray-500">{{ $parent->products_count }} products</span>
@@ -108,7 +111,9 @@
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {{ $parent->status === 'active' ? 'bg-teal-100 text-teal-800' : 'bg-gray-100 text-gray-600' }}">
                                 {{ $parent->status }}
                             </span>
-                            <a href="{{ route('admin.categories.index', ['edit' => $parent->id]) }}" class="px-3 py-1 rounded-lg text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 transition-colors">Edit</a>
+                            <a href="{{ route('admin.categories.index', ['edit' => $parent->id]) }}" class="px-3 py-1 rounded-lg text-xs font-bold {{ $selectedCategory?->id === $parent->id ? 'bg-[#00A8B8] text-white' : 'text-teal-700 bg-teal-50 hover:bg-teal-100' }} transition-colors">
+                                {{ $selectedCategory?->id === $parent->id ? 'Editing' : 'Edit' }}
+                            </a>
                             @if($parent->products_count === 0 && $parent->children->isEmpty())
                                 <form method="POST" action="{{ route('admin.categories.destroy', $parent->id) }}" onsubmit="return confirm('Delete {{ $parent->name }}?');" class="inline">
                                     @csrf @method('DELETE')
@@ -122,7 +127,7 @@
                     @if($parent->children->isNotEmpty())
                         <div class="divide-y divide-gray-50">
                             @foreach($parent->children as $sub)
-                                <div class="flex items-center justify-between px-5 py-3 hover:bg-gray-50/70 transition-colors">
+                                <div class="flex items-center justify-between px-5 py-3 {{ $selectedCategory?->id === $sub->id ? 'bg-teal-50/80 border-l-4 border-[#00A8B8]' : 'hover:bg-gray-50/70' }} transition-colors">
                                     <div class="flex items-center gap-3 min-w-0">
                                         {{-- Sub indent line --}}
                                         <div class="flex items-center gap-2 flex-shrink-0 pl-3">
@@ -156,7 +161,9 @@
                                         <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {{ $sub->status === 'active' ? 'bg-teal-100 text-teal-800' : 'bg-gray-100 text-gray-600' }}">
                                             {{ $sub->status }}
                                         </span>
-                                        <a href="{{ route('admin.categories.index', ['edit' => $sub->id]) }}" class="px-3 py-1 rounded-lg text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 transition-colors">Edit</a>
+                                        <a href="{{ route('admin.categories.index', ['edit' => $sub->id]) }}" class="px-3 py-1 rounded-lg text-xs font-bold {{ $selectedCategory?->id === $sub->id ? 'bg-[#00A8B8] text-white' : 'text-teal-700 bg-teal-50 hover:bg-teal-100' }} transition-colors">
+                                            {{ $selectedCategory?->id === $sub->id ? 'Editing' : 'Edit' }}
+                                        </a>
                                         @if($sub->products_count === 0)
                                             <form method="POST" action="{{ route('admin.categories.destroy', $sub->id) }}" onsubmit="return confirm('Delete {{ $sub->name }}?');" class="inline">
                                                 @csrf @method('DELETE')
@@ -186,9 +193,32 @@
         {{-- Add / Edit Category Form (Right 1 col) --}}
         <div class="lg:col-span-1">
             <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-4 sticky top-24">
-                <h2 class="text-sm font-bold text-gray-900 pb-3 border-b border-gray-100" style="color: #0F1B4D;">
-                    {{ $selectedCategory ? 'Edit: ' . $selectedCategory->name : 'Create Category' }}
-                </h2>
+                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <h2 class="text-sm font-bold text-gray-900" style="color: #0F1B4D;">
+                        {{ $selectedCategory ? 'Edit Category' : 'Create Category' }}
+                    </h2>
+                    @if($selectedCategory)
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full {{ $selectedCategory->parent_id ? 'bg-teal-100 text-teal-800' : 'bg-indigo-100 text-indigo-800' }}">
+                            {{ $selectedCategory->parent_id ? 'Subcategory' : 'Parent Category' }}
+                        </span>
+                    @endif
+                </div>
+
+                @if($selectedCategory)
+                    <div class="p-3 rounded-xl {{ $selectedCategory->parent_id ? 'bg-teal-50 border border-teal-200 text-teal-900' : 'bg-indigo-50 border border-indigo-200 text-indigo-900' }} text-xs space-y-1">
+                        <div class="flex items-center justify-between font-bold">
+                            <span>{{ $selectedCategory->name }}</span>
+                            <span class="font-mono text-[10px] opacity-75">ID: #{{ $selectedCategory->id }}</span>
+                        </div>
+                        <p class="text-[11px] opacity-80">
+                            @if($selectedCategory->parent_id)
+                                Subcategory under: <strong>{{ $selectedCategory->parent?->name }}</strong>
+                            @else
+                                Top-Level Parent with <strong>{{ $selectedCategory->children->count() }}</strong> subcategories.
+                            @endif
+                        </p>
+                    </div>
+                @endif
 
                 <form method="POST" action="{{ $selectedCategory ? route('admin.categories.update', $selectedCategory->id) : route('admin.categories.store') }}" class="space-y-4">
                     @csrf
@@ -199,15 +229,31 @@
                         <input
                             id="name" type="text" name="name" required
                             value="{{ old('name', $selectedCategory?->name) }}"
-                            placeholder="e.g. Smart Watches"
+                            placeholder="e.g. Luxury Watches"
                             class="w-full h-10 px-3.5 rounded-lg border border-gray-200 text-xs focus:outline-none focus:border-teal-500"
                         >
                     </div>
 
                     <div>
+                        <label for="slug" class="block text-xs font-semibold text-gray-700 mb-1">
+                            URL Slug
+                            <span class="font-normal text-gray-400 ml-1">— leave blank to auto-generate</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-xs text-gray-400 font-mono">/</span>
+                            <input
+                                id="slug" type="text" name="slug"
+                                value="{{ old('slug', $selectedCategory?->slug) }}"
+                                placeholder="luxury-watches"
+                                class="w-full h-10 pl-6 pr-3.5 rounded-lg border border-gray-200 text-xs font-mono focus:outline-none focus:border-teal-500"
+                            >
+                        </div>
+                    </div>
+
+                    <div>
                         <label for="parent_id" class="block text-xs font-semibold text-gray-700 mb-1">
                             Parent Category
-                            <span class="font-normal text-gray-400 ml-1">— leave blank to create as top-level</span>
+                            <span class="font-normal text-gray-400 ml-1">— leave blank for Top-Level Parent</span>
                         </label>
                         <select id="parent_id" name="parent_id" class="w-full h-10 px-3 rounded-lg border border-gray-200 text-xs focus:outline-none focus:border-teal-500">
                             <option value="">None — Top-Level Parent Category</option>
@@ -220,8 +266,18 @@
                             @endforeach
                         </select>
                         <p class="text-[11px] text-gray-400 mt-1">
-                            Selecting a parent makes this a <strong>subcategory</strong>.
+                            Selecting <strong>None</strong> keeps/makes this a <strong>Parent Category</strong>.
                         </p>
+                    </div>
+
+                    <div>
+                        <label for="display_order" class="block text-xs font-semibold text-gray-700 mb-1">Display Sort Order</label>
+                        <input
+                            id="display_order" type="number" name="display_order" min="0"
+                            value="{{ old('display_order', $selectedCategory?->display_order ?? 1) }}"
+                            placeholder="1"
+                            class="w-full h-10 px-3.5 rounded-lg border border-gray-200 text-xs focus:outline-none focus:border-teal-500"
+                        >
                     </div>
 
                     {{-- Dynamic Attributes --}}

@@ -354,9 +354,9 @@ if (imagesInput) {
     });
 }
 
-function compressImageFile(file, maxDimension = 2000, quality = 0.85) {
+function compressImageFile(file, maxDimension = 1600, quality = 0.8) {
     if (!file.type.startsWith('image/')) return Promise.resolve(file);
-    if (file.size <= 1024 * 1024) return Promise.resolve(file);
+    if (file.size <= 250 * 1024) return Promise.resolve(file);
 
     return new Promise((resolve) => {
         const img = new Image();
@@ -400,19 +400,18 @@ function compressImageFile(file, maxDimension = 2000, quality = 0.85) {
 }
 
 if (productEditForm && imagesInput) {
+    let isSubmitting = false;
     productEditForm.addEventListener('submit', async function(e) {
+        if (isSubmitting) return;
         if (!imagesInput.files || imagesInput.files.length === 0) return;
         
-        let needsCompression = false;
-        for (let i = 0; i < imagesInput.files.length; i++) {
-            if (imagesInput.files[i].size > 1024 * 1024) {
-                needsCompression = true;
-                break;
-            }
-        }
+        const filesArray = Array.from(imagesInput.files);
+        const totalSize = filesArray.reduce((acc, f) => acc + f.size, 0);
+        const hasLargeFile = filesArray.some(f => f.size > 250 * 1024);
         
-        if (needsCompression) {
+        if (totalSize > 500 * 1024 || hasLargeFile) {
             e.preventDefault();
+            isSubmitting = true;
             const submitBtn = productEditForm.querySelector('button[type="submit"]');
             if (submitBtn) {
                 submitBtn.disabled = true;
@@ -425,8 +424,8 @@ if (productEditForm && imagesInput) {
             }
             try {
                 const dt = new DataTransfer();
-                for (let i = 0; i < imagesInput.files.length; i++) {
-                    const compressed = await compressImageFile(imagesInput.files[i]);
+                for (let i = 0; i < filesArray.length; i++) {
+                    const compressed = await compressImageFile(filesArray[i]);
                     dt.items.add(compressed);
                 }
                 imagesInput.files = dt.files;
