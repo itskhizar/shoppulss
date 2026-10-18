@@ -353,5 +353,124 @@ function addChip(container, value) {
     const input = container.querySelector('.chip-input');
     container.insertBefore(chip, input);
 }
+
+// Image preview and auto-compression to avoid Nginx 413 Entity Too Large
+const imagesInput = document.getElementById('images');
+const productForm = document.querySelector('form[action*="admin/products"]');
+
+if (imagesInput) {
+    imagesInput.addEventListener('change', function() {
+        const previewRow = document.getElementById('image-preview-row');
+        if (!previewRow) return;
+        previewRow.innerHTML = '';
+        
+        let totalBytes = 0;
+        Array.from(this.files).forEach((file, index) => {
+            totalBytes += file.size;
+            const wrap = document.createElement('div');
+            wrap.className = 'relative w-16 h-16 rounded-lg border border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center';
+            
+            const img = document.createElement('img');
+            img.className = 'w-full h-full object-cover';
+            const reader = new FileReader();
+            reader.onload = (e) => { img.src = e.target.result; };
+            reader.readAsDataURL(file);
+            wrap.appendChild(img);
+            
+            if (index === 0) {
+                const badge = document.createElement('span');
+                badge.className = 'absolute bottom-0 inset-x-0 bg-teal-600 text-white text-[9px] font-bold text-center py-0.5 leading-tight';
+                badge.innerText = 'Featured';
+                wrap.appendChild(badge);
+            }
+            previewRow.appendChild(wrap);
+        });
+    });
+}
+
+function compressImageFile(file, maxDimension = 2000, quality = 0.85) {
+    if (!file.type.startsWith('image/')) return Promise.resolve(file);
+    if (file.size <= 1024 * 1024) return Promise.resolve(file); // Under 1MB does not need compression
+
+    return new Promise((resolve) => {
+        const img = new Image();
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            img.onload = () => {
+                let width = img.width;
+                let height = img.height;
+                if (width > maxDimension || height > maxDimension) {
+                    if (width > height) {
+                        height = Math.round((height * maxDimension) / width);
+                        width = maxDimension;
+                    } else {
+                        width = Math.round((width * maxDimension) / height);
+                        height = maxDimension;
+                    }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                canvas.toBlob((blob) => {
+                    if (blob && blob.size < file.size) {
+                        const newFile = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), {
+                            type: 'image/jpeg',
+                            lastModified: Date.now()
+                        });
+                        resolve(newFile);
+                    } else {
+                        resolve(file);
+                    }
+                }, 'image/jpeg', quality);
+            };
+            img.onerror = () => resolve(file);
+            img.src = e.target.result;
+        };
+        reader.onerror = () => resolve(file);
+        reader.readAsDataURL(file);
+    });
+}
+
+if (productForm && imagesInput) {
+    productForm.addEventListener('submit', async function(e) {
+        if (!imagesInput.files || imagesInput.files.length === 0) return;
+        
+        let needsCompression = false;
+        for (let i = 0; i < imagesInput.files.length; i++) {
+            if (imagesInput.files[i].size > 1024 * 1024) {
+                needsCompression = true;
+                break;
+            }
+        }
+        
+        if (needsCompression) {
+            e.preventDefault();
+            const submitBtn = productForm.querySelector('button[type="submit"]');
+            const origHtml = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                    </svg> Optimizing Images...
+                `;
+            }
+            try {
+                const dt = new DataTransfer();
+                for (let i = 0; i < imagesInput.files.length; i++) {
+                    const compressed = await compressImageFile(imagesInput.files[i]);
+                    dt.items.add(compressed);
+                }
+                imagesInput.files = dt.files;
+            } catch (err) {
+                console.warn('Image optimization skipped:', err);
+            }
+            productForm.submit();
+        }
+    });
+}
 </script>
 @endsection

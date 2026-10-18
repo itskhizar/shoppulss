@@ -1,0 +1,696 @@
+{
+  "project": "ShopPulss E-Commerce Product Image Catalog",
+  "generated_at": "2026-10-18",
+  "target_dimensions": "2000x2000 (1:1 Aspect Ratio)",
+  "background": "#FFFFFF Pure White",
+  "brands": {
+    "tissot": [
+      {
+        "id": "tissot_prx_green",
+        "name": "Tissot PRX 1853 Emerald Green Dial",
+        "dial_color": "Emerald Green Sunburst",
+        "case_material": "Stainless Steel",
+        "strap_type": "Integrated Stainless Steel Bracelet",
+        "reference_file": "tissot.jpeg",
+        "folder": "public/images/products/tissot",
+        "views": {
+          "front": "shoppulss_tissot_prx_green_front.jpg",
+          "side": "shoppulss_tissot_prx_green_side.jpg",
+          "back": "shoppulss_tissot_prx_green_back.jpg",
+          "strap": "shoppulss_tissot_prx_green_strap.jpg"
+        },
+        "status": {
+          "front": "COMPLETED",
+          "side": "COMPLETED",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "tissot_prx_blue",
+        "name": "Tissot PRX 1853 Royal Blue Dial",
+        "dial_color": "Royal Blue Sunburst",
+        "case_material": "Stainless Steel",
+        "strap_type": "Integrated Stainless Steel Bracelet",
+        "reference_file": "tissot.jpeg",
+        "folder": "public/images/products/tissot",
+        "views": {
+          "front": "shoppulss_tissot_prx_blue_front.jpg",
+          "side": "shoppulss_tissot_prx_blue_side.jpg",
+          "back": "shoppulss_tissot_prx_blue_back.jpg",
+          "strap": "shoppulss_tissot_prx_blue_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "tissot_prx_black",
+        "name": "Tissot PRX 1853 Classic Black Dial",
+        "dial_color": "Classic Black Sunburst",
+        "case_material": "Stainless Steel",
+        "strap_type": "Integrated Stainless Steel Bracelet",
+        "reference_file": "tissot.jpeg",
+        "folder": "public/images/products/tissot",
+        "views": {
+          "front": "shoppulss_tissot_prx_black_front.jpg",
+          "side": "shoppulss_tissot_prx_black_side.jpg",
+          "back": "shoppulss_tissot_prx_black_back.jpg",
+          "strap": "shoppulss_tissot_prx_black_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "tissot_prx_silver",
+        "name": "Tissot PRX 1853 Silver Sunray Dial",
+        "dial_color": "Silver / White Sunray",
+        "case_material": "Stainless Steel",
+        "strap_type": "Integrated Stainless Steel Bracelet",
+        "reference_file": "tissot.jpeg",
+        "folder": "public/images/products/tissot",
+        "views": {
+          "front": "shoppulss_tissot_prx_silver_front.jpg",
+          "side": "shoppulss_tissot_prx_silver_side.jpg",
+          "back": "shoppulss_tissot_prx_silver_back.jpg",
+          "strap": "shoppulss_tissot_prx_silver_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      }
+    ],
+    "hublot": [
+      {
+        "id": "hublot_classic_fusion_chrono_blue",
+        "name": "Hublot Classic Fusion Chronograph Blue Dial",
+        "dial_color": "Sunburst Navy Blue with Silver Subdials",
+        "case_material": "Titanium / Stainless Steel with H-screws",
+        "strap_type": "Stainless Steel H-link Bracelet",
+        "reference_file": "hublot_1.jpeg",
+        "folder": "public/images/products/hublot",
+        "views": {
+          "front": "shoppulss_hublot_classic_fusion_chrono_blue_front.jpg",
+          "side": "shoppulss_hublot_classic_fusion_chrono_blue_side.jpg",
+          "back": "shoppulss_hublot_classic_fusion_chrono_blue_back.jpg",
+          "strap": "shoppulss_hublot_classic_fusion_chrono_blue_strap.jpg"
+        },
+        "status": {
+          "front": "COMPLETED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "hublot_classic_fusion_chrono_black",
+        "name": "Hublot Classic Fusion Chronograph Black Dial",
+        "dial_color": "Black with Silver Subdials",
+        "case_material": "Titanium / Stainless Steel",
+        "strap_type": "Stainless Steel H-link Bracelet",
+        "reference_file": "hublot_1.jpeg",
+        "folder": "public/images/products/hublot",
+        "views": {
+          "front": "shoppulss_hublot_classic_fusion_chrono_black_front.jpg",
+          "side": "shoppulss_hublot_classic_fusion_chrono_black_side.jpg",
+          "back": "shoppulss_hublot_classic_fusion_chrono_black_back.jpg",
+          "strap": "shoppulss_hublot_classic_fusion_chrono_black_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "hublot_aerofusion_black_skeleton",
+        "name": "Hublot Aerofusion Black Skeleton Blue Accents",
+        "dial_color": "Openwork Skeleton with Blue Accents",
+        "case_material": "Matte Black Ceramic",
+        "strap_type": "Black Ceramic Bracelet",
+        "reference_file": "hublot_2.jpeg",
+        "folder": "public/images/products/hublot",
+        "views": {
+          "front": "shoppulss_hublot_aerofusion_black_skeleton_front.jpg",
+          "side": "shoppulss_hublot_aerofusion_black_skeleton_side.jpg",
+          "back": "shoppulss_hublot_aerofusion_black_skeleton_back.jpg",
+          "strap": "shoppulss_hublot_aerofusion_black_skeleton_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "hublot_sang_bleu_blue",
+        "name": "Hublot Big Bang Sang Bleu Geometric Blue",
+        "dial_color": "Geometric Skeleton Blue Dial",
+        "case_material": "Faceted Titanium / Stainless Steel",
+        "strap_type": "Geometric Faceted Bracelet",
+        "reference_file": "hublot_2.jpeg",
+        "folder": "public/images/products/hublot",
+        "views": {
+          "front": "shoppulss_hublot_sang_bleu_blue_front.jpg",
+          "side": "shoppulss_hublot_sang_bleu_blue_side.jpg",
+          "back": "shoppulss_hublot_sang_bleu_blue_back.jpg",
+          "strap": "shoppulss_hublot_sang_bleu_blue_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "hublot_classic_fusion_arabic_white",
+        "name": "Hublot Classic Fusion Eastern Arabic White Dial",
+        "dial_color": "White with Eastern Arabic Numerals",
+        "case_material": "Brushed Stainless Steel",
+        "strap_type": "Black Alligator / Leather Strap",
+        "reference_file": "hublot_3.jpeg",
+        "folder": "public/images/products/hublot",
+        "views": {
+          "front": "shoppulss_hublot_classic_fusion_arabic_white_front.jpg",
+          "side": "shoppulss_hublot_classic_fusion_arabic_white_side.jpg",
+          "back": "shoppulss_hublot_classic_fusion_arabic_white_back.jpg",
+          "strap": "shoppulss_hublot_classic_fusion_arabic_white_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "hublot_skeleton_black_brown_strap",
+        "name": "Hublot Skeleton Black Case Brown Strap",
+        "dial_color": "Silver Skeletonized Movement",
+        "case_material": "Matte Black Ceramic/PVD",
+        "strap_type": "Brown Alligator / Leather Strap",
+        "reference_file": "hublot_3.jpeg",
+        "folder": "public/images/products/hublot",
+        "views": {
+          "front": "shoppulss_hublot_skeleton_black_brown_strap_front.jpg",
+          "side": "shoppulss_hublot_skeleton_black_brown_strap_side.jpg",
+          "back": "shoppulss_hublot_skeleton_black_brown_strap_back.jpg",
+          "strap": "shoppulss_hublot_skeleton_black_brown_strap_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "hublot_all_black_skeleton",
+        "name": "Hublot All Black Skeleton",
+        "dial_color": "Blacked-out Skeleton Movement",
+        "case_material": "Matte Black Ceramic/PVD",
+        "strap_type": "Black Leather / Rubber Strap",
+        "reference_file": "hublot_3.jpeg",
+        "folder": "public/images/products/hublot",
+        "views": {
+          "front": "shoppulss_hublot_all_black_skeleton_front.jpg",
+          "side": "shoppulss_hublot_all_black_skeleton_side.jpg",
+          "back": "shoppulss_hublot_all_black_skeleton_back.jpg",
+          "strap": "shoppulss_hublot_all_black_skeleton_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "hublot_chrono_titanium_rubber",
+        "name": "Hublot Classic Fusion Chrono Titanium Rubber Strap",
+        "dial_color": "Black Dial with Subdials",
+        "case_material": "Brushed Titanium / Steel",
+        "strap_type": "Black Ribbed Rubber Strap",
+        "reference_file": "hublot_3.jpeg",
+        "folder": "public/images/products/hublot",
+        "views": {
+          "front": "shoppulss_hublot_chrono_titanium_rubber_front.jpg",
+          "side": "shoppulss_hublot_chrono_titanium_rubber_side.jpg",
+          "back": "shoppulss_hublot_chrono_titanium_rubber_back.jpg",
+          "strap": "shoppulss_hublot_chrono_titanium_rubber_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "hublot_skeleton_silver_black_strap",
+        "name": "Hublot Skeleton Silver Black Strap",
+        "dial_color": "Black / Silver Skeleton Movement",
+        "case_material": "Brushed Silver Stainless Steel",
+        "strap_type": "Black Alligator / Leather Strap",
+        "reference_file": "hublot_3.jpeg",
+        "folder": "public/images/products/hublot",
+        "views": {
+          "front": "shoppulss_hublot_skeleton_silver_black_strap_front.jpg",
+          "side": "shoppulss_hublot_skeleton_silver_black_strap_side.jpg",
+          "back": "shoppulss_hublot_skeleton_silver_black_strap_back.jpg",
+          "strap": "shoppulss_hublot_skeleton_silver_black_strap_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "hublot_meca10_skeleton_bracelet",
+        "name": "Hublot Complex Skeleton Steel Bracelet",
+        "dial_color": "Multi-Gear Skeleton with Red Accents",
+        "case_material": "Stainless Steel with 6 H-screws",
+        "strap_type": "Stainless Steel Bracelet",
+        "reference_file": "hublot_single _peace.jpeg",
+        "folder": "public/images/products/hublot",
+        "views": {
+          "front": "shoppulss_hublot_meca10_skeleton_bracelet_front.jpg",
+          "side": "shoppulss_hublot_meca10_skeleton_bracelet_side.jpg",
+          "back": "shoppulss_hublot_meca10_skeleton_bracelet_back.jpg",
+          "strap": "shoppulss_hublot_meca10_skeleton_bracelet_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      }
+    ],
+    "matturi": [
+      {
+        "id": "matturi_cushion_steel_blue",
+        "name": "Matturi Cushion Quartz Steel Blue Dial",
+        "dial_color": "Royal Blue Sunburst",
+        "case_material": "Stainless Steel Cushion Case",
+        "strap_type": "Stainless Steel Bracelet",
+        "reference_file": "mattrui_1.jpeg",
+        "folder": "public/images/products/matturi",
+        "views": {
+          "front": "shoppulss_matturi_cushion_steel_blue_front.jpg",
+          "side": "shoppulss_matturi_cushion_steel_blue_side.jpg",
+          "back": "shoppulss_matturi_cushion_steel_blue_back.jpg",
+          "strap": "shoppulss_matturi_cushion_steel_blue_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "matturi_cushion_gold_green",
+        "name": "Matturi Cushion Quartz Gold Green Dial",
+        "dial_color": "Emerald Green Sunburst with Gold Hands",
+        "case_material": "Yellow Gold PVD Cushion Case",
+        "strap_type": "Yellow Gold PVD Bracelet",
+        "reference_file": "mattrui_1.jpeg",
+        "folder": "public/images/products/matturi",
+        "views": {
+          "front": "shoppulss_matturi_cushion_gold_green_front.jpg",
+          "side": "shoppulss_matturi_cushion_gold_green_side.jpg",
+          "back": "shoppulss_matturi_cushion_gold_green_back.jpg",
+          "strap": "shoppulss_matturi_cushion_gold_green_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "matturi_cushion_black_black",
+        "name": "Matturi Cushion Quartz All-Black",
+        "dial_color": "Matte Black with Gold/Rose Indices",
+        "case_material": "Matte Black PVD Cushion Case",
+        "strap_type": "Matte Black PVD Bracelet",
+        "reference_file": "mattrui_1.jpeg",
+        "folder": "public/images/products/matturi",
+        "views": {
+          "front": "shoppulss_matturi_cushion_black_black_front.jpg",
+          "side": "shoppulss_matturi_cushion_black_black_side.jpg",
+          "back": "shoppulss_matturi_cushion_black_black_back.jpg",
+          "strap": "shoppulss_matturi_cushion_black_black_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "matturi_cushion_steel_silver",
+        "name": "Matturi Cushion Quartz Steel Silver Dial",
+        "dial_color": "Silver Sunburst with Black Hands",
+        "case_material": "Stainless Steel Cushion Case",
+        "strap_type": "Stainless Steel Bracelet",
+        "reference_file": "matturi_2.jpeg",
+        "folder": "public/images/products/matturi",
+        "views": {
+          "front": "shoppulss_matturi_cushion_steel_silver_front.jpg",
+          "side": "shoppulss_matturi_cushion_steel_silver_side.jpg",
+          "back": "shoppulss_matturi_cushion_steel_silver_back.jpg",
+          "strap": "shoppulss_matturi_cushion_steel_silver_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "matturi_cushion_twotone_blue",
+        "name": "Matturi Cushion Quartz Two-Tone Blue Dial",
+        "dial_color": "Royal Blue Sunburst with Gold Indices",
+        "case_material": "Two-Tone (Gold Bezel, Silver Case)",
+        "strap_type": "Two-Tone (Gold Center Links, Silver Outer Links)",
+        "reference_file": "matturi_2.jpeg",
+        "folder": "public/images/products/matturi",
+        "views": {
+          "front": "shoppulss_matturi_cushion_twotone_blue_front.jpg",
+          "side": "shoppulss_matturi_cushion_twotone_blue_side.jpg",
+          "back": "shoppulss_matturi_cushion_twotone_blue_back.jpg",
+          "strap": "shoppulss_matturi_cushion_twotone_blue_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      }
+    ],
+    "seastar": [
+      {
+        "id": "seastar_nautilus_steel_black",
+        "name": "Seastar Nautilus Tribute Steel Black Dial",
+        "dial_color": "Black Horizontal Ribbed / Embossed",
+        "case_material": "Stainless Steel Nautilus-style Case",
+        "strap_type": "Polished & Brushed Steel Bracelet",
+        "reference_file": "seastar.jpeg",
+        "folder": "public/images/products/seastar",
+        "views": {
+          "front": "shoppulss_seastar_nautilus_steel_black_front.jpg",
+          "side": "shoppulss_seastar_nautilus_steel_black_side.jpg",
+          "back": "shoppulss_seastar_nautilus_steel_black_back.jpg",
+          "strap": "shoppulss_seastar_nautilus_steel_black_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "seastar_nautilus_twotone_black",
+        "name": "Seastar Nautilus Tribute Two-Tone Black Dial",
+        "dial_color": "Black Horizontal Ribbed Dial with Gold Hands",
+        "case_material": "Two-Tone (Gold Bezel, Silver Case)",
+        "strap_type": "Two-Tone (Gold Center Links, Silver Outer Links)",
+        "reference_file": "seastar.jpeg",
+        "folder": "public/images/products/seastar",
+        "views": {
+          "front": "shoppulss_seastar_nautilus_twotone_black_front.jpg",
+          "side": "shoppulss_seastar_nautilus_twotone_black_side.jpg",
+          "back": "shoppulss_seastar_nautilus_twotone_black_back.jpg",
+          "strap": "shoppulss_seastar_nautilus_twotone_black_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "seastar_nautilus_steel_charcoal",
+        "name": "Seastar Nautilus Tribute Steel Charcoal Dial",
+        "dial_color": "Dark Charcoal Ribbed Dial",
+        "case_material": "Stainless Steel Nautilus-style Case",
+        "strap_type": "Polished & Brushed Steel Bracelet",
+        "reference_file": "seastar.jpeg",
+        "folder": "public/images/products/seastar",
+        "views": {
+          "front": "shoppulss_seastar_nautilus_steel_charcoal_front.jpg",
+          "side": "shoppulss_seastar_nautilus_steel_charcoal_side.jpg",
+          "back": "shoppulss_seastar_nautilus_steel_charcoal_back.jpg",
+          "strap": "shoppulss_seastar_nautilus_steel_charcoal_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      }
+    ],
+    "universe_point": [
+      {
+        "id": "universe_point_arabic_twotone_white",
+        "name": "Universe Point Arabic Dial Two-Tone White",
+        "dial_color": "White with Eastern Arabic Numerals",
+        "case_material": "Two-Tone (Gold Bezel, Silver Case)",
+        "strap_type": "Black Silicone / Rubber Strap",
+        "reference_file": "universe_point_1.jpeg",
+        "folder": "public/images/products/universe_point",
+        "views": {
+          "front": "shoppulss_universe_point_arabic_twotone_white_front.jpg",
+          "side": "shoppulss_universe_point_arabic_twotone_white_side.jpg",
+          "back": "shoppulss_universe_point_arabic_twotone_white_back.jpg",
+          "strap": "shoppulss_universe_point_arabic_twotone_white_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "universe_point_arabic_gold_champagne",
+        "name": "Universe Point Gold Champagne Dial",
+        "dial_color": "Champagne Sunburst Dial",
+        "case_material": "Yellow Gold PVD Case",
+        "strap_type": "Black Silicone / Rubber Strap",
+        "reference_file": "universe_point_1.jpeg",
+        "folder": "public/images/products/universe_point",
+        "views": {
+          "front": "shoppulss_universe_point_arabic_gold_champagne_front.jpg",
+          "side": "shoppulss_universe_point_arabic_gold_champagne_side.jpg",
+          "back": "shoppulss_universe_point_arabic_gold_champagne_back.jpg",
+          "strap": "shoppulss_universe_point_arabic_gold_champagne_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "universe_point_arabic_steel_blue",
+        "name": "Universe Point Arabic Dial Steel Blue",
+        "dial_color": "Deep Blue with White Eastern Arabic Numerals",
+        "case_material": "Stainless Steel Case",
+        "strap_type": "Navy Blue Silicone / Rubber Strap",
+        "reference_file": "universe_point_1.jpeg",
+        "folder": "public/images/products/universe_point",
+        "views": {
+          "front": "shoppulss_universe_point_arabic_steel_blue_front.jpg",
+          "side": "shoppulss_universe_point_arabic_steel_blue_side.jpg",
+          "back": "shoppulss_universe_point_arabic_steel_blue_back.jpg",
+          "strap": "shoppulss_universe_point_arabic_steel_blue_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "universe_point_arabic_gold_black",
+        "name": "Universe Point Arabic Dial Gold Black",
+        "dial_color": "Black with Gold Eastern Arabic Numerals",
+        "case_material": "Yellow Gold PVD Case",
+        "strap_type": "Black Silicone / Rubber Strap",
+        "reference_file": "universe_point_1.jpeg",
+        "folder": "public/images/products/universe_point",
+        "views": {
+          "front": "shoppulss_universe_point_arabic_gold_black_front.jpg",
+          "side": "shoppulss_universe_point_arabic_gold_black_side.jpg",
+          "back": "shoppulss_universe_point_arabic_gold_black_back.jpg",
+          "strap": "shoppulss_universe_point_arabic_gold_black_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "universe_point_arabic_steel_green",
+        "name": "Universe Point Arabic Dial Steel Green",
+        "dial_color": "Olive Green with Eastern Arabic Numerals",
+        "case_material": "Stainless Steel Case",
+        "strap_type": "Olive Green Silicone / Rubber Strap",
+        "reference_file": "universe_point_1.jpeg",
+        "folder": "public/images/products/universe_point",
+        "views": {
+          "front": "shoppulss_universe_point_arabic_steel_green_front.jpg",
+          "side": "shoppulss_universe_point_arabic_steel_green_side.jpg",
+          "back": "shoppulss_universe_point_arabic_steel_green_back.jpg",
+          "strap": "shoppulss_universe_point_arabic_steel_green_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "universe_point_arabic_steel_grey",
+        "name": "Universe Point Arabic Dial Steel Grey",
+        "dial_color": "Silver / Grey with Eastern Arabic Numerals",
+        "case_material": "Stainless Steel Case",
+        "strap_type": "Grey Silicone / Rubber Strap",
+        "reference_file": "universe_point_1.jpeg",
+        "folder": "public/images/products/universe_point",
+        "views": {
+          "front": "shoppulss_universe_point_arabic_steel_grey_front.jpg",
+          "side": "shoppulss_universe_point_arabic_steel_grey_side.jpg",
+          "back": "shoppulss_universe_point_arabic_steel_grey_back.jpg",
+          "strap": "shoppulss_universe_point_arabic_steel_grey_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "universe_point_octo_blackout",
+        "name": "Universe Point Octo Blackout",
+        "dial_color": "Matte Black Minimalist with 12 & 6 Numerals",
+        "case_material": "Matte Black Octagonal Case",
+        "strap_type": "Black Textured Rubber Strap",
+        "reference_file": "universe_point_2.jpeg",
+        "folder": "public/images/products/universe_point",
+        "views": {
+          "front": "shoppulss_universe_point_octo_blackout_front.jpg",
+          "side": "shoppulss_universe_point_octo_blackout_side.jpg",
+          "back": "shoppulss_universe_point_octo_blackout_back.jpg",
+          "strap": "shoppulss_universe_point_octo_blackout_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "universe_point_octo_gunmetal",
+        "name": "Universe Point Octo Gunmetal",
+        "dial_color": "Matte Grey Minimalist with 12 & 6 Numerals",
+        "case_material": "Gunmetal / Titanium Grey Octagonal Case",
+        "strap_type": "Grey Textured Rubber Strap",
+        "reference_file": "universe_point_2.jpeg",
+        "folder": "public/images/products/universe_point",
+        "views": {
+          "front": "shoppulss_universe_point_octo_gunmetal_front.jpg",
+          "side": "shoppulss_universe_point_octo_gunmetal_side.jpg",
+          "back": "shoppulss_universe_point_octo_gunmetal_back.jpg",
+          "strap": "shoppulss_universe_point_octo_gunmetal_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "universe_point_octo_black_green_ribbed",
+        "name": "Universe Point Octo Black Olive Green Ribbed",
+        "dial_color": "Olive Green Vertically Ribbed Dial",
+        "case_material": "Matte Black Octagonal Case",
+        "strap_type": "Olive Green Textured Rubber Strap",
+        "reference_file": "universe_point_2.jpeg",
+        "folder": "public/images/products/universe_point",
+        "views": {
+          "front": "shoppulss_universe_point_octo_black_green_ribbed_front.jpg",
+          "side": "shoppulss_universe_point_octo_black_green_ribbed_side.jpg",
+          "back": "shoppulss_universe_point_octo_black_green_ribbed_back.jpg",
+          "strap": "shoppulss_universe_point_octo_black_green_ribbed_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      },
+      {
+        "id": "universe_point_octo_steel_black_ribbed",
+        "name": "Universe Point Octo Steel Black Ribbed",
+        "dial_color": "Black Vertically Ribbed Dial",
+        "case_material": "Polished & Brushed Steel Octagonal Case",
+        "strap_type": "Black Textured Rubber Strap",
+        "reference_file": "universe_point_2.jpeg",
+        "folder": "public/images/products/universe_point",
+        "views": {
+          "front": "shoppulss_universe_point_octo_steel_black_ribbed_front.jpg",
+          "side": "shoppulss_universe_point_octo_steel_black_ribbed_side.jpg",
+          "back": "shoppulss_universe_point_octo_steel_black_ribbed_back.jpg",
+          "strap": "shoppulss_universe_point_octo_steel_black_ribbed_strap.jpg"
+        },
+        "status": {
+          "front": "GENERATION_FAILED",
+          "side": "NEEDS_REFERENCE",
+          "back": "NEEDS_REFERENCE",
+          "strap": "GENERATION_FAILED"
+        }
+      }
+    ]
+  },
+  "audit_summary": {
+    "total_variants": 32,
+    "completed_images": 3,
+    "needs_reference": 63,
+    "generation_failed": 62
+  }
+}
