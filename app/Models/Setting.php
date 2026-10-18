@@ -26,6 +26,18 @@ class Setting extends Model
             }
         }
 
+        if (in_array($key, ['easypaisa_account_number', 'jazzcash_account_number'])) {
+            if (empty($value) || str_contains((string) $value, '0300') || str_contains((string) $value, '0321')) {
+                return '03328912706';
+            }
+        }
+
+        if (in_array($key, ['easypaisa_account_title', 'jazzcash_account_title'])) {
+            if (empty($value) || str_contains((string) $value, 'ShopPulss') || str_contains((string) $value, 'Admin')) {
+                return 'Khizar Ahmad';
+            }
+        }
+
         return $value;
     }
 

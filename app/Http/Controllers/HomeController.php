@@ -44,10 +44,10 @@ class HomeController extends Controller
 
         $deals = Product::published()
             ->with(['images', 'category'])
-            ->onSale()
+            ->activeDeals()
             ->inStock()
-            ->orderByRaw('(regular_price - sale_price) DESC')
-            ->limit(4)
+            ->orderBy('deal_end_at', 'asc')
+            ->limit(6)
             ->get();
 
         $heroProducts = Product::published()

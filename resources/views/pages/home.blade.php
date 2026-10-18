@@ -6,15 +6,13 @@
     // Hero featured product
     $heroProduct = $heroProducts->first() ?? $trendingProducts->first() ?? $deals->first();
 
-    // Deal of the Day product
-    $dealProduct = $deals->first() ?? $trendingProducts->first();
+    // Deal of the Day product (strictly active deals scheduled by admin)
+    $dealProduct = $deals->first();
     $dealDiscount = 0;
-    if ($dealProduct) {
-        $hasDealSale = $dealProduct->sale_price && $dealProduct->sale_price > 0 && $dealProduct->sale_price < $dealProduct->regular_price;
-        $dealDiscount = $dealProduct->discount_percentage > 0
-            ? $dealProduct->discount_percentage
-            : ($hasDealSale ? (int) round((($dealProduct->regular_price - $dealProduct->sale_price) / $dealProduct->regular_price) * 100) : 0);
-        $dealSavings = $dealProduct->regular_price - ($dealProduct->sale_price ?? $dealProduct->regular_price);
+    $dealSavings = 0;
+    if ($dealProduct && $dealProduct->hasActiveDeal()) {
+        $dealDiscount = $dealProduct->discount_percentage > 0 ? $dealProduct->discount_percentage : 0;
+        $dealSavings = max(0, (float) $dealProduct->regular_price - (float) $dealProduct->effective_price);
     }
 
     // Category visual mappings
@@ -292,7 +290,7 @@
 {{-- END: ShopByCategories --}}
 
 {{-- 4. BEGIN: DealOfTheDaySection --}}
-@if($dealProduct)
+@if($dealProduct && $dealProduct->hasActiveDeal())
 <section class="py-10 bg-white" data-purpose="deal-of-the-day" id="deals">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-gradient-to-br from-amber-50/80 via-orange-50/60 to-white border border-amber-200/80 rounded-3xl p-6 sm:p-10 shadow-card">
@@ -313,19 +311,24 @@
                     {{-- Countdown Timer Blocks --}}
                     <div class="pt-2">
                         <span class="text-xs font-bold uppercase text-slate-500 tracking-wider block mb-2">Deal Ends In</span>
-                        <div class="flex items-center space-x-2.5 text-center">
-                            <div class="bg-white border border-slate-200 rounded-xl px-3.5 py-2 min-w-[64px] shadow-sm">
-                                <span class="block text-xl font-black text-pulse-navy" id="deal-hours">14</span>
+                        <div id="deal-countdown" data-deal-end="{{ $dealProduct->deal_end_at?->toIso8601String() }}" class="flex items-center space-x-2 text-center">
+                            <div class="bg-white border border-slate-200 rounded-xl px-3 py-2 min-w-[56px] shadow-sm">
+                                <span class="block text-xl font-black text-pulse-navy" id="deal-days">00</span>
+                                <span class="block text-[9px] font-bold text-slate-400 uppercase">Days</span>
+                            </div>
+                            <span class="font-bold text-slate-400">:</span>
+                            <div class="bg-white border border-slate-200 rounded-xl px-3.5 py-2 min-w-[60px] shadow-sm">
+                                <span class="block text-xl font-black text-pulse-navy" id="deal-hours">00</span>
                                 <span class="block text-[9px] font-bold text-slate-400 uppercase">Hours</span>
                             </div>
                             <span class="font-bold text-slate-400">:</span>
-                            <div class="bg-white border border-slate-200 rounded-xl px-3.5 py-2 min-w-[64px] shadow-sm">
-                                <span class="block text-xl font-black text-pulse-navy" id="deal-minutes">31</span>
+                            <div class="bg-white border border-slate-200 rounded-xl px-3.5 py-2 min-w-[60px] shadow-sm">
+                                <span class="block text-xl font-black text-pulse-navy" id="deal-minutes">00</span>
                                 <span class="block text-[9px] font-bold text-slate-400 uppercase">Mins</span>
                             </div>
                             <span class="font-bold text-slate-400">:</span>
-                            <div class="bg-white border border-slate-200 rounded-xl px-3.5 py-2 min-w-[64px] shadow-sm">
-                                <span class="block text-xl font-black text-pulse-navy" id="deal-seconds">43</span>
+                            <div class="bg-white border border-slate-200 rounded-xl px-3.5 py-2 min-w-[60px] shadow-sm">
+                                <span class="block text-xl font-black text-pulse-navy" id="deal-seconds">00</span>
                                 <span class="block text-[9px] font-bold text-slate-400 uppercase">Secs</span>
                             </div>
                         </div>
@@ -650,29 +653,37 @@
 
 @push('scripts')
 <script>
-    // Live countdown timer updater for Deal of the Day
+    // Live countdown timer updater for Deal of the Day based on actual deal_end_at
     document.addEventListener('DOMContentLoaded', () => {
+        const countdownContainer = document.getElementById('deal-countdown');
+        if (!countdownContainer) return;
+
+        const endIso = countdownContainer.dataset.dealEnd;
+        if (!endIso) return;
+
+        const targetTime = new Date(endIso).getTime();
+        const daysEl = document.getElementById('deal-days');
         const hoursEl = document.getElementById('deal-hours');
         const minsEl = document.getElementById('deal-minutes');
         const secsEl = document.getElementById('deal-seconds');
 
-        if (!hoursEl || !minsEl || !secsEl) return;
-
-        // Target: Midnight tonight or remaining seconds
-        const now = new Date();
-        const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-
         function updateCountdown() {
-            const currentTime = new Date();
-            const diff = Math.max(0, Math.floor((endOfDay - currentTime) / 1000));
+            const now = new Date().getTime();
+            const diff = Math.max(0, Math.floor((targetTime - now) / 1000));
 
-            const hours = Math.floor(diff / 3600);
+            const days = Math.floor(diff / 86400);
+            const hours = Math.floor((diff % 86400) / 3600);
             const minutes = Math.floor((diff % 3600) / 60);
             const seconds = diff % 60;
 
-            hoursEl.textContent = String(hours).padStart(2, '0');
-            minsEl.textContent = String(minutes).padStart(2, '0');
-            secsEl.textContent = String(seconds).padStart(2, '0');
+            if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+            if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+            if (minsEl) minsEl.textContent = String(minutes).padStart(2, '0');
+            if (secsEl) secsEl.textContent = String(seconds).padStart(2, '0');
+
+            if (diff <= 0) {
+                countdownContainer.classList.add('opacity-60');
+            }
         }
 
         updateCountdown();

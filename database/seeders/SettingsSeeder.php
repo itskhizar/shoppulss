@@ -38,8 +38,12 @@ class SettingsSeeder extends Seeder
             'whatsapp_helpline' => '+923328912706',
             // Payment
             'cod_enabled' => 'true',
-            'easypaisa_enabled' => 'false',
-            'jazzcash_enabled' => 'false',
+            'easypaisa_enabled' => 'true',
+            'easypaisa_account_title' => 'Khizar Ahmad',
+            'easypaisa_account_number' => '03328912706',
+            'jazzcash_enabled' => 'true',
+            'jazzcash_account_title' => 'Khizar Ahmad',
+            'jazzcash_account_number' => '03328912706',
             // Meta
             'meta_title' => 'ShopPulss - Premium Essentials. Direct to You.',
             'meta_description' => 'Shop authentic products at fair prices. Handpicked from 100+ trusted brands. Shipped directly from our central Karachi fulfilment facility.',

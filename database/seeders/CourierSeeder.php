@@ -88,11 +88,11 @@ class CourierSeeder extends Seeder
             'bank_branch' => 'Main Commercial Branch',
             'bank_instructions' => 'Please transfer the total amount via Mobile Banking / ATM. Enter your Transaction Reference ID below for immediate manual verification.',
             'easypaisa_enabled' => 'true',
-            'easypaisa_account_title' => 'ShopPulss Store',
-            'easypaisa_account_number' => '03001234567',
+            'easypaisa_account_title' => 'Khizar Ahmad',
+            'easypaisa_account_number' => '03328912706',
             'jazzcash_enabled' => 'true',
-            'jazzcash_account_title' => 'ShopPulss Store',
-            'jazzcash_account_number' => '03007654321',
+            'jazzcash_account_title' => 'Khizar Ahmad',
+            'jazzcash_account_number' => '03328912706',
         ];
 
         foreach ($paymentSettings as $key => $value) {

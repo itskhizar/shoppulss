@@ -302,8 +302,8 @@
                                         Official ShopPulss EasyPaisa Account Details
                                     </div>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-800 pt-1">
-                                        <div><span class="text-slate-500">Account Title:</span> <strong>{{ $settings['easypaisa_account_title'] ?? 'ShopPulss / Muhammad Khizar' }}</strong></div>
-                                        <div><span class="text-slate-500">EasyPaisa Mobile Number:</span> <strong class="font-mono text-emerald-800">{{ $settings['easypaisa_account_number'] ?? ($settings['store_phone'] ?? '03328912706') }}</strong></div>
+                                        <div><span class="text-slate-500">Account Title:</span> <strong>{{ $settings['easypaisa_account_title'] ?? 'Khizar Ahmad' }}</strong></div>
+                                        <div><span class="text-slate-500">EasyPaisa Mobile Number:</span> <strong class="font-mono text-emerald-800">{{ $settings['easypaisa_account_number'] ?? '03328912706' }}</strong></div>
                                     </div>
                                     <p class="text-[11px] text-emerald-950 pt-1 border-t border-emerald-200/60 leading-relaxed">
                                         Please send <strong>Rs. {{ number_format($totals['total']) }}</strong> to our EasyPaisa account and provide your sender registered mobile number & Transaction ID below for manual verification.
@@ -362,8 +362,8 @@
                                         Official ShopPulss JazzCash Account Details
                                     </div>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-800 pt-1">
-                                        <div><span class="text-slate-500">Account Title:</span> <strong>{{ $settings['jazzcash_account_title'] ?? 'ShopPulss / Muhammad Khizar' }}</strong></div>
-                                        <div><span class="text-slate-500">JazzCash Mobile Number:</span> <strong class="font-mono text-amber-800">{{ $settings['jazzcash_account_number'] ?? ($settings['store_phone'] ?? '03328912706') }}</strong></div>
+                                        <div><span class="text-slate-500">Account Title:</span> <strong>{{ $settings['jazzcash_account_title'] ?? 'Khizar Ahmad' }}</strong></div>
+                                        <div><span class="text-slate-500">JazzCash Mobile Number:</span> <strong class="font-mono text-amber-800">{{ $settings['jazzcash_account_number'] ?? '03328912706' }}</strong></div>
                                     </div>
                                     <p class="text-[11px] text-amber-950 pt-1 border-t border-amber-200/60 leading-relaxed">
                                         Please send <strong>Rs. {{ number_format($totals['total']) }}</strong> to our JazzCash account and provide your sender registered mobile number & Transaction ID below for manual verification.

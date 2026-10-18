@@ -67,6 +67,13 @@
                 <option value="archived" {{ request('status') === 'archived' ? 'selected' : '' }}>Archived</option>
             </select>
 
+            {{-- Deals Filter --}}
+            <select name="deal" class="h-10 px-3.5 bg-gray-50/70 hover:bg-white focus:bg-white rounded-xl border border-gray-200 text-xs font-medium text-gray-700 focus:outline-none focus:border-[#00A8B8] focus:ring-1 focus:ring-[#00A8B8] min-w-[130px] cursor-pointer" onchange="this.form.submit()">
+                <option value="">Deals: All</option>
+                <option value="active" {{ request('deal') === 'active' ? 'selected' : '' }}>🔥 Active Deals</option>
+                <option value="inactive" {{ request('deal') === 'inactive' ? 'selected' : '' }}>Non-Deals</option>
+            </select>
+
             {{-- Stock Filter --}}
             <select name="stock" class="h-10 px-3.5 bg-gray-50/70 hover:bg-white focus:bg-white rounded-xl border border-gray-200 text-xs font-medium text-gray-700 focus:outline-none focus:border-[#00A8B8] focus:ring-1 focus:ring-[#00A8B8] min-w-[130px] cursor-pointer" onchange="this.form.submit()">
                 <option value="">Stock: All</option>
@@ -90,7 +97,7 @@
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     <span>Filter</span>
                 </button>
-                @if(request()->hasAny(['q', 'status', 'category_id', 'stock', 'sort']))
+                @if(request()->hasAny(['q', 'status', 'category_id', 'stock', 'sort', 'deal']))
                     <a href="{{ route('admin.products.index') }}" class="h-10 px-3.5 flex items-center justify-center rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:text-red-600 hover:border-red-200 hover:bg-red-50/30 transition-colors whitespace-nowrap" title="Reset Filters">
                         Reset
                     </a>
@@ -124,8 +131,13 @@
                                     </div>
                                     <div class="min-w-0">
                                         <div class="font-bold text-gray-900 truncate max-w-xs">{{ $prod->name }}</div>
-                                        <div class="mt-0.5">
+                                        <div class="mt-0.5 flex items-center gap-1.5 flex-wrap">
                                             <span class="text-[10px] px-1.5 py-0.5 rounded font-semibold {{ $prod->type === 'variant' ? 'bg-purple-50 text-purple-700 border border-purple-200' : 'bg-gray-100 text-gray-600' }}">{{ ucfirst($prod->type ?? 'simple') }}</span>
+                                            @if($prod->hasActiveDeal())
+                                                <span class="text-[10px] px-1.5 py-0.5 rounded font-black bg-orange-100 text-orange-700 border border-orange-200">🔥 Deal</span>
+                                            @elseif($prod->is_deal && $prod->isDealExpired())
+                                                <span class="text-[10px] px-1.5 py-0.5 rounded font-semibold bg-gray-100 text-gray-400">Expired Deal</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

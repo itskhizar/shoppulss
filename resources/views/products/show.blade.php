@@ -156,6 +156,24 @@
                     </p>
                 @endif
 
+                @if($product->hasActiveDeal())
+                    {{-- Active Deal Banner with Live Countdown --}}
+                    <div class="rounded-xl border border-orange-200 bg-orange-50/70 p-3.5 flex items-center justify-between gap-3 text-xs">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                                <i class="fa-solid fa-bolt"></i>
+                            </span>
+                            <div>
+                                <span class="font-extrabold text-orange-950 block">Official Flash Deal</span>
+                                <span class="text-[11px] text-orange-700">Special warehouse direct price while deal timer is active.</span>
+                            </div>
+                        </div>
+                        <div id="product-deal-timer" data-deal-end="{{ $product->deal_end_at?->toIso8601String() }}" class="font-mono font-black text-orange-800 text-xs px-2.5 py-1.5 rounded-lg bg-white border border-orange-200 shrink-0 shadow-2xs">
+                            Loading...
+                        </div>
+                    </div>
+                @endif
+
                 {{-- Purchase Form --}}
                 <form action="{{ route('cart.add') }}" method="POST" class="ajax-add-to-cart space-y-4 pt-1">
                     @csrf
@@ -398,6 +416,23 @@ document.addEventListener('DOMContentLoaded', function () {
         qtyInput.addEventListener('change', updateTotalDisplay);
     }
     updateTotalDisplay();
+
+    // Live countdown updater on product page
+    const prodTimer = document.getElementById('product-deal-timer');
+    if (prodTimer && prodTimer.dataset.dealEnd) {
+        const target = new Date(prodTimer.dataset.dealEnd).getTime();
+        function updateProdTimer() {
+            const diff = Math.max(0, Math.floor((target - Date.now()) / 1000));
+            const d = Math.floor(diff / 86400);
+            const h = Math.floor((diff % 86400) / 3600);
+            const m = Math.floor((diff % 3600) / 60);
+            const s = diff % 60;
+            const pad = (n) => String(n).padStart(2, '0');
+            prodTimer.textContent = d > 0 ? `${d}d ${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(h)}:${pad(m)}:${pad(s)}`;
+        }
+        updateProdTimer();
+        setInterval(updateProdTimer, 1000);
+    }
 });
 </script>
 @endsection

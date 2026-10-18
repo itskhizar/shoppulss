@@ -12,6 +12,7 @@ use App\Models\ProductVariant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -37,6 +38,14 @@ class ProductController extends Controller
 
         if ($catId = $request->get('category_id')) {
             $query->where('category_id', $catId);
+        }
+
+        if ($deal = $request->get('deal')) {
+            if ($deal === 'active') {
+                $query->activeDeals();
+            } elseif ($deal === 'inactive') {
+                $query->where('is_deal', false);
+            }
         }
 
         if ($stock = $request->get('stock')) {
@@ -162,13 +171,26 @@ class ProductController extends Controller
             'images.*.uploaded' => 'An image failed to upload. Please ensure the file is under 20MB and not corrupted.',
         ]);
 
+        $isDeal = $request->boolean('is_deal');
         $validated['slug'] = Str::slug($validated['name']).'-'.Str::random(5);
         $validated['is_featured'] = $request->boolean('is_featured');
         $validated['is_new'] = $request->boolean('is_new');
-        $validated['is_deal'] = $request->boolean('is_deal');
         $validated['is_trending'] = $request->boolean('is_trending');
-        $validated['deal_start_at'] = $request->filled('deal_start_at') ? $request->date('deal_start_at') : null;
-        $validated['deal_end_at'] = $request->filled('deal_end_at') ? $request->date('deal_end_at') : null;
+        $validated['is_deal'] = $isDeal;
+
+        if ($isDeal) {
+            $startAt = $request->filled('deal_start_at') ? Carbon::parse($request->input('deal_start_at')) : now();
+            $endAt = $request->filled('deal_end_at') ? Carbon::parse($request->input('deal_end_at')) : $startAt->copy()->addDays(7);
+
+            if (empty($validated['sale_price']) || (float) $validated['sale_price'] >= (float) $validated['regular_price']) {
+                $validated['sale_price'] = round((float) $validated['regular_price'] * 0.9, 2);
+            }
+            $validated['deal_start_at'] = $startAt;
+            $validated['deal_end_at'] = $endAt;
+        } else {
+            $validated['deal_start_at'] = null;
+            $validated['deal_end_at'] = null;
+        }
 
         $imageUrl = $validated['image_url'] ?? null;
         unset($validated['image_url'], $validated['images']);
@@ -277,12 +299,25 @@ class ProductController extends Controller
             'stock_quantity', 'status', 'is_featured', 'is_deal', 'deal_start_at', 'deal_end_at',
         ]);
 
+        $isDeal = $request->boolean('is_deal');
         $validated['is_featured'] = $request->boolean('is_featured');
         $validated['is_new'] = $request->boolean('is_new');
-        $validated['is_deal'] = $request->boolean('is_deal');
         $validated['is_trending'] = $request->boolean('is_trending');
-        $validated['deal_start_at'] = $request->filled('deal_start_at') ? $request->date('deal_start_at') : null;
-        $validated['deal_end_at'] = $request->filled('deal_end_at') ? $request->date('deal_end_at') : null;
+        $validated['is_deal'] = $isDeal;
+
+        if ($isDeal) {
+            $startAt = $request->filled('deal_start_at') ? Carbon::parse($request->input('deal_start_at')) : now();
+            $endAt = $request->filled('deal_end_at') ? Carbon::parse($request->input('deal_end_at')) : $startAt->copy()->addDays(7);
+
+            if (empty($validated['sale_price']) || (float) $validated['sale_price'] >= (float) $validated['regular_price']) {
+                $validated['sale_price'] = round((float) $validated['regular_price'] * 0.9, 2);
+            }
+            $validated['deal_start_at'] = $startAt;
+            $validated['deal_end_at'] = $endAt;
+        } else {
+            $validated['deal_start_at'] = null;
+            $validated['deal_end_at'] = null;
+        }
 
         $imageUrl = $validated['image_url'] ?? null;
         $deleteImages = $validated['delete_images'] ?? [];

@@ -180,6 +180,84 @@
             </div>
         </div>
 
+        {{-- Flash Deal & Promotion Scheduling (Admin Deal Control) --}}
+        <div class="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50/60 via-white to-orange-50/40 p-5 shadow-xs">
+            <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-base shadow-xs">
+                        <i class="fa-solid fa-fire"></i>
+                    </span>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xs font-bold text-gray-900 uppercase tracking-wider">Admin Deal Control & Flash Schedule</h2>
+                            @if($product->hasActiveDeal())
+                                <span class="bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse">ACTIVE DEAL</span>
+                            @elseif($product->is_deal && $product->isDealExpired())
+                                <span class="bg-gray-400 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">EXPIRED</span>
+                            @endif
+                        </div>
+                        <p class="text-xs text-gray-500 mt-0.5">Control whether this product enters the Deal of the Day and promotional banners with an active countdown timer.</p>
+                    </div>
+                </div>
+
+                <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input type="checkbox" id="dealToggle" name="is_deal" value="1" {{ old('is_deal', $product->is_deal) ? 'checked' : '' }} onchange="toggleDealSchedule(this.checked)" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
+                    <span class="ml-2.5 text-xs font-bold text-gray-700 peer-checked:text-orange-600">Mark as Deal</span>
+                </label>
+            </div>
+
+            {{-- Collapsible Deal Inputs --}}
+            <div id="dealSchedulePanel" class="{{ old('is_deal', $product->is_deal) ? '' : 'hidden' }} mt-4 pt-4 border-t border-amber-200/60 space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="deal_start_at" class="block text-xs font-semibold text-gray-700 mb-1">
+                            Deal Start Date & Time
+                        </label>
+                        <input
+                            type="datetime-local"
+                            id="deal_start_at"
+                            name="deal_start_at"
+                            value="{{ old('deal_start_at', $product->deal_start_at ? $product->deal_start_at->format('Y-m-d\TH:i') : '') }}"
+                            class="w-full h-11 px-3.5 rounded-lg border border-amber-200 bg-white text-xs font-medium focus:outline-none focus:border-orange-500"
+                        >
+                        <span class="text-[10px] text-gray-400 mt-0.5 block">Leave blank to start immediately upon saving.</span>
+                    </div>
+
+                    <div>
+                        <label for="deal_end_at" class="block text-xs font-semibold text-gray-700 mb-1">
+                            Deal End Date & Time *
+                        </label>
+                        <input
+                            type="datetime-local"
+                            id="deal_end_at"
+                            name="deal_end_at"
+                            value="{{ old('deal_end_at', $product->deal_end_at ? $product->deal_end_at->format('Y-m-d\TH:i') : '') }}"
+                            class="w-full h-11 px-3.5 rounded-lg border border-amber-200 bg-white text-xs font-medium focus:outline-none focus:border-orange-500"
+                        >
+                        <span class="text-[10px] text-gray-400 mt-0.5 block">Deal badge & countdown expire automatically at this time.</span>
+                    </div>
+                </div>
+
+                {{-- Quick Duration Presets --}}
+                <div class="flex flex-wrap items-center gap-2 pt-1">
+                    <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mr-1">Quick Presets:</span>
+                    <button type="button" onclick="setDealDurationHours(24)" class="px-3 py-1 rounded-lg text-xs font-bold bg-white border border-amber-200 text-gray-700 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 transition-colors shadow-2xs">
+                        +24 Hours
+                    </button>
+                    <button type="button" onclick="setDealDurationDays(3)" class="px-3 py-1 rounded-lg text-xs font-bold bg-white border border-amber-200 text-gray-700 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 transition-colors shadow-2xs">
+                        +3 Days
+                    </button>
+                    <button type="button" onclick="setDealDurationDays(7)" class="px-3 py-1 rounded-lg text-xs font-bold bg-orange-100 border border-orange-300 text-orange-800 hover:bg-orange-200 transition-colors shadow-2xs">
+                        +7 Days (Default)
+                    </button>
+                    <button type="button" onclick="setDealDurationDays(14)" class="px-3 py-1 rounded-lg text-xs font-bold bg-white border border-amber-200 text-gray-700 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 transition-colors shadow-2xs">
+                        +14 Days
+                    </button>
+                </div>
+            </div>
+        </div>
+
         {{-- Media --}}
         <div>
             <h2 class="text-xs font-bold text-gray-900 uppercase tracking-wider mb-4 pb-2 border-b border-gray-100">Product Media</h2>
@@ -435,6 +513,47 @@ if (productEditForm && imagesInput) {
             productEditForm.submit();
         }
     });
+}
+function toggleDealSchedule(checked) {
+    const panel = document.getElementById('dealSchedulePanel');
+    if (panel) {
+        if (checked) {
+            panel.classList.remove('hidden');
+            const endInput = document.getElementById('deal_end_at');
+            if (endInput && !endInput.value) {
+                setDealDurationDays(7);
+            }
+        } else {
+            panel.classList.add('hidden');
+        }
+    }
+}
+
+function formatDatetimeLocal(date) {
+    const pad = (n) => String(n).padStart(2, '0');
+    const y = date.getFullYear();
+    const m = pad(date.getMonth() + 1);
+    const d = pad(date.getDate());
+    const h = pad(date.getHours());
+    const min = pad(date.getMinutes());
+    return `${y}-${m}-${d}T${h}:${min}`;
+}
+
+function setDealDurationHours(hours) {
+    const startInput = document.getElementById('deal_start_at');
+    const endInput = document.getElementById('deal_end_at');
+    const baseDate = (startInput && startInput.value) ? new Date(startInput.value) : new Date();
+    if (startInput && !startInput.value) {
+        startInput.value = formatDatetimeLocal(baseDate);
+    }
+    const endDate = new Date(baseDate.getTime() + hours * 3600 * 1000);
+    if (endInput) {
+        endInput.value = formatDatetimeLocal(endDate);
+    }
+}
+
+function setDealDurationDays(days) {
+    setDealDurationHours(days * 24);
 }
 </script>
 @endsection
